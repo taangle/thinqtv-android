@@ -47,4 +47,12 @@ public class MainActivity extends AppCompatActivity {
             JitsiMeetActivity.launch(this, options);
         }
     }
+
+    public void onButtonClickDefault(View v) {
+        JitsiMeetConferenceOptions options
+                = new JitsiMeetConferenceOptions.Builder()
+                .setRoom("ThinqTV")
+                .build();
+        JitsiMeetActivity.launch(this, options);
+    }
 }

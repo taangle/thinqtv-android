@@ -4,37 +4,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/ic_launcher_background"
     tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/conferenceName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="105dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="@string/conference_name_hint"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textAllCaps="false"
 
-        android:importantForAutofill="no"/>
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerText" />
 
     <Button
         android:id="@+id/joinButton"
-        android:layout_width="147dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
         android:onClick="onButtonClick"
         android:text="@string/join_button_hint"
         android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textColorHighlight="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.889"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/conferenceName" />
+
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="269dp"
+        android:layout_height="143dp"
+        android:layout_marginTop="175dp"
+        android:text="@string/homescreenHeader"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/defaultJoinButton"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="105dp"
+        android:background="@color/colorPrimary"
+        android:onClick="onButtonClickDefault"
+        android:text="@string/defaultTryConversation"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textColorHighlight="@android:color/darker_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerText" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:text="or"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerText" />
+
+    <Button
+        android:id="@+id/GetInvolved"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:text="Get Involved"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
