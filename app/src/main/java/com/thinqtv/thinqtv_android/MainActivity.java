@@ -1,6 +1,8 @@
 package com.thinqtv.thinqtv_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
     }
-
+    //blah
     public void onButtonClick(View v) {
         EditText editText = findViewById(R.id.conferenceName);
         String text = editText.getText().toString();
@@ -47,4 +49,10 @@ public class MainActivity extends AppCompatActivity {
             JitsiMeetActivity.launch(this, options);
         }
     }
+
+    public void goGetInvolved(View V){
+        Intent i = new Intent(this, getInvolve.class);
+        startActivity(i);
+    }
+
 }
