@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
     }
-    //blah
+
     public void onButtonClick(View v) {
         EditText editText = findViewById(R.id.conferenceName);
         String text = editText.getText().toString();
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //go to get involved page
     public void goGetInvolved(View V){
         Intent i = new Intent(this, getInvolve.class);
         startActivity(i);
