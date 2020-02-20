@@ -21,19 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="159dp"
-        android:layout_marginEnd="164dp"
-        android:layout_marginBottom="159dp"
-        android:onClick="goHome"
-        android:text="Home"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="72dp"
@@ -44,4 +31,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <ScrollView
+        android:id="@+id/GetInvolvedScroll"
+        android:layout_width="409dp"
+        android:layout_height="537dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="162dp"
+        android:onClick="goHome"
+        android:text="Home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
