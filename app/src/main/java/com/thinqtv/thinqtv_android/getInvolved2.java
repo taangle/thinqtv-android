@@ -1,4 +1,4 @@
-//For the "Get Involved" -> "Organizations"
+//For the Get Involved -> Responsible Adults
 
 package com.thinqtv.thinqtv_android;
 
@@ -8,22 +8,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class getInvolve extends AppCompatActivity {
+public class getInvolved2 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_involve);
+        setContentView(R.layout.activity_get_involved2);
     }
 
     public void goHome(View v){
         Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-    }
-
-    //Go to "Get Involved" -> "Responsible Adults"
-    public void goGI2(View v){
-        Intent i = new Intent(this, getInvolved2.class);
         startActivity(i);
     }
 
