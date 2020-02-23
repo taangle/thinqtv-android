@@ -6,224 +6,255 @@
     android:layout_height="wrap_content"
 
 
-    android:background="#e0d2c3"
-    tools:context=".getInvolve">
+    android:background="#ffffff"
+    tools:context=".getInvolve" >
 
     <ScrollView
-        android:id="@+id/GetInvolvedScroll"
-        android:layout_width="411dp"
-        android:layout_height="596dp"
-
-        android:layout_marginTop="135dp"
+        android:id="@+id/scrollView3"
+        android:layout_width="416dp"
+        android:layout_height="576dp"
         android:background="#F2EBE4"
+        android:paddingBottom="65dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/homeButton">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="60dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/creepinessBanner"
-                android:layout_width="398dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="350dp"
-                android:layout_marginRight="350dp"
-                android:background="#F2EBE4"
-                android:text="Help create a culture without                                                  creepiness"
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:foregroundTint="#FFFFFF"
+                android:text="Our Mission"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="Create a culture where speaking up against sexual harassment is the norm"
                 android:textAlignment="center"
                 android:textColor="#8C1D40"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/msg1"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Live video conversations are becoming more mainstream as video technology evolves. However several platforms and apps have defaulted to a culture where women are solicited for nude pictures and lewd acts for money. When we walk down the street in public, we are not assumed to be prostitutes, why is that the assumption when we are online? Thus women leave the table and their voices go unheard. "
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/space1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="Want an internet culture where harassment and sexual solicitations are not the norm? We're inviting individuals and organizations to form a Coalition to steer live video culture toward a civilized society where speaking up against harassment is the norm."
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/space2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/space3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#F2EBE4"
-                android:text="Live video conversations are becoming more mainstream as video technology evolves. However several platforms and apps have defaulted to a culture where women are solicited for nude pictures and lewd acts for money. When we walk down the street in public, we are not assumed to be prostitutes, why is that the assumption when we are online? This treatment results in forums where people interested in civil discourse leave and bad behavior thrives. When women feel they need to hide their identities, they are not represented proportionately in society and their voices go unheard.  Want an internet culture where harassment and sexual solicitations are not the norm? We're inviting churches, schools, parents' organizations, women's organizations, and any other interested groups to form a Coalition to steer live video culture toward a civilized society where we can all grow our minds - where speaking out against harassment is the norm.  Anyone who has questions is encouraged to drop in to any Your Online Mom session scheduled on the ThinQ.tv home page"
-                android:textColor="#000000" />
+                android:textSize="8sp" />
 
             <TextView
-                android:id="@+id/blank1"
+                android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ffffff" />
+                android:background="#F2EBE4"
+                android:text="Apply to be on the YourOnlineMom BOARD OF DIRECTORS! "
+                android:textAlignment="center"
+                android:textColor="#8C1D40"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center"
+                android:background="#8c2140"
+                android:text="Apply Here"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF" />
 
             <TextView
-                android:id="@+id/canDoBanner"
+                android:id="@+id/textView10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#F2EBE4"
+                android:textSize="8sp" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:text="What can ORGANIZATIONS do:"
-                android:textAlignment="textStart"
-                android:textColor="#8C1D40"
-                android:textSize="24sp" />
+                android:textColor="#8c2140"
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/msg2"
+                android:id="@+id/textView12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Invite other organizations to participate in the Your Online Mom coalition "
-                android:textColor="#000000" />
+                android:background="#FFFFFF"
+                android:text="- Invite other organizations to participate in the Your Online Mom coalition"
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/msg2-2"
+                android:id="@+id/textView13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:text="- Nominate adults to be Online Parents or Siblings"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/msg2-3"
+                android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Announce to student organizations that their members can drop in and be heard "
-                android:textColor="#000000" />
+                android:background="#FFFFFF"
+                android:text="- Announce to student organizations that their members can drop in and be heard"
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/msg2-4"
+                android:id="@+id/textView15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Spread the word via social media "
-                android:textColor="#000000" />
+                android:background="#FFFFFF"
+                android:text="- Spread the word via social media"
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/blank2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/coalition"
+                android:id="@+id/space4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Goals of coalition:"
+                android:background="#FFFFFF"
+                android:textSize="8sp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="Goals of Coalition:"
                 android:textColor="#8C1D40"
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/msg3-1"
+                android:id="@+id/textView18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Draft a List of guidelines for what bystanders on the internet can do when they witness harassment and solicitation in live video "
-                android:textColor="#000000" />
+                android:background="#FFFFFF"
+                android:text="- Draft a list of Bystander Guidelines for what people can do when they witness harassment in live video "
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/msg3-2"
-                android:layout_width="match_parent"
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="- A monthly day to take over apps that have high sexual harassment activity by sending a group of responsible adults into the apps to do the items on the List "
-                android:textColor="#000000" />
+                android:background="#FFFFFF"
+                android:text="- Stage occasional Intervention Days to take over apps that have high sexual harassment activity by sending responsible adults into the apps to enact the Bystander Guidelines - Stage occasional Intervention Days to take over apps that have high sexual harassment activity by sending responsible adults into the apps to enact the Bystander Guidelines "
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/msg3-3"
-                android:layout_width="match_parent"
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:text="- Vet a force of Online Parents and Siblings to host conversation times for students "
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/blank3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/join"
+                android:id="@+id/space5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="How to join the Coalition:"
+                android:background="#FFFFFF"
+                android:textSize="8sp" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="How to join the Coalition: "
                 android:textColor="#8C1D40"
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/msg4-1"
+                android:id="@+id/textView23"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Drop in to any of the Your Online Mom Conversations by Dr. Lisa Schaefer listed on the ThinQ.tv schedule so we can meet you "
-                android:textColor="#000000" />
+                android:background="#FFFFFF"
+                android:text="- Email info@ThinQ.tv to state your interest or call 602-888-3089 "
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/msg4-2"
+                android:id="@+id/textView24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Or drop in to any of the Coalition Conversations to be listed on the ThinQ.tv schedule soon. "
-                android:textColor="#000000" />
+                android:background="#FFFFFF"
+                android:text="- Drop in to any of the Your Online Mom Conversations by Dr. Lisa Schaefer listed on the ThinQ.tv schedule so we can meet you and you can ask questions "
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/lastBlank"
+                android:id="@+id/space6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ffff" />
+                android:background="#FFFFFF"
+                android:textSize="8sp" />
         </LinearLayout>
-
     </ScrollView>
 
-    <TextView
-        android:id="@+id/pageTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="41dp"
-        android:layout_marginStart="171dp"
-        android:layout_marginEnd="181dp"
-        android:text="Get Involved!"
-        android:textColor="#8C2140"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.456"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
+    <ImageButton
         android:id="@+id/homeButton"
-        android:layout_width="48dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="71dp"
-        android:layout_marginBottom="56dp"
-        android:onClick="goHome"
-        android:text="Home"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/GetInvolvedScroll"
-        app:layout_constraintEnd_toStartOf="@+id/pageTitle"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="110dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="15dp"
-        android:onClick="goGI2"
-        android:text="Responsible Adults"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/GetInvolvedScroll"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeButton" />
-
-    <TextView
-        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginEnd="162dp"
-        android:text="Organizations"
-        android:textColor="#8C1D40"
-        app:layout_constraintBottom_toTopOf="@+id/GetInvolvedScroll"
+        android:layout_marginTop="51dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:clickable="false"
+        android:onClick="goHome"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pageTitle" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_foreground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

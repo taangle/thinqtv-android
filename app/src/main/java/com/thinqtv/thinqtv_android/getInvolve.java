@@ -21,10 +21,6 @@ public class getInvolve extends AppCompatActivity {
         startActivity(i);
     }
 
-    //Go to "Get Involved" -> "Responsible Adults"
-    public void goGI2(View v){
-        Intent i = new Intent(this, getInvolved2.class);
-        startActivity(i);
-    }
+
 
 }
