@@ -37,19 +37,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onButtonClick(View v) {
-        EditText conferenceName = findViewById(R.id.conferenceName);
-        String conferenceNameStr = conferenceName.getText().toString();
-        System.out.println(conferenceNameStr);
+        // extract screen name and conference name from EditText fields
         EditText screenName = findViewById(R.id.screenName);
         String screenNameStr = screenName.getText().toString();
+        EditText conferenceName = findViewById(R.id.conferenceName);
+        String conferenceNameStr = conferenceName.getText().toString();
 
-        Bundle userInfoBundle = new Bundle();
-        if (screenNameStr.length() > 0) {
-            Log.d("SCREEN_NAME", screenNameStr);
-            userInfoBundle.putString("displayName", screenNameStr);
-        }
-
+        // join conference if a conference name has been entered
         if (conferenceNameStr.length() > 0) {
+            // populate user Bundle if a screen name has been entered
+            Bundle userInfoBundle = new Bundle();
+            if (screenNameStr.length() > 0) {
+                Log.d("SCREEN_NAME", screenNameStr);
+                userInfoBundle.putString("displayName", screenNameStr);
+            }
+
             JitsiMeetConferenceOptions options
                     = new JitsiMeetConferenceOptions.Builder()
                     .setRoom(conferenceNameStr)
