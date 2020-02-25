@@ -7,7 +7,7 @@
 
 
     android:background="#ffffff"
-    tools:context=".getInvolve" >
+    tools:context=".GetInvolved" >
 
     <ScrollView
         android:id="@+id/scrollView3"
