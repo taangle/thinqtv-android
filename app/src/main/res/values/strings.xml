@@ -2,5 +2,4 @@
     <string name="app_name">ThinQ TV</string>
     <string name="conference_name_hint">Enter Room Name</string>
     <string name="join_button_hint">Join</string>
-    <string name="screen_name_hint">Enter Your Name</string>
 </resources>
