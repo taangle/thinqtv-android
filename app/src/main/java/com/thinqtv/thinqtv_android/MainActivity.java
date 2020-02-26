@@ -1,7 +1,6 @@
 package com.thinqtv.thinqtv_android;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -50,10 +49,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //go to get involved page
+    // go to get involved page
     public void goGetInvolved(View V){
         Intent i = new Intent(this, GetInvolved.class);
         startActivity(i);
     }
-
 }
