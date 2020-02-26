@@ -39,6 +39,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/conferenceName"
         app:layout_constraintTop_toBottomOf="@+id/conferenceName" />
+
+    <VideoView
+        android:id="@+id/videoview"
+        android:layout_width="1307dp"
+        android:layout_height="735dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 -->
     <TextView
         android:id="@+id/headerText"
@@ -103,6 +112,7 @@
         android:id="@+id/upcoming_events"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:background="#D9FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -117,7 +127,7 @@
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@color/colorAccent" />
         </LinearLayout>
     </ScrollView>
 
@@ -128,10 +138,11 @@
         android:layout_marginStart="5dp"
         android:layout_marginBottom="3dp"
         android:text="@string/upcoming_events"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/upcoming_events"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
