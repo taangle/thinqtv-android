@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
     }
-
+/*
     public void onButtonClick(View v) {
         EditText editText = findViewById(R.id.conferenceName);
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             JitsiMeetActivity.launch(this, options);
         }
     }
-
+*/
     public void onButtonClickDefault(View v) {
         JitsiMeetConferenceOptions options
                 = new JitsiMeetConferenceOptions.Builder()
