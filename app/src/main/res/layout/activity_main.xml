@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/ic_launcher_background"
     tools:context=".MainActivity">
-<!--
+
+<!--  COMMENTED OUT BECAUSE BUTTONS ARE NO LONGER USEFUL /AND/ NOT SURE IF VIDEO IS GOOD IDEA
+
     <EditText
         android:id="@+id/conferenceName"
         android:layout_width="130dp"
@@ -49,6 +51,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 -->
+
+<!--  HEADER TEXT AT THE TOP OF HOME SCREEN  -->
     <TextView
         android:id="@+id/headerText"
         android:layout_width="351dp"
@@ -65,6 +69,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.091" />
 
+<!--  DEFAULT JOIN THE CONVERSATION BUTTON  -->
     <Button
         android:id="@+id/defaultJoinButton"
         android:layout_width="200dp"
@@ -82,6 +87,7 @@
         app:layout_constraintHorizontal_bias=".93"
         app:layout_constraintStart_toStartOf="parent" />
 
+<!--  GET INVOLVED BUTTON  -->
     <Button
         android:id="@+id/get_involved"
         android:layout_width="125dp"
@@ -97,17 +103,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/defaultJoinButton" />
 
+<!--  GOLD BRAIN ICON NEAR HOME SCREEN TITLE  -->
     <ImageView
         android:id="@+id/goldIcon"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_marginTop="130dp"
         android:layout_marginEnd="40dp"
-        android:contentDescription="golden brain by title"
         app:layout_constraintEnd_toEndOf="@+id/headerText"
         app:layout_constraintTop_toTopOf="@+id/headerText"
         app:srcCompat="@drawable/ic_launcher_foreground_gold" />
 
+<!--  UPCOMING EVENTS HEADER TEXT  -->
+    <TextView
+        android:id="@+id/upcoming_events_header"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="3dp"
+        android:text="@string/upcoming_events"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/upcoming_events"
+        app:layout_constraintStart_toStartOf="parent" />
+
+<!--  UPCOMING EVENTS SCROLL VIEW  -->
     <ScrollView
         android:id="@+id/upcoming_events"
         android:layout_width="match_parent"
@@ -130,19 +151,5 @@
                 android:background="@color/colorAccent" />
         </LinearLayout>
     </ScrollView>
-
-    <TextView
-        android:id="@+id/upcoming_events_header"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="3dp"
-        android:text="@string/upcoming_events"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/upcoming_events"
-        app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

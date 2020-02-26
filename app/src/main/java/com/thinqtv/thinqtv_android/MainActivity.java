@@ -38,11 +38,14 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
+        // COMMENTED OUT BECAUSE I'M NOT SURE IF IT ACTUALLY LOOKS GOOD. GET TEAM OPINION
         //mainViewer = (VideoView) findViewById(R.id.videoview);
         //Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.crowdpubcommercialv_1);
         //mainViewer.setVideoURI(uri);
         //mainViewer.start();
     }
+
+// COMMENTED OUT BECAUSE BUTTON IS NOT USEFUL ANYMORE
 /*
     public void onButtonClick(View v) {
         EditText editText = findViewById(R.id.conferenceName);
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 */
+
+    //Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
     public void onButtonClickDefault(View v) {
         JitsiMeetConferenceOptions options
                 = new JitsiMeetConferenceOptions.Builder()

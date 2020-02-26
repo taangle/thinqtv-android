@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--THIS IS CODE TO MAKE A BUTTON WITH ROUNDED CORNERS-->
+<!--TO USE IT, JUST MAKE A BUTTON AND SET "rounded_button" AS THE BACKGROUND-->
+
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:state_pressed="true" >
         <shape android:shape="rectangle"  >
