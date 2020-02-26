@@ -3,5 +3,6 @@
     <string name="conference_name_hint">Enter Room Name</string>
     <string name="join_button_hint">Join</string>
     <string name="homescreenHeader">Conversations\nthat make you\nThinQ</string>
-    <string name="defaultTryConversation">Try a\nConversation!</string>
+    <string name="defaultTryConversation">Join the conversation!</string>
+    <string name="getInvolved">Get involved</string>
 </resources>
