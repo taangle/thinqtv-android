@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onButtonClick(View v) {
         EditText editText = findViewById(R.id.conferenceName);
+
         String text = editText.getText().toString();
         System.out.println(text);
 
