@@ -2,14 +2,12 @@ package com.thinqtv.thinqtv_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
-import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,25 +35,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onButtonClick(View v) {
-        // extract screen name and conference name from EditText fields
-        EditText screenName = findViewById(R.id.screenName);
-        String screenNameStr = screenName.getText().toString();
-        EditText conferenceName = findViewById(R.id.conferenceName);
-        String conferenceNameStr = conferenceName.getText().toString();
+        EditText editText = findViewById(R.id.conferenceName);
+        String text = editText.getText().toString();
+        System.out.println(text);
 
-        // join conference if a conference name has been entered
-        if (conferenceNameStr.length() > 0) {
-            // populate user Bundle if a screen name has been entered
-            Bundle userInfoBundle = new Bundle();
-            if (screenNameStr.length() > 0) {
-                Log.d("SCREEN_NAME", screenNameStr);
-                userInfoBundle.putString("displayName", screenNameStr);
-            }
-
+        if (text.length() > 0) {
             JitsiMeetConferenceOptions options
                     = new JitsiMeetConferenceOptions.Builder()
-                    .setRoom(conferenceNameStr)
-                    .setUserInfo(new JitsiMeetUserInfo(userInfoBundle))
+                    .setRoom(text)
                     .build();
             JitsiMeetActivity.launch(this, options);
         }
