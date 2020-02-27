@@ -7,51 +7,6 @@
     android:background="@color/ic_launcher_background"
     tools:context=".MainActivity">
 
-<!--  COMMENTED OUT BECAUSE BUTTONS ARE NO LONGER USEFUL /AND/ NOT SURE IF VIDEO IS GOOD IDEA
-
-    <EditText
-        android:id="@+id/conferenceName"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="175dp"
-        android:ems="10"
-        android:hint="@string/conference_name_hint"
-
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        android:textAllCaps="false"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/upcoming_events"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.067"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/joinButton"
-        android:layout_width="130dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_button"
-        android:onClick="onButtonClick"
-        android:text="@string/join_button_hint"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textColorHighlight="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="@+id/conferenceName"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/conferenceName"
-        app:layout_constraintTop_toBottomOf="@+id/conferenceName" />
-
-    <VideoView
-        android:id="@+id/videoview"
-        android:layout_width="1307dp"
-        android:layout_height="735dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
--->
-
 <!--  HEADER TEXT AT THE TOP OF HOME SCREEN  -->
     <TextView
         android:id="@+id/headerText"
