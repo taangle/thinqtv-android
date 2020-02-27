@@ -52,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Live video conversations are becoming more mainstream as video technology evolves. However several platforms and apps have defaulted to a culture where women are solicited for nude pictures and lewd acts for money. When we walk down the street in public, we are not assumed to be prostitutes, why is that the assumption when we are online? Thus women leave the table and their voices go unheard. "
+                android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -67,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
                 android:text="Want an internet culture where harassment and sexual solicitations are not the norm? We're inviting individuals and organizations to form a Coalition to steer live video culture toward a civilized society where speaking up against harassment is the norm."
+                android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
