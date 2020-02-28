@@ -32,7 +32,7 @@
         android:layout_height="45dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_button"
-        android:onClick="onButtonClick"
+        android:onClick="onJoinClick"
         android:text="@string/defaultTryConversation"
         android:textAllCaps="false"
         android:textColor="@android:color/white"

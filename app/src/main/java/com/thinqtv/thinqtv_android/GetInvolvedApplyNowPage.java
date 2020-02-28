@@ -11,7 +11,7 @@ public class GetInvolvedApplyNowPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_involved2);
+        setContentView(R.layout.activity_get_involved_apply_now);
     }
 
     public void goHome(View v){
