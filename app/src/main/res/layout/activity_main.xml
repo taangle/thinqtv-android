@@ -4,60 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/ic_launcher_background"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/conferenceName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="@string/conference_name_hint"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintTop_toBottomOf="@+id/screenName" />
-
-    <Button
-        android:id="@+id/joinButton"
-        android:layout_width="147dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:onClick="onButtonClick"
-        android:text="@string/join_button_hint"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/conferenceName" />
-
-    <EditText
-        android:id="@+id/screenName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:hint="@string/screen_name_hint"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginEnd="162dp"
-        android:layout_marginBottom="44dp"
-        android:onClick="goGetInvolved"
-        android:text="Get Involved"
-        android:textSize="14sp"
+<!--  HEADER TEXT AT THE TOP OF HOME SCREEN  -->
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="351dp"
+        android:layout_height="223dp"
+        android:text="@string/homescreenHeader"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/colorAccent"
+        android:textSize="50sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.091" />
+
+<!--  DEFAULT JOIN THE CONVERSATION BUTTON  -->
+    <Button
+        android:id="@+id/defaultJoinButton"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/rounded_button"
+        android:onClick="onButtonClickDefault"
+        android:text="@string/defaultTryConversation"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textColorHighlight="@android:color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/upcoming_events"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".93"
         app:layout_constraintStart_toStartOf="parent" />
+
+<!--  GET INVOLVED BUTTON  -->
+    <Button
+        android:id="@+id/get_involved"
+        android:layout_width="125dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_button"
+        android:text="@string/getInvolved"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/defaultJoinButton" />
+
+<!--  GOLD BRAIN ICON NEAR HOME SCREEN TITLE  -->
+    <ImageView
+        android:id="@+id/goldIcon"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="@+id/headerText"
+        app:layout_constraintTop_toTopOf="@+id/headerText"
+        app:srcCompat="@drawable/ic_launcher_foreground_gold" />
+
+<!--  UPCOMING EVENTS HEADER TEXT  -->
+    <TextView
+        android:id="@+id/upcoming_events_header"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="3dp"
+        android:text="@string/upcoming_events"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/upcoming_events"
+        app:layout_constraintStart_toStartOf="parent" />
+
+<!--  UPCOMING EVENTS SCROLL VIEW  -->
+    <ScrollView
+        android:id="@+id/upcoming_events"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#D9FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorAccent" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
