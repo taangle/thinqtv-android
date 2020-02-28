@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:background="#E0D2C3"
                 android:text="Mission: Create a culture where harassment in live online video is called out "
+                android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -71,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:background="#E0D2C3"
                 android:text="We are starting the process of forming YourOnlineMom as a nonprofit and seeking Founding Board Members. "
+                android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -88,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:background="#E0D2C3"
                 android:text="Anyone who has questions is encouraged to drop in to any Your Online Mom session scheduled on the ThinQ.tv home page "
+                android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -123,7 +126,7 @@
                 android:id="@+id/textView31"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Experience in planning and implementing advocacy strategies and campaigns to support an issue or cause. "
+                android:text="-- Experience in planning and implementing advocacy strategies and campaigns to support an issue or cause. "
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -131,7 +134,7 @@
                 android:id="@+id/textView32"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Connected leader in tech or feminist communities who can leverage networks and resources in support of efforts to positively impact the live video tech culture. "
+                android:text="-- Connected leader in tech or feminist communities who can leverage networks and resources in support of efforts to positively impact the live video tech culture. "
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -139,7 +142,7 @@
                 android:id="@+id/textView33"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Significant presence in social media, as evidenced by having written well-researched content. "
+                android:text="-- Significant presence in social media, as evidenced by having written well-researched content. "
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -163,13 +166,13 @@
                 android:layout_height="wrap_content"
                 android:text="Carry out the mission of YourOnlineMom by: "
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView37"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Advocating for what we're doing to combat online sexual harassment via your articles, speaking, social media "
+                android:text="-- Advocating for what we're doing to combat online sexual harassment via your articles, speaking, social media "
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -177,7 +180,7 @@
                 android:id="@+id/textView38"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Inviting relevant organizations to join a coalition "
+                android:text="-- Inviting relevant organizations to join a coalition "
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -185,7 +188,7 @@
                 android:id="@+id/textView39"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Attend virtual Board meetings, Coalition meetings, and drop in to occasional Online Parent sessions hosted by ThinQ.tv members at least once per month "
+                android:text="-- Attend virtual Board meetings, Coalition meetings, and drop in to occasional Online Parent sessions hosted by ThinQ.tv members at least once per month "
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -193,7 +196,7 @@
                 android:id="@+id/textView40"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Fundraising "
+                android:text="-- Fundraising "
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -229,7 +232,7 @@
                 android:id="@+id/textView45"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Drop in to any of the Your Online Mom Conversations by Dr. Lisa Schaefer listed on the ThinQ.tv schedule so we can meet you "
+                android:text="-- Drop in to any of the Your Online Mom Conversations by Dr. Lisa Schaefer listed on the ThinQ.tv schedule so we can meet you "
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -237,7 +240,7 @@
                 android:id="@+id/textView46"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Send resume and cover letter to info@ThinQ.tv. Cover letter must describe your goals or mission for participating on the Board. "
+                android:text="-- Send resume and cover letter to info@ThinQ.tv. Cover letter must describe your goals or mission for participating on the Board. "
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
