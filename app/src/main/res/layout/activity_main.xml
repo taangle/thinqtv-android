@@ -24,11 +24,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 <!--  DEFAULT JOIN THE CONVERSATION BUTTON  -->
+
+    <!--  GET INVOLVED BUTTON  -->
     <Button
         android:id="@+id/defaultJoinButton"
         android:layout_width="200dp"
         android:layout_height="45dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_button"
         android:onClick="onButtonClick"
@@ -38,9 +39,8 @@
         android:textColorHighlight="@android:color/darker_gray"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/conferenceName" />
+        app:layout_constraintTop_toBottomOf="@+id/screenName" />
 
-<!--  GET INVOLVED BUTTON  -->
     <Button
         android:id="@+id/get_involved"
         android:layout_width="125dp"
@@ -106,7 +106,7 @@
 
     <EditText
         android:id="@+id/screenName"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
@@ -115,17 +115,5 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerText" />
-
-    <EditText
-        android:id="@+id/conferenceName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="@string/conference_name_hint"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/screenName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

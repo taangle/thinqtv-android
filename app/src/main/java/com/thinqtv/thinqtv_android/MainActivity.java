@@ -43,25 +43,19 @@ public class MainActivity extends AppCompatActivity {
         // extract screen name and conference name from EditText fields
         EditText screenName = findViewById(R.id.screenName);
         String screenNameStr = screenName.getText().toString();
-        EditText conferenceName = findViewById(R.id.conferenceName);
-        String conferenceNameStr = conferenceName.getText().toString();
 
-        // join conference if a conference name has been entered
-        if (conferenceNameStr.length() > 0) {
-            // populate user Bundle if a screen name has been entered
-            Bundle userInfoBundle = new Bundle();
-            if (screenNameStr.length() > 0) {
-                Log.d("SCREEN_NAME", screenNameStr);
-                userInfoBundle.putString("displayName", screenNameStr);
-            }
-
-            JitsiMeetConferenceOptions options
-                    = new JitsiMeetConferenceOptions.Builder()
-                    .setRoom(conferenceNameStr)
-                    .setUserInfo(new JitsiMeetUserInfo(userInfoBundle))
-                    .build();
-            JitsiMeetActivity.launch(this, options);
+        Bundle userInfoBundle = new Bundle();
+        if (screenNameStr.length() > 0) {
+            Log.d("SCREEN_NAME", screenNameStr);
+            userInfoBundle.putString("displayName", screenNameStr);
         }
+
+        JitsiMeetConferenceOptions options
+                = new JitsiMeetConferenceOptions.Builder()
+                .setRoom("ThinqTV")
+                .setUserInfo(new JitsiMeetUserInfo(userInfoBundle))
+                .build();
+        JitsiMeetActivity.launch(this, options);
     }
 
     // go to get involved page
