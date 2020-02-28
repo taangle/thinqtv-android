@@ -1,6 +1,7 @@
 package com.thinqtv.thinqtv_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         URL serverURL;
+
         try {
             serverURL = new URL("https://meet.jit.si");
         } catch (MalformedURLException e) {
@@ -37,29 +38,24 @@ public class MainActivity extends AppCompatActivity {
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
     }
 
+    //Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
     public void onButtonClick(View v) {
         // extract screen name and conference name from EditText fields
         EditText screenName = findViewById(R.id.screenName);
         String screenNameStr = screenName.getText().toString();
-        EditText conferenceName = findViewById(R.id.conferenceName);
-        String conferenceNameStr = conferenceName.getText().toString();
 
-        // join conference if a conference name has been entered
-        if (conferenceNameStr.length() > 0) {
-            // populate user Bundle if a screen name has been entered
-            Bundle userInfoBundle = new Bundle();
-            if (screenNameStr.length() > 0) {
-                Log.d("SCREEN_NAME", screenNameStr);
-                userInfoBundle.putString("displayName", screenNameStr);
-            }
-
-            JitsiMeetConferenceOptions options
-                    = new JitsiMeetConferenceOptions.Builder()
-                    .setRoom(conferenceNameStr)
-                    .setUserInfo(new JitsiMeetUserInfo(userInfoBundle))
-                    .build();
-            JitsiMeetActivity.launch(this, options);
+        Bundle userInfoBundle = new Bundle();
+        if (screenNameStr.length() > 0) {
+            Log.d("SCREEN_NAME", screenNameStr);
+            userInfoBundle.putString("displayName", screenNameStr);
         }
+
+        JitsiMeetConferenceOptions options
+                = new JitsiMeetConferenceOptions.Builder()
+                .setRoom("ThinqTV")
+                .setUserInfo(new JitsiMeetUserInfo(userInfoBundle))
+                .build();
+        JitsiMeetActivity.launch(this, options);
     }
 
     // go to get involved page
