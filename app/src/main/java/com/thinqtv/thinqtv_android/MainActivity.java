@@ -1,6 +1,7 @@
 package com.thinqtv.thinqtv_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         URL serverURL;
+
         try {
             serverURL = new URL("https://meet.jit.si");
         } catch (MalformedURLException e) {
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
     }
 
+    //Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
     public void onButtonClick(View v) {
         // extract screen name and conference name from EditText fields
         EditText screenName = findViewById(R.id.screenName);
