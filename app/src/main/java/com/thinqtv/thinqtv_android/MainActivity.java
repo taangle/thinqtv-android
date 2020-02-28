@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     // go to get involved page
     public void goGetInvolved(View V){
-        Intent i = new Intent(this, GetInvolved.class);
+        Intent i = new Intent(this, WebViewActivity.class);
         startActivity(i);
     }
 }
