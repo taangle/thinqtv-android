@@ -17,6 +17,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String URL_STR = "https://meet.jit.si";
+    private static final String THINQTV_ROOM_NAME = "ThinqTV";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         URL serverURL;
 
         try {
-            serverURL = new URL("https://meet.jit.si");
+            serverURL = new URL(URL_STR);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             throw new RuntimeException("Invalid server URL.");
@@ -38,23 +40,24 @@ public class MainActivity extends AppCompatActivity {
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
     }
 
-    //Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
-    public void onButtonClick(View v) {
+    // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
+    public void onJoinClick(View v) {
         // extract screen name and conference name from EditText fields
         EditText screenName = findViewById(R.id.screenName);
         String screenNameStr = screenName.getText().toString();
 
-        Bundle userInfoBundle = new Bundle();
+        JitsiMeetConferenceOptions.Builder optionsBuilder
+                = new JitsiMeetConferenceOptions.Builder()
+                .setRoom(THINQTV_ROOM_NAME);
+
         if (screenNameStr.length() > 0) {
             Log.d("SCREEN_NAME", screenNameStr);
+            Bundle userInfoBundle = new Bundle();
             userInfoBundle.putString("displayName", screenNameStr);
+            optionsBuilder.setUserInfo(new JitsiMeetUserInfo(userInfoBundle));
         }
 
-        JitsiMeetConferenceOptions options
-                = new JitsiMeetConferenceOptions.Builder()
-                .setRoom("ThinqTV")
-                .setUserInfo(new JitsiMeetUserInfo(userInfoBundle))
-                .build();
+        JitsiMeetConferenceOptions options = optionsBuilder.build();
         JitsiMeetActivity.launch(this, options);
     }
 
