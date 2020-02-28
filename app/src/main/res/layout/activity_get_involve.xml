@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center"
-                android:background="#8c2140"
+                android:background="@drawable/rounded_button"
                 android:onClick="applyNow"
                 android:text="Apply Here"
                 android:textAlignment="center"
