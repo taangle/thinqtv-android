@@ -32,6 +32,6 @@ public class WebViewActivity extends AppCompatActivity {
             }
         });
 
-        view.loadUrl("http://thinq.tv/getinvolved");
+        view.loadUrl("https://thinqtv.herokuapp.com/getinvolved");
     }
 }
