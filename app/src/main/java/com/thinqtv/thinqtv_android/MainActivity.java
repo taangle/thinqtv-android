@@ -43,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
+        Log.d("SCREEN_NAME", "~~onCreate");
         if (savedInstanceState != null) {
+            Log.d("SCREEN_NAME", "~~~~savedInstanceState wasn't null");
             lastScreenNameStr = savedInstanceState.getString(screenNameKey);
             EditText screenName = findViewById(R.id.screenName);
             screenName.setText(lastScreenNameStr);
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        Log.d("SCREEN_NAME", "~~onSaveInstanceState");
         if (lastScreenNameStr.length() > 0) {
             outState.putString(screenNameKey, lastScreenNameStr);
         }
