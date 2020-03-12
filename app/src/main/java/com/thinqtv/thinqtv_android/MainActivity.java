@@ -20,7 +20,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     private static final String URL_STR = "https://meet.jit.si";
-    private static final String THINQTV_ROOM_NAME = "ThinqTV";
+    private static final String THINQTV_ROOM_NAME = "trevorroom";
     private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";;
     private static String lastScreenNameStr = "";
 
@@ -80,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         Log.d("SCREEN_NAME", "~~onSaveInstanceState");
         if (lastScreenNameStr.length() > 0) {
             outState.putString(screenNameKey, lastScreenNameStr);
         }
 
-        super.onSaveInstanceState(outState, outPersistentState);
+        super.onSaveInstanceState(outState);
     }
 }
