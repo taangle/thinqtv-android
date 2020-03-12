@@ -3,9 +3,10 @@ package com.thinqtv.thinqtv_android;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -43,8 +44,15 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
+        // restore screen name using lastInstanceState if possible
         if (savedInstanceState != null) {
             lastScreenNameStr = savedInstanceState.getString(screenNameKey);
+        }
+        // else try to restore it using SharedPreferences
+        else {
+            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            String defaultValue = lastScreenNameStr;
+            lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
         }
     }
 
@@ -52,11 +60,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
         String screenNameStr = screenName.getText().toString();
         if (screenNameStr.length() == 0) {
             screenName.setText(lastScreenNameStr);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (lastScreenNameStr.length() > 0) {
+            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(screenNameKey, lastScreenNameStr);
+            editor.commit();
+        }
+
+        super.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        // save lastScreenNameStr to savedInstanceState if it exists
+        if (lastScreenNameStr.length() > 0) {
+            outState.putString(screenNameKey, lastScreenNameStr);
+        }
+
+        super.onSaveInstanceState(outState);
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
@@ -85,14 +116,5 @@ public class MainActivity extends AppCompatActivity {
     public void goGetInvolved(View V){
         Intent i = new Intent(this, GetInvolved.class);
         startActivity(i);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (lastScreenNameStr.length() > 0) {
-            outState.putString(screenNameKey, lastScreenNameStr);
-        }
-
-        super.onSaveInstanceState(outState);
     }
 }
