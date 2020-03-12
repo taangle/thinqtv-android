@@ -12,14 +12,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#B93841AA"
-        android:orientation="vertical">
+        android:background="#F8F8F8"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
             android:id="@+id/homeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
             android:clickable="false"
@@ -29,8 +33,9 @@
         <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
-            android:layout_height="572dp"
-            android:layout_below="@+id/homeButton" />
+            android:layout_height="623dp"
+            android:layout_below="@+id/homeButton"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
