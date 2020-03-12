@@ -45,11 +45,18 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("SCREEN_NAME", "~~onCreate");
         if (savedInstanceState != null) {
-            Log.d("SCREEN_NAME", "~~~~savedInstanceState wasn't null");
+            Log.d("SCREEN_NAME", "~~~~savedInstanceState wasn't null: " +
+                    savedInstanceState.getString(screenNameKey));
             lastScreenNameStr = savedInstanceState.getString(screenNameKey);
-            EditText screenName = findViewById(R.id.screenName);
-            screenName.setText(lastScreenNameStr);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        EditText screenName = findViewById(R.id.screenName);
+        screenName.setText(lastScreenNameStr);
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
