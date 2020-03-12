@@ -53,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         EditText screenName = findViewById(R.id.screenName);
-        screenName.setText(lastScreenNameStr);
+        String screenNameStr = screenName.getText().toString();
+        if (screenNameStr.length() == 0) {
+            screenName.setText(lastScreenNameStr);
+        }
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
