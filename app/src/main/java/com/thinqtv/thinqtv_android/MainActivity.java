@@ -20,8 +20,8 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     private static final String URL_STR = "https://meet.jit.si";
-    private static final String THINQTV_ROOM_NAME = "trevorroom";
-    private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";;
+    private static final String THINQTV_ROOM_NAME = "ThinqTV";
+    private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
     private static String lastScreenNameStr = "";
 
     @Override
@@ -43,10 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
-        Log.d("SCREEN_NAME", "~~onCreate");
         if (savedInstanceState != null) {
-            Log.d("SCREEN_NAME", "~~~~savedInstanceState wasn't null: " +
-                    savedInstanceState.getString(screenNameKey));
             lastScreenNameStr = savedInstanceState.getString(screenNameKey);
         }
     }
@@ -72,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         if (lastScreenNameStr.length() > 0) {
             Log.d("SCREEN_NAME", lastScreenNameStr);
             Bundle userInfoBundle = new Bundle();
+            // the string "displayName" is required by the API
             userInfoBundle.putString("displayName", lastScreenNameStr);
             optionsBuilder.setUserInfo(new JitsiMeetUserInfo(userInfoBundle));
         }
@@ -88,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        Log.d("SCREEN_NAME", "~~onSaveInstanceState");
         if (lastScreenNameStr.length() > 0) {
             outState.putString(screenNameKey, lastScreenNameStr);
         }
