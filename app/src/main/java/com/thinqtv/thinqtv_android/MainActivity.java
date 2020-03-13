@@ -17,27 +17,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String URL_STR = "https://meet.jit.si";
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        URL serverURL;
-
-        try {
-            serverURL = new URL(URL_STR);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Invalid server URL.");
-        }
-        JitsiMeetConferenceOptions defaultOptions
-                = new JitsiMeetConferenceOptions.Builder()
-                .setServerURL(serverURL)
-                .setWelcomePageEnabled(false)
-                .build();
-        JitsiMeet.setDefaultConferenceOptions(defaultOptions);
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
@@ -58,7 +43,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         JitsiMeetConferenceOptions options = optionsBuilder.build();
-        JitsiMeetActivity.launch(this, options);
+
+        // build and start intent to start a jitsi meet conference
+        Intent intent = new Intent(getApplicationContext(), ConferenceActivity.class);
+        intent.setAction("org.jitsi.meet.CONFERENCE");
+        intent.putExtra("JitsiMeetConferenceOptions", options);
+        startActivity(intent);
+        finish();
     }
 
     // go to get involved page
