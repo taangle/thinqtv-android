@@ -68,8 +68,8 @@ public class SignIn extends AppCompatActivity {
         ResetPassW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               // ResetPassword.setBackgroundColor()
                 gotoResetPassword(v);
-
             }
         });
 
