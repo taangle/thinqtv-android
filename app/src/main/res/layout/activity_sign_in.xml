@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignIn">
+
+    <!-- Email text view -->
+
+    <!-- Enter your Email text -->
+
+
+    <TextView
+        android:id="@+id/EmailtextView"
+        android:layout_width="110dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="52dp"
+        android:text="Email"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/EmaileditText"
+        android:layout_width="387dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:freezesText="false"
+        android:inputType="textPersonName"
+        android:text="Enter your email"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EmailtextView" />
+
+    <TextView
+        android:id="@+id/PasswordtextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="36dp"
+        android:text="Password"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EmaileditText" />
+
+    <EditText
+        android:id="@+id/PasswordeditText"
+        android:layout_width="400dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Enter your password"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PasswordtextView" />
+
+    <CheckBox
+        android:id="@+id/RemembercheckBox"
+        android:layout_width="142dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:text="Remember me"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PasswordeditText" />
+
+    <CheckedTextView
+        android:id="@+id/ForgotPasscheckedTextView"
+        android:layout_width="126dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="32dp"
+        android:autoText="true"
+        android:singleLine="true"
+        android:text="Forgot Password?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.979"
+        app:layout_constraintStart_toEndOf="@+id/RemembercheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/PasswordeditText" />
+<!--
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@color/colorPrimary"
+        tools:layout_editor_absoluteY="509dp" />  -->
+
+    <!-- Sign in button -->
+
+    <!-- Term of Service text link -->
+
+    <Button
+        android:id="@+id/SignInbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button"
+        android:text="Sign in"
+        android:textColor="@android:color/white"
+        android:textColorHighlight="@android:color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/SignUpbutton3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TermscheckedTextView2"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <CheckedTextView
+        android:id="@+id/TermscheckedTextView2"
+        android:layout_width="341dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="56dp"
+        android:text="By 'Sign In,' you agree to the ThinQ.tv Terms of Service."
+        android:textColor="@color/colorPrimary"
+        android:textColorLink="#91183F"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RemembercheckBox" />
+
+    <Button
+        android:id="@+id/SignUpbutton3"
+        android:layout_width="454dp"
+        android:layout_height="58dp"
+        android:background="@drawable/rounded_button"
+        android:text="Not a member yet? Sign Up"
+        android:textColor="@android:color/white"
+        android:textColorHighlight="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TermscheckedTextView2"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!--  GOLD BRAIN ICON NEAR HOME SCREEN TITLE  -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
