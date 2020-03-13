@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import org.jitsi.meet.sdk.JitsiMeet;
@@ -19,6 +20,9 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
     private static final String URL_STR = "https://meet.jit.si";
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
+
+    private Button SignIn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,17 @@ public class MainActivity extends AppCompatActivity {
                 .setWelcomePageEnabled(false)
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
+
+        //Listen to the sign in button from the main and connect to the sign in page
+        SignIn = (Button)findViewById(R.id.SignINbutton);
+        SignIn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                gotoSignIN(v);
+            }
+        });
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
@@ -61,9 +76,16 @@ public class MainActivity extends AppCompatActivity {
         JitsiMeetActivity.launch(this, options);
     }
 
-    // go to get involved page
+
+        // go to get involved page
     public void goGetInvolved(View V){
         Intent i = new Intent(this, GetInvolved.class);
+        startActivity(i);
+    }
+
+    // go to sign in page
+    public void gotoSignIN(View V){
+        Intent i = new Intent(this, SignIn.class);
         startActivity(i);
     }
 }
