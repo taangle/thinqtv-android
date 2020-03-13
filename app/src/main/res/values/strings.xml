@@ -1,19 +1,20 @@
 <resources>
-    <string name="app_name">ThinQ TV</string>
-    <string name="conference_name_hint">Enter Room Name</string>
-    <string name="join_button_hint">Join</string>
-    <string name="screen_name_hint">Enter Your Name</string>
-    <string name="homescreenHeader">Conversations\nthat make you\nThinQ!</string>
-    <string name="defaultTryConversation">Join the conversation!</string>
-    <string name="getInvolved">Get involved</string>
-    <string name="upcoming_events">Upcoming events</string>
-    <string name="title_activity_login">Sign in</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+<string name="app_name">ThinQ TV</string>
+<string name="conference_name_hint">Enter Room Name</string>
+<string name="join_button_hint">Join</string>
+<string name="screen_name_hint">Enter Your Name</string>
+<string name="homescreenHeader">Conversations\nthat make you\nThinQ!</string>
+<string name="defaultTryConversation">Join the conversation!</string>
+<string name="getInvolved">Get involved</string>
+<string name="upcoming_events">Upcoming events</string>
+<string name="title_activity_login">Sign in</string>
+<string name="prompt_email">Email</string>
+<string name="prompt_password">Password</string>
+<string name="action_sign_in">Sign in or register</string>
+<string name="action_sign_in_short">Sign in</string>
+<string name="welcome">"Welcome !"</string>
+<string name="invalid_email">Not a valid email</string>
+<string name="password_empty">Password must not be empty!</string>
+<string name="login_failed">"Login failed"</string>
+<string name="could_not_reach_server">"Could not reach server"</string>
 </resources>
