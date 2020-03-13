@@ -18,7 +18,9 @@
             android:configChanges=
                 "screenSize|smallestScreenSize|screenLayout|orientation"
             ></activity>
-        <activity android:name=".GetInvolvedApplyNowPage" />
+        <activity android:name=".AboutUS"></activity>
+        <activity android:name=".GuideLines" />
+        <activity android:name=".InviteUs" />
         <activity android:name=".GetInvolved" />
         <activity android:name=".EventWebview" />
         <activity android:name=".MainActivity">

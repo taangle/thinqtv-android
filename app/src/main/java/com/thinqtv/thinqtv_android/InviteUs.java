@@ -15,13 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class GetInvolved extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class InviteUs extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private WebView view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_involve);
+        setContentView(R.layout.activity_invite_us);
 
         view = findViewById(R.id.webView);
         view.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
@@ -42,7 +42,7 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
-        view.loadUrl("https://thinqtv.herokuapp.com/getinvolved");
+        view.loadUrl("https://thinqtv.herokuapp.com/drschaeferspeaking");
 
         Spinner spinner = findViewById(R.id.spinner1);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.Pages,android.R.layout.simple_spinner_item);
@@ -56,7 +56,6 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
     public void goHome(View v){
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
-        System.out.println(" ''" + v + " ''");
     }
 
 
@@ -67,11 +66,10 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
             case 0:
                 break;
             case 1:
-                System.out.println("Selected");
-
+                startActivity(new Intent(this,GetInvolved.class));
                 break;
             case 2:
-                startActivity(new Intent(this,InviteUs.class));
+                System.out.println("Selected");
                 break;
             case 3:
                 startActivity(new Intent(this,GuideLines.class));

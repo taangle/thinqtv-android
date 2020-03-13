@@ -15,4 +15,11 @@
         <item>Next Week</item>
         <item>Future</item>
     </string-array>
+    <string-array name="Pages">
+        <item> </item>
+        <item>Get Involved</item>
+        <item>Invite Us To Speak</item>
+        <item>Bystander Guidelines</item>
+        <item>About Us</item>
+    </string-array>
 </resources>
