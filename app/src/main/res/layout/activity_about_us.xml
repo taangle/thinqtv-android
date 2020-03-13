@@ -7,7 +7,7 @@
 
 
     android:background="#ffffff"
-    tools:context=".GetInvolved" >
+    tools:context=".AboutUS" >
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -7,7 +7,7 @@
 
 
     android:background="#ffffff"
-    tools:context=".GetInvolved" >
+    tools:context=".GuideLines" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"/>
+
 
         <ImageButton
             android:id="@+id/homeButton"
