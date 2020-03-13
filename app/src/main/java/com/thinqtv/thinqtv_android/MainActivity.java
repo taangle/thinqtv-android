@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.thinqtv.thinqtv_android.ui.login.LoginActivity;
+
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
@@ -63,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     // go to get involved page
     public void goGetInvolved(View V){
-        Intent i = new Intent(this, GetInvolved.class);
+        Log.d("link", "here we goooo");
+        Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
 }
