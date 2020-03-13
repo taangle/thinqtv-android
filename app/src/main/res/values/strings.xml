@@ -8,7 +8,6 @@
     <string name="getInvolved">Get involved</string>
     <string name="upcoming_events">Upcoming events</string>
     <string-array name="Pages">
-        <item> </item>
         <item>Get Involved</item>
         <item>Invite Us To Speak</item>
         <item>Bystander Guidelines</item>
