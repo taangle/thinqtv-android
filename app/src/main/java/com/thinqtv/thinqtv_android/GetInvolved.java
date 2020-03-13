@@ -86,7 +86,7 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch(position){
             case 0:
-                changeSite("https://thinqtv.herokuapp.com/getinvolved");
+                changeSite("https://thinqtv.herokuapp.com/parents");
                 break;
             case 1:
                 changeSite("https://thinqtv.herokuapp.com/drschaeferspeaking");
