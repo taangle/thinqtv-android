@@ -17,6 +17,8 @@
         android:layout_height="22dp"
         android:layout_marginTop="52dp"
         android:text="Email"
+        android:textColor="@android:color/black"
+        android:textColorHighlight="@android:color/darker_gray"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +31,7 @@
         android:ems="10"
         android:freezesText="false"
         android:inputType="textPersonName"
-        android:text="Enter your email"
+        android:hint="Enter your email"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EmailtextView" />
@@ -41,6 +43,8 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="36dp"
         android:text="Password"
+        android:textColor="@android:color/black"
+        android:textColorHighlight="@android:color/darker_gray"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EmaileditText" />
@@ -52,7 +56,7 @@
         android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Enter your password"
+        android:hint="Enter your password"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PasswordtextView" />
