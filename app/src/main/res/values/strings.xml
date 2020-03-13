@@ -24,4 +24,7 @@
         <item>Next Week</item>
         <item>Future</item>
     </string-array>
+<string name="invalid_email">Not a valid email</string>
+<string name="password_empty">Password must not be empty!</string>
+<string name="could_not_reach_server">"Could not reach server"</string>
 </resources>
