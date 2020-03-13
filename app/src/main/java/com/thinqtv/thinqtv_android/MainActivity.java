@@ -2,20 +2,27 @@ package com.thinqtv.thinqtv_android;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.Button;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.LinearLayout;
 
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
+import org.json.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,19 +33,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import org.json.*;
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
     private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
     private static String lastScreenNameStr = "";
+    private String fullEventsJSON;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getJSONfile();
+        getEventsJSONfile();
         
         // restore screen name using lastInstanceState if possible
         if (savedInstanceState != null) {
@@ -119,30 +125,34 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, GetInvolved.class);
         startActivity(i);
     }
-    String fullJSON;
+
     public void setUpcomingEvents()
     {
-        TextView event1 = (TextView) findViewById(R.id.upcomingEvent_1);
-        TextView event2 = (TextView) findViewById(R.id.upcomingEvent_2);
-        TextView event3 = (TextView) findViewById(R.id.upcomingEvent_3);
-        TextView event4 = (TextView) findViewById(R.id.upcomingEvent_4);
-        TextView event5 = (TextView) findViewById(R.id.upcomingEvent_5);
-
         try {
-            JSONArray json = new JSONArray(fullJSON);
-            event1.setText(json.getJSONObject(0).getString("id"));
-            event2.setText(json.getJSONObject(1).getString("id"));
-            event3.setText(json.getJSONObject(2).getString("id"));
-            event4.setText(json.getJSONObject(3).getString("id"));
-            event5.setText(json.getJSONObject(4).getString("id"));
-        } catch (JSONException e) {
-            // TODO : ADD SOMETHING FOR EXCEPTION
-        }
+            LinearLayout linearLayout = findViewById(R.id.upcoming_events_linearView);
+
+            JSONArray json = new JSONArray(fullEventsJSON);
+            for(int i=0; i < json.length(); i++)
+            {
+                TextView newEvent_name = new TextView(this);
+                newEvent_name.setText(json.getJSONObject(i).getString("name"));
+                newEvent_name.setTextSize(18);
+                newEvent_name.setPadding(20, 50, 0, 0);
+                newEvent_name.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                ConstraintLayout constraintLayout = new ConstraintLayout(this);
+                constraintLayout.setLayoutParams(new LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100f, getResources().getDisplayMetrics())));
+                constraintLayout.addView(newEvent_name);
+
+                linearLayout.addView(constraintLayout);
+            }
+
+        } catch (JSONException e) { }
     }
-    public void getJSONfile()
+
+    public void getEventsJSONfile()
     {
         final String url = "https://thinqtv.herokuapp.com/events.json";
-
 
         //RequestQueue initialized
         RequestQueue mRequestQueue;
@@ -153,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         mStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                fullJSON = response;
+                fullEventsJSON = response;
                 setUpcomingEvents();
             }
         }, new Response.ErrorListener() {
@@ -165,7 +175,40 @@ public class MainActivity extends AppCompatActivity {
 
         mRequestQueue.add(mStringRequest);
     }
+
     public void expandEventsClick(View v) {
-        String temp = "";
+        TextView header = (TextView) findViewById(R.id.upcoming_events_header);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) header.getLayoutParams();
+
+        CheckBox checkBox = (CheckBox) findViewById(R.id.expand_checkBox);
+        Button joinButton = findViewById(R.id.defaultJoinButton);
+        Button involvedButton = findViewById(R.id.get_involved);
+
+        if (!checkBox.isChecked())
+        {
+            float headerMarginSmall = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    450f,
+                    getResources().getDisplayMetrics()
+            );
+            params.topMargin = (int) headerMarginSmall;
+
+            joinButton.setVisibility(View.VISIBLE);
+            involvedButton.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            float headerMarginLarge = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    215f,
+                    getResources().getDisplayMetrics()
+            );
+            params.topMargin = (int) headerMarginLarge;
+
+            joinButton.setVisibility(View.INVISIBLE);
+            involvedButton.setVisibility(View.INVISIBLE);
+        }
+
+        header.setLayoutParams(params);
     }
 }
