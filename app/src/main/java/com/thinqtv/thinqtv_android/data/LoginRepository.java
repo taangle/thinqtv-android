@@ -3,6 +3,7 @@ package com.thinqtv.thinqtv_android.data;
 import android.content.Context;
 
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
+import com.thinqtv.thinqtv_android.ui.login.LoginViewModel;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -39,18 +40,15 @@ public class LoginRepository {
         dataSource.logout();
     }
 
-    private void setLoggedInUser(LoggedInUser user) {
+    public void setLoggedInUser(LoggedInUser user) {
         this.user = user;
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
     }
 
-    public Result<LoggedInUser> login(String username, String password, Context context) {
+    public void login(String username, String password, Context context, LoginListener listener, LoginViewModel loginViewModel) {
         // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password, context);
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
-        }
-        return result;
+        dataSource.login(username, password, context, listener, loginViewModel, this);
+
     }
 }
