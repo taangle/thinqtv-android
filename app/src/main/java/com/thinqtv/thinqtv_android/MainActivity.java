@@ -29,8 +29,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
-import java.util.Calendar;
 import java.util.Date;
 
 import com.android.volley.Request;
@@ -49,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getEventsJSONfile();
         setContentView(R.layout.activity_main);
         getEventsJSONfile();
         
@@ -132,26 +131,32 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    // Use EventsJSON file to fill in ScrollView
     public void setUpcomingEvents()
     {
         try {
+            //link layout and JSON file
             LinearLayout linearLayout = findViewById(R.id.upcoming_events_linearView);
-
             JSONArray json = new JSONArray(fullEventsJSON);
+
+            //For each event in the database, create a new item for it in ScrollView
             for(int i=0; i < json.length(); i++)
             {
+                // gets the name and sets its values
                 TextView newEvent_name = new TextView(this);
                 newEvent_name.setText(json.getJSONObject(i).getString("name"));
                 newEvent_name.setTextSize(22);
                 newEvent_name.setPadding(20, 70, 0, 0);
                 newEvent_name.setTextColor(getResources().getColor(R.color.colorPrimary));
 
+                // gets the host id and sets its values
                 TextView newEvent_host = new TextView(this);
                 newEvent_host.setText(getResources().getString(R.string.hosted_by) + " " + json.getJSONObject(i).getString("id"));
                 newEvent_host.setTextSize(15);
                 newEvent_host.setPadding(20, 150, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
 
+                // gets the date of event, formats it accordingly
                 TextView newEvent_time = new TextView(this);
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
                 Date date = new Date();
@@ -164,21 +169,26 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_time.setPadding(750, 80, 0, 0);
                 newEvent_time.setTextColor(getResources().getColor(R.color.colorPrimary));
 
+                // Now you have all your TextViews, create a ConstraintLayout for each one
                 ConstraintLayout constraintLayout = new ConstraintLayout(this);
                 constraintLayout.setLayoutParams(new LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100f, getResources().getDisplayMetrics())));
+
+                // Add your TextViews to the ConstraintLayout
                 constraintLayout.addView(newEvent_name);
                 constraintLayout.addView(newEvent_host);
                 constraintLayout.addView(newEvent_time);
 
+                // Add simple divider to put in between ConstraintLayouts (ie events)
                 View viewDivider = new View(this);
                 viewDivider.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 2));
                 viewDivider.setBackgroundColor(Color.LTGRAY);
 
+                // Add the ConstraintLayout and divider to the linked linearLayout
                 linearLayout.addView(constraintLayout);
                 linearLayout.addView(viewDivider);
             }
 
-        } catch (JSONException e) { }
+        } catch (JSONException e) { e.printStackTrace(); }
     }
 
     public void getEventsJSONfile()
@@ -194,29 +204,38 @@ public class MainActivity extends AppCompatActivity {
         mStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                // If you receive a response, set the fullEventsJSON string to the response
+                // Then call setUpcomingEvents() to fill in ScrollView data
                 fullEventsJSON = response;
                 setUpcomingEvents();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                // TODO : ADD SOMETHING TO HAPPEN WHEN JSON IS NOT REACHABLE
+                // TODO : ie display error message
             }
         });
 
+        //Add the request to the Queue
+        //This is essentially telling it to execute
         mRequestQueue.add(mStringRequest);
     }
 
     public void expandEventsClick(View v) {
+        // Link the header TextView
         TextView header = (TextView) findViewById(R.id.upcoming_events_header);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) header.getLayoutParams();
 
+        // Link any buttons
         CheckBox checkBox = (CheckBox) findViewById(R.id.expand_checkBox);
         Button joinButton = findViewById(R.id.defaultJoinButton);
         Button involvedButton = findViewById(R.id.get_involved);
 
+        // if the Upcoming Events is NOT expanded
         if (!checkBox.isChecked())
         {
+            // convert pixels to dp and set the margin
             float headerMarginSmall = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
                     450f,
@@ -224,9 +243,13 @@ public class MainActivity extends AppCompatActivity {
             );
             params.topMargin = (int) headerMarginSmall;
 
+            // the buttons are always visible under the ScrollView for some reason
+            // because of this, they must be set to invisible when you expand the Events
             joinButton.setVisibility(View.VISIBLE);
             involvedButton.setVisibility(View.VISIBLE);
         }
+        // when the Upcoming Events are expanded already, this code collapses it
+        // it's just the opposite of the above code essentially
         else
         {
             float headerMarginLarge = TypedValue.applyDimension(
@@ -240,6 +263,8 @@ public class MainActivity extends AppCompatActivity {
             involvedButton.setVisibility(View.INVISIBLE);
         }
 
+        // move header based on the values set in the if-else statement
+        // other items are linked to the header so they will move as well
         header.setLayoutParams(params);
     }
 }
