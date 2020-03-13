@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -26,6 +27,11 @@ import org.json.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -136,15 +142,40 @@ public class MainActivity extends AppCompatActivity {
             {
                 TextView newEvent_name = new TextView(this);
                 newEvent_name.setText(json.getJSONObject(i).getString("name"));
-                newEvent_name.setTextSize(18);
-                newEvent_name.setPadding(20, 50, 0, 0);
+                newEvent_name.setTextSize(22);
+                newEvent_name.setPadding(20, 70, 0, 0);
                 newEvent_name.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                TextView newEvent_host = new TextView(this);
+                newEvent_host.setText(getResources().getString(R.string.hosted_by) + " " + json.getJSONObject(i).getString("id"));
+                newEvent_host.setTextSize(15);
+                newEvent_host.setPadding(20, 150, 0, 0);
+                newEvent_host.setTextColor(Color.GRAY);
+
+                TextView newEvent_time = new TextView(this);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+                Date date = new Date();
+                try {
+                    date = format.parse(json.getJSONObject(i).getString("start_at"));
+                } catch (ParseException e) { e.printStackTrace(); }
+                format.applyPattern("EEE, MMM dd");
+                newEvent_time.setText(format.format(date));
+                newEvent_time.setTextSize(20);
+                newEvent_time.setPadding(750, 80, 0, 0);
+                newEvent_time.setTextColor(getResources().getColor(R.color.colorPrimary));
 
                 ConstraintLayout constraintLayout = new ConstraintLayout(this);
                 constraintLayout.setLayoutParams(new LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100f, getResources().getDisplayMetrics())));
                 constraintLayout.addView(newEvent_name);
+                constraintLayout.addView(newEvent_host);
+                constraintLayout.addView(newEvent_time);
+
+                View viewDivider = new View(this);
+                viewDivider.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 2));
+                viewDivider.setBackgroundColor(Color.LTGRAY);
 
                 linearLayout.addView(constraintLayout);
+                linearLayout.addView(viewDivider);
             }
 
         } catch (JSONException e) { }
