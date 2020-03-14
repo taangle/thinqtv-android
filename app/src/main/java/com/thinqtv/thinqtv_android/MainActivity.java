@@ -20,7 +20,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String URL_STR = "https://meet.jit.si";
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
     private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
     private static String lastScreenNameStr = "";
@@ -29,21 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        URL serverURL;
-
-        try {
-            serverURL = new URL(URL_STR);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Invalid server URL.");
-        }
-        JitsiMeetConferenceOptions defaultOptions
-                = new JitsiMeetConferenceOptions.Builder()
-                .setServerURL(serverURL)
-                .setWelcomePageEnabled(false)
-                .build();
-        JitsiMeet.setDefaultConferenceOptions(defaultOptions);
-
+        
         // restore screen name using lastInstanceState if possible
         if (savedInstanceState != null) {
             lastScreenNameStr = savedInstanceState.getString(screenNameKey);
@@ -109,7 +94,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         JitsiMeetConferenceOptions options = optionsBuilder.build();
-        JitsiMeetActivity.launch(this, options);
+
+        // build and start intent to start a jitsi meet conference
+        Intent intent = new Intent(getApplicationContext(), ConferenceActivity.class);
+        intent.setAction("org.jitsi.meet.CONFERENCE");
+        intent.putExtra("JitsiMeetConferenceOptions", options);
+        startActivity(intent);
+        finish();
     }
 
     // go to get involved page
