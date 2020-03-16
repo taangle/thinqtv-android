@@ -131,8 +131,23 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    private class MyListener implements View.OnClickListener{
+        private Context mContext;
+        private String eventAddress;
+        public MyListener(Context context, String eventID){
+            mContext = context;
+            eventAddress = eventID;
+        }
+
+        @Override
+        public void onClick(View v){
+            //do whatever you need here
+            //if you need some view, use mContext.findViewById
+        }
+    }
+
     // Use EventsJSON file to fill in ScrollView
-    public void setUpcomingEvents()
+    public void setUpcomingEvents(String fullEventsJSON)
     {
         try {
             //link layout and JSON file
@@ -149,9 +164,11 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_name.setPadding(20, 70, 0, 0);
                 newEvent_name.setTextColor(getResources().getColor(R.color.colorPrimary));
 
+                newEvent_name.setOnClickListener(new MyListener(this, json.getJSONObject(i).getString("id")));
+
                 // gets the host id and sets its values
                 TextView newEvent_host = new TextView(this);
-                newEvent_host.setText(getResources().getString(R.string.hosted_by) + " " + json.getJSONObject(i).getString("id"));
+                newEvent_host.setText(getResources().getString(R.string.hosted_by) + " " + json.getJSONObject(i).getString("user_id"));
                 newEvent_host.setTextSize(15);
                 newEvent_host.setPadding(20, 150, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
@@ -206,8 +223,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 // If you receive a response, set the fullEventsJSON string to the response
                 // Then call setUpcomingEvents() to fill in ScrollView data
-                fullEventsJSON = response;
-                setUpcomingEvents();
+                setUpcomingEvents(response);
             }
         }, new Response.ErrorListener() {
             @Override
