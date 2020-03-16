@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,6 +25,7 @@ import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import org.json.*;
+import org.w3c.dom.Text;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -238,18 +240,19 @@ public class MainActivity extends AppCompatActivity {
         mRequestQueue.add(mStringRequest);
     }
 
+    boolean eventsExpanded = false;
     public void expandEventsClick(View v) {
         // Link the header TextView
         TextView header = (TextView) findViewById(R.id.upcoming_events_header);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) header.getLayoutParams();
 
         // Link any buttons
-        CheckBox checkBox = (CheckBox) findViewById(R.id.expand_checkBox);
+        TextView carrot = (TextView) findViewById(R.id.expandButton);
         Button joinButton = findViewById(R.id.defaultJoinButton);
         Button involvedButton = findViewById(R.id.get_involved);
 
         // if the Upcoming Events is NOT expanded
-        if (!checkBox.isChecked())
+        if (eventsExpanded)
         {
             // convert pixels to dp and set the margin
             float headerMarginSmall = TypedValue.applyDimension(
@@ -263,6 +266,9 @@ public class MainActivity extends AppCompatActivity {
             // because of this, they must be set to invisible when you expand the Events
             joinButton.setVisibility(View.VISIBLE);
             involvedButton.setVisibility(View.VISIBLE);
+            carrot.setRotation(0);
+
+            eventsExpanded = false;
         }
         // when the Upcoming Events are expanded already, this code collapses it
         // it's just the opposite of the above code essentially
@@ -277,6 +283,9 @@ public class MainActivity extends AppCompatActivity {
 
             joinButton.setVisibility(View.INVISIBLE);
             involvedButton.setVisibility(View.INVISIBLE);
+            carrot.setRotation(180);
+
+            eventsExpanded = true;
         }
 
         // move header based on the values set in the if-else statement
