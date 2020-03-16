@@ -130,19 +130,19 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, GetInvolved.class);
         startActivity(i);
     }
-
-    private class MyListener implements View.OnClickListener{
+    private class EventListener implements View.OnClickListener{
         private Context mContext;
-        private String eventAddress;
-        public MyListener(Context context, String eventID){
+        private String eventCode;
+        public EventListener(Context context, String eventID){
             mContext = context;
-            eventAddress = eventID;
+            eventCode = eventID;
         }
 
         @Override
         public void onClick(View v){
-            //do whatever you need here
-            //if you need some view, use mContext.findViewById
+            Intent i = new Intent(mContext, WebViewActivity.class);
+            i.putExtra("eventCode", eventCode); //Optional parameters
+            startActivity(i);
         }
     }
 
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_name.setPadding(20, 70, 0, 0);
                 newEvent_name.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-                newEvent_name.setOnClickListener(new MyListener(this, json.getJSONObject(i).getString("id")));
+                newEvent_name.setOnClickListener(new EventListener(this, json.getJSONObject(i).getString("id")));
 
                 // gets the host id and sets its values
                 TextView newEvent_host = new TextView(this);
