@@ -8,14 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.CheckBox;
 import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
@@ -25,7 +25,6 @@ import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import org.json.*;
-import org.w3c.dom.Text;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v){
-            Intent i = new Intent(mContext, WebViewActivity.class);
+            Intent i = new Intent(mContext, EventWebview.class);
             i.putExtra("eventCode", eventCode); //Optional parameters
             startActivity(i);
         }

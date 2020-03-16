@@ -105,6 +105,19 @@
         tools:layout_editor_absoluteX="-16dp" />
 
 <!--  SCROLLVIEW THAT HOLDS ALL OF THE UPCOMING EVENTS  -->
+    <TextView
+        android:id="@+id/expandButton"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:layout_marginStart="10dp"
+        android:onClick="expandEventsClick"
+        android:text="^"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/upcoming_events_header"
+        app:layout_constraintStart_toEndOf="@+id/upcoming_events_header"
+        app:layout_constraintTop_toTopOf="@+id/upcoming_events_header" />
+
     <ScrollView
         android:id="@+id/upcoming_events_scrollView"
         android:layout_width="match_parent"
@@ -123,18 +136,5 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"/>
     </ScrollView>
-
-    <TextView
-        android:id="@+id/expandButton"
-        android:layout_width="wrap_content"
-        android:layout_height="33dp"
-        android:layout_marginStart="10dp"
-        android:onClick="expandEventsClick"
-        android:text="^"
-        android:textColor="@color/colorPrimary"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/upcoming_events_header"
-        app:layout_constraintStart_toEndOf="@+id/upcoming_events_header"
-        app:layout_constraintTop_toTopOf="@+id/upcoming_events_header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
