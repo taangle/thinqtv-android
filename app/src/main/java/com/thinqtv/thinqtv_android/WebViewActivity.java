@@ -12,11 +12,6 @@ public class WebViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
 
@@ -36,15 +31,16 @@ public class WebViewActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return true;
+            }
         });
 
-        Bundle extras = getIntent().getExtras();
         String code = "";
-        if(extras !=null)
-        {
-            code = extras.getString("eventCode");
-        }
-        String address = "http://www.thinq.tv/events/" + code;
+        if(getIntent().getExtras() !=null)
+            code = getIntent().getExtras().getString("eventCode");
+
+        String address = "https://thinqtv.herokuapp.com/events/" + code;
         Log.d("myTag", "String address = " + address);
         view.loadUrl(address);
     }
