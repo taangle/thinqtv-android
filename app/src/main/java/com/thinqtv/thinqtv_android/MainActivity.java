@@ -211,6 +211,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void getEventsJSONfile()
     {
+        Spinner spinner = findViewById(R.id.eventsSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.eventFilters,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        //spinner.setOnItemSelectedListener(this);
+
+
         final String url = "https://thinqtv.herokuapp.com/events.json";
 
         //RequestQueue initialized

@@ -9,4 +9,10 @@
     <string name="upcoming_events">Upcoming events</string>
     <string name="expand">Expand</string>
     <string name="hosted_by">Hosted by</string>
+    <string-array name="eventFilters">
+        <item>All Events</item>
+        <item>This Week</item>
+        <item>Next Week</item>
+        <item>Future</item>
+    </string-array>
 </resources>
