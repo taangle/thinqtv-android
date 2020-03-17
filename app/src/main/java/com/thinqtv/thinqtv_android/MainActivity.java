@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.android.volley.Request;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         getEventsJSONfile();
         setContentView(R.layout.activity_main);
         getEventsJSONfile();
@@ -131,9 +133,12 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, GetInvolved.class);
         startActivity(i);
     }
+
+    // listener for when a user clicks an event to go to its page
     private class EventListener implements View.OnClickListener{
         private Context mContext;
         private String eventCode;
+
         public EventListener(Context context, String eventID){
             mContext = context;
             eventCode = eventID;
@@ -174,15 +179,17 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_host.setPadding(20, 150, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
 
-                // gets the date of event, formats it accordingly
+                // gets the date of event
                 TextView newEvent_time = new TextView(this);
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
                 Date date = new Date();
                 try {
-                    date = format.parse(json.getJSONObject(i).getString("start_at"));
+                    date = dateFormat.parse(json.getJSONObject(i).getString("start_at"));
                 } catch (ParseException e) { e.printStackTrace(); }
-                format.applyPattern("EEE, MMM dd");
-                newEvent_time.setText(format.format(date));
+
+                // formats the date from above into viewable format
+                SimpleDateFormat displayFormat = new SimpleDateFormat("EEE, MMM dd");
+                newEvent_time.setText(displayFormat.format(date));
                 newEvent_time.setTextSize(20);
                 newEvent_time.setPadding(750, 80, 0, 0);
                 newEvent_time.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -201,23 +208,88 @@ public class MainActivity extends AppCompatActivity {
                 viewDivider.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 2));
                 viewDivider.setBackgroundColor(Color.LTGRAY);
 
-                // Add the ConstraintLayout and divider to the linked linearLayout
-                linearLayout.addView(constraintLayout);
-                linearLayout.addView(viewDivider);
-            }
+                // Get the selected event filter text
+                Spinner spinner = (Spinner)findViewById(R.id.eventsSpinner);
+                String text = spinner.getSelectedItem().toString();
 
+                //get current date and what week it is
+                Calendar mCalendar = Calendar.getInstance();
+                int week = mCalendar.get(Calendar.WEEK_OF_MONTH);
+
+                switch(text)
+                {
+                    case ("All Events") :
+                    {
+                        linearLayout.addView(constraintLayout);
+                        linearLayout.addView(viewDivider);
+                        break;
+                    }
+                    case ("This Week") :
+                    {
+                        mCalendar.set(Calendar.WEEK_OF_MONTH, ++week);
+                        Date filterDate = mCalendar.getTime();
+
+                        if (date.before(filterDate))
+                        {
+                            linearLayout.addView(constraintLayout);
+                            linearLayout.addView(viewDivider);
+                        }
+                        break;
+                    }
+                    case ("Next Week") :
+                    {
+                        mCalendar.set(Calendar.WEEK_OF_MONTH, (week + 1));
+                        Date filterDate = mCalendar.getTime();
+
+                        if (date.after(filterDate))
+                        {
+                            mCalendar.set(Calendar.WEEK_OF_MONTH, (week + 2));
+                            filterDate = mCalendar.getTime();
+
+                            if (date.before(filterDate))
+                            {
+                                linearLayout.addView(constraintLayout);
+                                linearLayout.addView(viewDivider);
+                            }
+                        }
+                        break;
+                    }
+                    case ("Future") :
+                    {
+                        mCalendar.set(Calendar.WEEK_OF_MONTH, (week + 2));
+                        Date filterDate = mCalendar.getTime();
+
+                        if (date.after(filterDate))
+                        {
+                            linearLayout.addView(constraintLayout);
+                            linearLayout.addView(viewDivider);
+                        }
+                        break;
+                    }
+                }
+            }
         } catch (JSONException e) { e.printStackTrace(); }
     }
 
     public void getEventsJSONfile()
     {
-        Spinner spinner = findViewById(R.id.eventsSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.eventFilters,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        //spinner.setOnItemSelectedListener(this);
+        // get the spinner filter and the layout that's inside of it
+        Spinner eventFilter = (Spinner) findViewById(R.id.eventsSpinner);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
 
+        // add listener for whenever a user changes filter
+        eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                layout.removeAllViews();
+                getEventsJSONfile();
+            }
 
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // this doesn't ever happen but i need to override the virtual class
+            }
+        });
+
+        // where you get the JSON file
         final String url = "https://thinqtv.herokuapp.com/events.json";
 
         //RequestQueue initialized
@@ -257,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
         Button joinButton = findViewById(R.id.defaultJoinButton);
         Button involvedButton = findViewById(R.id.get_involved);
 
-        // if the Upcoming Events is NOT expanded
+        // if the Upcoming Events are expanded, minimize
         if (eventsExpanded)
         {
             // convert pixels to dp and set the margin
@@ -272,8 +344,11 @@ public class MainActivity extends AppCompatActivity {
             // because of this, they must be set to invisible when you expand the Events
             joinButton.setVisibility(View.VISIBLE);
             involvedButton.setVisibility(View.VISIBLE);
+
+            // make it twist
             carrot.setRotation(0);
 
+            // for when it gets clicked again
             eventsExpanded = false;
         }
         // when the Upcoming Events are expanded already, this code collapses it
@@ -297,5 +372,7 @@ public class MainActivity extends AppCompatActivity {
         // move header based on the values set in the if-else statement
         // other items are linked to the header so they will move as well
         header.setLayoutParams(params);
+
+
     }
 }

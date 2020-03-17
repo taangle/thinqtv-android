@@ -93,8 +93,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--  EXPAND CHECKBOX TO USE FOR UPCOMING EVENTS  -->
-
     <!--  DIVIDER THAT'S RIGHT BELOW UPCOMING EVENTS HEADER  -->
     <View
         android:id="@+id/divider"
@@ -104,7 +102,7 @@
         app:layout_constraintTop_toBottomOf="@+id/upcoming_events_header"
         tools:layout_editor_absoluteX="-16dp" />
 
-<!--  SCROLLVIEW THAT HOLDS ALL OF THE UPCOMING EVENTS  -->
+<!--  CARROT FOR EXPANDING UPCOMING EVENTS  -->
     <TextView
         android:id="@+id/expandButton"
         android:layout_width="wrap_content"
@@ -118,6 +116,7 @@
         app:layout_constraintStart_toEndOf="@+id/upcoming_events_header"
         app:layout_constraintTop_toTopOf="@+id/upcoming_events_header" />
 
+    <!--  SCROLLVIEW THAT HOLDS ALL OF THE UPCOMING EVENTS  -->
     <ScrollView
         android:id="@+id/upcoming_events_scrollView"
         android:layout_width="match_parent"
@@ -137,11 +136,16 @@
             android:orientation="vertical"/>
     </ScrollView>
 
+<!--  Spinner to filter upcoming events  -->
     <Spinner
         android:id="@+id/eventsSpinner"
-        android:layout_width="match_parent"
+        android:layout_width="131dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/expandButton"
-        tools:layout_editor_absoluteX="-1dp" />
+        android:entries="@array/eventFilters"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/upcoming_events_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/upcoming_events_header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
