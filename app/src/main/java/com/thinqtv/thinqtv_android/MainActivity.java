@@ -173,8 +173,8 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_name.setOnClickListener(new EventListener(this, json.getJSONObject(i).getString("id")));
 
                 // gets the host id and sets its values
-                TextView newEvent_host = new TextView(this);
-                newEvent_host.setText(getResources().getString(R.string.hosted_by) + " " + json.getJSONObject(i).getString("user_id"));
+                TextView newEvent_host = new TextView(this);    // TODO : CHANGE THIS "name" TO "user_id" WHEN DATABASE INCLUDES PERMALINK
+                newEvent_host.setText(getResources().getString(R.string.hosted_by) + " " + json.getJSONObject(i).getString("name"));
                 newEvent_host.setTextSize(15);
                 newEvent_host.setPadding(20, 150, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
@@ -347,6 +347,9 @@ public class MainActivity extends AppCompatActivity {
 
             // make it twist
             carrot.setRotation(0);
+            ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
+            lparams.verticalBias = 0.33f;
+            carrot.setLayoutParams(lparams);
 
             // for when it gets clicked again
             eventsExpanded = false;
@@ -365,6 +368,9 @@ public class MainActivity extends AppCompatActivity {
             joinButton.setVisibility(View.INVISIBLE);
             involvedButton.setVisibility(View.INVISIBLE);
             carrot.setRotation(180);
+            ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
+            lparams.verticalBias = 0.48f;
+            carrot.setLayoutParams(lparams);
 
             eventsExpanded = true;
         }

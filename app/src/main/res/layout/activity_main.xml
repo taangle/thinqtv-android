@@ -86,6 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="450dp"
+        android:onClick="expandEventsClick"
         android:text="@string/upcoming_events"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
@@ -106,15 +107,16 @@
     <TextView
         android:id="@+id/expandButton"
         android:layout_width="wrap_content"
-        android:layout_height="33dp"
-        android:layout_marginStart="10dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
         android:onClick="expandEventsClick"
         android:text="^"
         android:textColor="@color/colorPrimary"
-        android:textSize="30sp"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="@+id/upcoming_events_header"
         app:layout_constraintStart_toEndOf="@+id/upcoming_events_header"
-        app:layout_constraintTop_toTopOf="@+id/upcoming_events_header" />
+        app:layout_constraintTop_toTopOf="@+id/upcoming_events_header"
+        app:layout_constraintVertical_bias=".4" />
 
     <!--  SCROLLVIEW THAT HOLDS ALL OF THE UPCOMING EVENTS  -->
     <ScrollView
