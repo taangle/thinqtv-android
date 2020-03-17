@@ -1,7 +1,6 @@
 package com.thinqtv.thinqtv_android;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -41,7 +40,6 @@ public class EventWebview extends AppCompatActivity {
             code = getIntent().getExtras().getString("eventCode");
 
         String address = "https://thinqtv.herokuapp.com/events/" + code;
-        Log.d("myTag", "String address = " + address);
         view.loadUrl(address);
     }
 }
