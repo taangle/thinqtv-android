@@ -14,22 +14,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class GetInvolved extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private WebView view;
+    private WebView webpageViewer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_involve);
-        view = findViewById(R.id.webView);
-        view.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-        view.getSettings().setJavaScriptEnabled(true);
-        view.getSettings().setDomStorageEnabled(true);
-        view.setWebViewClient(new WebViewClient() {
+        webpageViewer = findViewById(R.id.webView);
+        webpageViewer.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+        webpageViewer.getSettings().setJavaScriptEnabled(true);
+        webpageViewer.getSettings().setDomStorageEnabled(true);
+        webpageViewer.setWebViewClient(new WebViewClient() {
             @Override
             public void onLoadResource(WebView webView, String url) {
                 try {
                     // remove the nav bar and the footer from each loaded page.
-                    view.loadUrl("javascript:(window.onload = function() { " +
+                    webpageViewer.loadUrl("javascript:(window.onload = function() { " +
                             "(navBar = document.getElementsByTagName('nav')[0]); navBar.parentNode.removeChild(navBar);" +
                             "(footer = document.getElementsByTagName('footer')[0]); footer.parentNode.removeChild(footer);" +
                             "})()");
@@ -38,7 +38,14 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
                 }
             }
         });
-        view.loadUrl("https://thinqtv.herokuapp.com/getinvolved");
+        webpageViewer.loadUrl("https://thinqtv.herokuapp.com/getinvolved");
+
+        /*
+          - 'spinner' is the actual Spinner object which is our drop down menu
+          - 'adapter' fills 'spinner' with the strings in the string array pages under res/values/strings.xml
+          - line 50 sets the layout of the adapter, which we connect to  'spinner' in line 51
+          - Finally, setOnItemSelectedListener allows the app to react to clicks on 'spinner'
+         */
         Spinner spinner = findViewById(R.id.spinner1);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.Pages,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -46,17 +53,18 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
         spinner.setOnItemSelectedListener(this);
     }
 
+    //Identical to load, except can be called when user selects something on spinner.
     public void changeSite(String site){
-        view = findViewById(R.id.webView);
-        view.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-        view.getSettings().setJavaScriptEnabled(true);
-        view.getSettings().setDomStorageEnabled(true);
-        view.setWebViewClient(new WebViewClient() {
+        webpageViewer = findViewById(R.id.webView);
+        webpageViewer.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+        webpageViewer.getSettings().setJavaScriptEnabled(true);
+        webpageViewer.getSettings().setDomStorageEnabled(true);
+        webpageViewer.setWebViewClient(new WebViewClient() {
             @Override
             public void onLoadResource(WebView webView, String url) {
                 try {
                     // remove the nav bar and the footer from each loaded page.
-                    view.loadUrl("javascript:(window.onload = function() { " +
+                    webpageViewer.loadUrl("javascript:(window.onload = function() { " +
                             "(navBar = document.getElementsByTagName('nav')[0]); navBar.parentNode.removeChild(navBar);" +
                             "(footer = document.getElementsByTagName('footer')[0]); footer.parentNode.removeChild(footer);" +
                             "})()");
@@ -65,7 +73,7 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
                 }
             }
         });
-        view.loadUrl(site);
+        webpageViewer.loadUrl(site);
     }
 
     public void goHome(View v){
