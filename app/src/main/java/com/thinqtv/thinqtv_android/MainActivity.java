@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
     private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
     private static String lastScreenNameStr = "";
-    private String fullEventsJSON;
+    boolean eventsExpanded = false; //used to expand and collapse the Events ScrollView, changes with each click
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,11 +135,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // listener for when a user clicks an event to go to its page
-    private class EventListener implements View.OnClickListener{
+    private class ViewEventDetails_ClickListener implements View.OnClickListener{
         private Context mContext;
         private String eventCode;
 
-        public EventListener(Context context, String eventID){
+        public ViewEventDetails_ClickListener(Context context, String eventID){
             mContext = context;
             eventCode = eventID;
         }
@@ -160,24 +160,35 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout linearLayout = findViewById(R.id.upcoming_events_linearView);
             JSONArray json = new JSONArray(fullEventsJSON);
 
+            // Get the selected event filter text
+            Spinner eventFilter_spinner = (Spinner)findViewById(R.id.eventsSpinner);
+            String eventFilter_selection = eventFilter_spinner.getSelectedItem().toString();
+
             //For each event in the database, create a new item for it in ScrollView
             for(int i=0; i < json.length(); i++)
             {
                 // gets the name and sets its values
                 TextView newEvent_name = new TextView(this);
-                newEvent_name.setText(json.getJSONObject(i).getString("name"));
                 newEvent_name.setTextSize(22);
                 newEvent_name.setPadding(20, 70, 0, 0);
                 newEvent_name.setTextColor(getResources().getColor(R.color.colorPrimary));
+                newEvent_name.setText(json.getJSONObject(i).getString("name")
+                        .substring(0, Math.min(json.getJSONObject(i).getString("name").length(), 18)));
+                if (json.getJSONObject(i).getString("name").length() > 18)
+                    newEvent_name.setText(newEvent_name.getText() + "...");
 
-                newEvent_name.setOnClickListener(new EventListener(this, json.getJSONObject(i).getString("id")));
+                // add listener to the name, so when the user clicks an event it will bring them to the event page
+                newEvent_name.setOnClickListener(new ViewEventDetails_ClickListener(this, json.getJSONObject(i).getString("id")));
 
                 // gets the host id and sets its values
                 TextView newEvent_host = new TextView(this);    // TODO : CHANGE THIS "name" TO "user_id" WHEN DATABASE INCLUDES PERMALINK
-                newEvent_host.setText(getResources().getString(R.string.hosted_by) + " " + json.getJSONObject(i).getString("name"));
                 newEvent_host.setTextSize(15);
                 newEvent_host.setPadding(20, 150, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
+                newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("name")
+                        .substring(0, Math.min(json.getJSONObject(i).getString("name").length(), 18)));
+                if (json.getJSONObject(i).getString("name").length() > 18)
+                    newEvent_host.setText(newEvent_host.getText() + "...");
 
                 // gets the date of event
                 TextView newEvent_time = new TextView(this);
@@ -208,15 +219,10 @@ public class MainActivity extends AppCompatActivity {
                 viewDivider.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 2));
                 viewDivider.setBackgroundColor(Color.LTGRAY);
 
-                // Get the selected event filter text
-                Spinner spinner = (Spinner)findViewById(R.id.eventsSpinner);
-                String text = spinner.getSelectedItem().toString();
-
                 //get current date and what week it is
                 Calendar mCalendar = Calendar.getInstance();
-                int week = mCalendar.get(Calendar.WEEK_OF_MONTH);
 
-                switch(text)
+                switch(eventFilter_selection)
                 {
                     case ("All Events") :
                     {
@@ -226,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case ("This Week") :
                     {
-                        mCalendar.set(Calendar.WEEK_OF_MONTH, ++week);
+                        mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
                         Date filterDate = mCalendar.getTime();
 
                         if (date.before(filterDate))
@@ -238,12 +244,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case ("Next Week") :
                     {
-                        mCalendar.set(Calendar.WEEK_OF_MONTH, (week + 1));
+                        mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
                         Date filterDate = mCalendar.getTime();
 
                         if (date.after(filterDate))
                         {
-                            mCalendar.set(Calendar.WEEK_OF_MONTH, (week + 2));
+                            mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
                             filterDate = mCalendar.getTime();
 
                             if (date.before(filterDate))
@@ -256,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case ("Future") :
                     {
-                        mCalendar.set(Calendar.WEEK_OF_MONTH, (week + 2));
+                        mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 2));
                         Date filterDate = mCalendar.getTime();
 
                         if (date.after(filterDate))
@@ -318,7 +324,6 @@ public class MainActivity extends AppCompatActivity {
         mRequestQueue.add(mStringRequest);
     }
 
-    boolean eventsExpanded = false;
     public void expandEventsClick(View v) {
         // Link the header TextView
         TextView header = (TextView) findViewById(R.id.upcoming_events_header);

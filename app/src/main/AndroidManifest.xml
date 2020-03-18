@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thinqtv.thinqtv_android">
 
+    <!--This permission is required in order to get JSON files using Hudson's API-->
+    <!--Without it, the app cannot access the internet and get outside data-->
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
