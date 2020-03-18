@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
     private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
     private static String lastScreenNameStr = "";
-    boolean eventsExpanded = false; //used to expand and collapse the Events ScrollView, changes with each click
+
+    //used to expand and collapse the Events ScrollView, changes with each click
+    boolean eventsExpanded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
