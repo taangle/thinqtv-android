@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thinqtv.thinqtv_android">
 
+    <!--This permission is required in order to get JSON files using Hudson's API-->
+    <!--Without it, the app cannot access the internet and get outside data-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,8 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GetInvolvedApplyNowPage"></activity>
+        <activity android:name=".ConferenceActivity"
+            android:supportsPictureInPicture="true"
+            android:configChanges=
+                "screenSize|smallestScreenSize|screenLayout|orientation"
+            ></activity>
+        <activity android:name=".GetInvolvedApplyNowPage" />
         <activity android:name=".GetInvolved" />
+        <activity android:name=".EventWebview" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
