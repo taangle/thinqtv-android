@@ -7,10 +7,7 @@ import androidx.lifecycle.ViewModel;
 import android.content.Context;
 import android.util.Patterns;
 
-import com.thinqtv.thinqtv_android.data.LoginListener;
 import com.thinqtv.thinqtv_android.data.LoginRepository;
-import com.thinqtv.thinqtv_android.data.Result;
-import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 import com.thinqtv.thinqtv_android.R;
 
 public class LoginViewModel extends ViewModel {
@@ -30,22 +27,14 @@ public class LoginViewModel extends ViewModel {
     LiveData<LoginResult> getLoginResult() {
         return loginResult;
     }
+
     public void setLoginResult(LoginResult result) {
         loginResult.setValue(result);
     }
 
     public void login(String username, String password, Context context) {
-        // can be launched in a separate asynchronous job
-        LoginListener listener = new LoginListener() {
-            @Override
-            public void onError(Object response) {
 
-            }
-            public void onResponse(Object response) {
-
-            }
-        };
-        loginRepository.login(username, password, context, listener, this);
+        loginRepository.login(username, password, context, this);
     }
 
     public void loginDataChanged(String username, String password) {
