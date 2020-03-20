@@ -12,7 +12,7 @@
 <string name="prompt_password">Password</string>
 <string name="action_sign_in">Sign in or register</string>
 <string name="action_sign_in_short">Sign in</string>
-<string name="welcome">"Welcome !"</string>
+<string name="welcome">"Welcome "</string>
 <string name="invalid_email">Not a valid email</string>
 <string name="password_empty">Password must not be empty!</string>
 <string name="login_failed">"Login failed"</string>
@@ -25,4 +25,9 @@
         <item>Next Week</item>
         <item>Future</item>
     </string-array>
+<string name="forgot_password">Forgot password?</string>
+<string name="remember_me">Remember me</string>
+<string name="tos_agreement">By signing in, you agree to the Thinq.tv terms of service.</string>
+<string name="sign_in">Sign In</string>
+<string name="sign_up_prompt">Not a member? Sign up!</string>
 </resources>

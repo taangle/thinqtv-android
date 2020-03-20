@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.thinqtv.thinqtv_android.ui.login.LoginActivity;
+
 public class ResetPassword extends AppCompatActivity {
 
     private EditText Email;
@@ -67,13 +69,11 @@ public class ResetPassword extends AppCompatActivity {
 
     //Go to the Sign up page
     public void gotoSignUp(View V){
-        Intent i = new Intent(this, SignUp.class);
-        startActivity(i);
     }
 
     //Go to the Sign up page
     public void gotoSignIn(View V){
-        Intent i = new Intent(this, SignIn.class);
+        Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
 }

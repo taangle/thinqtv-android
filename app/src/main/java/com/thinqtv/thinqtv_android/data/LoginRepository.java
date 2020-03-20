@@ -71,7 +71,7 @@ public class LoginRepository {
             }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.networkResponse.statusCode == 401) {
+                if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 401) {
                     NetworkResponse networkResponse = error.networkResponse;
                     if (networkResponse != null && networkResponse.data != null) {
                         String response = new String(networkResponse.data);
