@@ -19,11 +19,6 @@
         </activity>
         <activity android:name=".GetInvolvedApplyNowPage" />
         <activity android:name=".GetInvolved" />
-        <activity android:name=".Account" />
-        <activity android:name=".ResetPassword" />
-        <activity android:name=".SignIn" />
-        <activity android:name=".SignUp" />
-        <activity android:name=".Terms" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
