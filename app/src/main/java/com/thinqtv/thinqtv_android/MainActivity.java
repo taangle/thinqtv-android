@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
         // go to get involved page
     public void goGetInvolved(View V){
-        Log.d("link", "here we goooo");
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
