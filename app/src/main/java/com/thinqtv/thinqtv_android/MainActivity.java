@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.thinqtv.thinqtv_android.ui.login.LoginActivity;
 
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
@@ -48,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getEventsJSONfile();
         setContentView(R.layout.activity_main);
         getEventsJSONfile();
         
@@ -130,6 +129,12 @@ public class MainActivity extends AppCompatActivity {
     // go to get involved page
     public void goGetInvolved(View V){
         Intent i = new Intent(this, GetInvolved.class);
+        startActivity(i);
+    }
+
+    // Go to login page.
+    public void goToLogin(View v) {
+        Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
 

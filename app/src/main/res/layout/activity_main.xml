@@ -39,7 +39,6 @@
         android:id="@+id/screenName"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="@string/screen_name_hint"
@@ -80,6 +79,22 @@
         app:layout_constraintTop_toBottomOf="@+id/defaultJoinButton" />
 
 <!--  HEADER FOR UPCOMING EVENTS, ITS JUST TEXT  -->
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_button"
+        android:onClick="goToLogin"
+        android:text="@string/sign_in"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/get_involved" />
+
     <TextView
         android:id="@+id/upcoming_events_header"
         android:layout_width="wrap_content"
