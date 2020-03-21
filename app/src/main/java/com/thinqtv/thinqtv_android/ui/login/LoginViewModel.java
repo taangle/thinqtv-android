@@ -47,25 +47,11 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
-    // A placeholder username validation check
-    private boolean isUserNameValid(String username) {
-        return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-        /*
-        if (username == null) {
-            return false;
-        }
-        if (username.contains("@")) {
-            return Patterns.E
-        }
-        if (username.contains("@")) {
-            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-        } else {
-            return !username.trim().isEmpty();
-        }*/
+    private boolean isUserNameValid(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {
-        // return password != null && password.trim().length() >= 8; Should we validate password for login?
         return password != null && password.trim().length() > 0;
     }
 }

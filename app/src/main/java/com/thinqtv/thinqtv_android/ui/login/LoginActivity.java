@@ -113,10 +113,12 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString(),
-                        context);
+                if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0) {
+                    loadingProgressBar.setVisibility(View.VISIBLE);
+                    loginViewModel.login(emailEditText.getText().toString(),
+                            passwordEditText.getText().toString(),
+                            context);
+                }
             }
         });
     }
