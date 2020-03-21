@@ -20,18 +20,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.thinqtv.thinqtv_android.data.DataSource;
+import com.thinqtv.thinqtv_android.data.LoginRepository;
+import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
+import com.thinqtv.thinqtv_android.ui.login.LoggedInUserView;
 import com.thinqtv.thinqtv_android.ui.login.LoginActivity;
+import com.thinqtv.thinqtv_android.ui.login.LoginResult;
 
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,24 +59,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getEventsJSONfile();
-        
-        // restore screen name using lastInstanceState if possible
-        if (savedInstanceState != null) {
-            lastScreenNameStr = savedInstanceState.getString(screenNameKey);
+        getEventsJSONFile();
+
+        // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
+        if (LoginRepository.getInstance().isLoggedIn()) {
+            lastScreenNameStr = LoginRepository.getInstance().getLoggedInUser().getName();
         }
-        // else try to restore it using SharedPreferences
         else {
-            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-            String defaultValue = lastScreenNameStr;
-            lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
+            // restore screen name using lastInstanceState if possible
+            if (savedInstanceState != null) {
+                lastScreenNameStr = savedInstanceState.getString(screenNameKey);
+            }
+            // else try to restore it using SharedPreferences
+            else {
+                SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                String defaultValue = lastScreenNameStr;
+                lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
+            }
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        // Check if a user has logged in, and if so, set the screen name.
+        if (LoginRepository.getInstance().isLoggedIn()) {
+            lastScreenNameStr = LoginRepository.getInstance().getLoggedInUser().getName();
+        }
         // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
         String screenNameStr = screenName.getText().toString();
@@ -157,12 +175,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Use EventsJSON file to fill in ScrollView
-    public void setUpcomingEvents(String fullEventsJSON)
+    public void setUpcomingEvents(JSONArray json)
     {
         try {
             //link layout and JSON file
             LinearLayout linearLayout = findViewById(R.id.upcoming_events_linearView);
-            JSONArray json = new JSONArray(fullEventsJSON);
 
             // Get the selected event filter text
             Spinner eventFilter_spinner = (Spinner)findViewById(R.id.eventsSpinner);
@@ -281,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) { e.printStackTrace(); }
     }
 
-    public void getEventsJSONfile()
+    public void getEventsJSONFile()
     {
         // get the spinner filter and the layout that's inside of it
         Spinner eventFilter = (Spinner) findViewById(R.id.eventsSpinner);
@@ -291,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 layout.removeAllViews();
-                getEventsJSONfile();
+                getEventsJSONFile();
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -302,17 +319,9 @@ public class MainActivity extends AppCompatActivity {
         // where you get the JSON file
         final String url = "https://thinqtv.herokuapp.com/events.json";
 
-        //RequestQueue initialized
-        RequestQueue mRequestQueue;
-        mRequestQueue = Volley.newRequestQueue(this);
-
-        //String Request initialized
-        StringRequest mStringRequest;
-        mStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(String response) {
-                // If you receive a response, set the fullEventsJSON string to the response
-                // Then call setUpcomingEvents() to fill in ScrollView data
+            public void onResponse(JSONArray response) {
                 setUpcomingEvents(response);
             }
         }, new Response.ErrorListener() {
@@ -322,10 +331,7 @@ public class MainActivity extends AppCompatActivity {
                 // TODO : ie display error message
             }
         });
-
-        //Add the request to the Queue
-        //This is essentially telling it to execute
-        mRequestQueue.add(mStringRequest);
+        DataSource.getInstance(this).addToRequestQueue(request);
     }
 
     public void expandEventsClick(View v) {
@@ -337,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
         TextView carrot = (TextView) findViewById(R.id.expandButton);
         Button joinButton = findViewById(R.id.defaultJoinButton);
         Button involvedButton = findViewById(R.id.get_involved);
+        Button loginButton = findViewById(R.id.login);
 
         // if the Upcoming Events are expanded, minimize
         if (eventsExpanded)
@@ -353,6 +360,7 @@ public class MainActivity extends AppCompatActivity {
             // because of this, they must be set to invisible when you expand the Events
             joinButton.setVisibility(View.VISIBLE);
             involvedButton.setVisibility(View.VISIBLE);
+            loginButton.setVisibility(View.VISIBLE);
 
             // make it twist
             carrot.setRotation(0);
@@ -376,6 +384,7 @@ public class MainActivity extends AppCompatActivity {
 
             joinButton.setVisibility(View.INVISIBLE);
             involvedButton.setVisibility(View.INVISIBLE);
+            loginButton.setVisibility(View.INVISIBLE);
             carrot.setRotation(180);
             ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
             lparams.verticalBias = 0.48f;

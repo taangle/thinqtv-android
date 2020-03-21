@@ -44,6 +44,10 @@ public class LoginRepository {
         this.user = user;
     }
 
+    public LoggedInUser getLoggedInUser() {
+        return user;
+    }
+
     public void login(String email, String password, Context context, LoginViewModel loginViewModel) {
         JSONObject userLogin = new JSONObject();
         JSONObject loginParams = new JSONObject();
