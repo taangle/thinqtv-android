@@ -7,7 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 /**
- * Class that handles requests to the server.
+ * Class that handles requests to the server. Creates a standard request queue.
  */
 public class DataSource {
     private static DataSource instance;
@@ -31,7 +31,7 @@ public class DataSource {
         return requestQueue;
     }
 
-    public static String getServerUrl() {
+    static String getServerUrl() {
         return url;
     }
 

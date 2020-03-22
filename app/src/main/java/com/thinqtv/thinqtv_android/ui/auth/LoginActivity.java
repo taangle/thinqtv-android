@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new ViewModelFactory())
+        loginViewModel = ViewModelProviders.of(this, new AuthViewModelFactory())
                 .get(LoginViewModel.class);
 
         final EditText emailEditText = findViewById(R.id.email);
@@ -42,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Can't submit the initial empty form.
         loginButton.setEnabled(false);
+
+        // Check if the data in the form is valid each time the loginFormState changes.
         loginViewModel.getLoginFormState().observe(this, loginFormState -> {
             if (loginFormState == null) {
                 return;
@@ -55,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Respond to the login once the result is made available.
         loginViewModel.getLoginResult().observe(this, loginResult -> {
             if (loginResult == null) {
                 return;
@@ -85,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                // Send the new text to the loginViewModel, which will check if it's valid.
                 loginViewModel.loginDataChanged(emailEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
@@ -103,11 +107,13 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(view -> goToRegister());
     }
 
+    // Display error at the top of the login screen.
     private void showLoginFailed(List<?> errorList, TextView errorTextView) {
         if (errorList.size() == 0) {
             errorTextView.setText(R.string.login_failed);
         }
         else {
+            // If multiple errors occur, show the first one.
             errorTextView.setText((Integer)errorList.get(0));
         }
     }

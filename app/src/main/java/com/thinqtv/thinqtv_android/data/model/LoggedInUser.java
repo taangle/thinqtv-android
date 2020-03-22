@@ -2,8 +2,8 @@ package com.thinqtv.thinqtv_android.data.model;
 
 public class LoggedInUser {
 
-    private String name;
-    private String authToken;
+    private final String name;
+    private final String authToken;
 
     public LoggedInUser(String name, String authToken) {
         this.name = name;
@@ -12,8 +12,5 @@ public class LoggedInUser {
 
     public String getName() {
         return name;
-    }
-    public String getAuthToken() {
-        return authToken;
     }
 }

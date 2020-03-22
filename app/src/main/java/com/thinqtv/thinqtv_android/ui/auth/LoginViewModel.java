@@ -13,9 +13,9 @@ import com.thinqtv.thinqtv_android.R;
 
 public class LoginViewModel extends ViewModel {
 
-    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-    private MutableLiveData<Result> loginResult = new MutableLiveData<>();
-    private UserRepository userRepository;
+    private final MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
+    private final MutableLiveData<Result> loginResult = new MutableLiveData<>();
+    private final UserRepository userRepository;
 
     LoginViewModel(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -33,11 +33,11 @@ public class LoginViewModel extends ViewModel {
         loginResult.setValue(result);
     }
 
-    public void login(String username, String password, Context context) {
+    void login(String username, String password, Context context) {
         userRepository.login(username, password, context, this);
     }
 
-    public void loginDataChanged(String username, String password) {
+    void loginDataChanged(String username, String password) {
         if (!isUserNameValid(username)) {
             loginFormState.setValue(new LoginFormState(R.string.invalid_email, null));
         } else if (!isPasswordValid(password)) {

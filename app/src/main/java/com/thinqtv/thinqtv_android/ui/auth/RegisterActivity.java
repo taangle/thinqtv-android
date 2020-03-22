@@ -20,13 +20,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class RegisterActivity extends AppCompatActivity {
     private RegisterViewModel registerViewModel;
-    private Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        registerViewModel = ViewModelProviders.of(this, new ViewModelFactory())
+        registerViewModel = ViewModelProviders.of(this, new AuthViewModelFactory())
                 .get(RegisterViewModel.class);
 
         final EditText emailEditText = findViewById(R.id.email);
@@ -38,6 +37,10 @@ public class RegisterActivity extends AppCompatActivity {
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final TextView errorTextView = findViewById(R.id.error);
 
+        // Can't submit initial empty form- some text has to be typed.
+        registerButton.setEnabled(false);
+
+        // Check if the data in the form is valid each time the registerFormState changes.
         registerViewModel.getRegisterFormState().observe(this, registerFormState -> {
             if (registerFormState == null) {
                 return;
@@ -60,16 +63,17 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        registerViewModel.getLoginResult().observe(this, loginResult -> {
-            if (loginResult == null) {
+        // Respond once the result is made available.
+        registerViewModel.getResult().observe(this, result -> {
+            if (result == null) {
                 return;
             }
             loadingProgressBar.setVisibility(View.GONE);
-            if (!loginResult.isSuccess() && loginResult.getData() != null) {
-                List<?> errorList = (List<?>)loginResult.getData();
+            if (!result.isSuccess() && result.getData() != null) {
+                List<?> errorList = (List<?>)result.getData();
                 showRegisterFailed(errorList, errorTextView);
             }
-            if (loginResult.isSuccess()) {
+            if (result.isSuccess()) {
                 setResult(Activity.RESULT_OK);
 
                 // Complete and destroy activity on a successful registration.
@@ -102,23 +106,22 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEditText.addTextChangedListener(afterTextChangedListener);
         passwordConfirmationEditText.addTextChangedListener(afterTextChangedListener);
 
+        Context context = this;
         registerButton.setOnClickListener(view -> {
-            if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0 // TODO: Make validations start immediately instead of after text changes.
-            && nameEditText.getText().length() != 0 && permalinkEditText.getText().length() != 0
-            && passwordConfirmationEditText.getText().length() != 0) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                registerViewModel.register(emailEditText.getText().toString(),
-                        nameEditText.getText().toString(), permalinkEditText.getText().toString(),
-                        passwordEditText.getText().toString(), context);
-            }
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            registerViewModel.register(emailEditText.getText().toString(),
+                    nameEditText.getText().toString(), permalinkEditText.getText().toString(),
+                    passwordEditText.getText().toString(), context);
         });
     }
 
+    // Display errors at top of the screen.
     private void showRegisterFailed(List<?> errorList, TextView errorTextView) {
         if (errorList.size() == 0) {
             errorTextView.setText(R.string.register_failed);
         }
         else {
+            // If multiple errors exist, show the first one.
             errorTextView.setText((Integer)errorList.get(0));
         }
     }

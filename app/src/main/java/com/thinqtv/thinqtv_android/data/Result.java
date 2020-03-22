@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A generic class that holds a result success w/ data or an error exception.
+ * A generic class that holds a list of data, and the success of the action.
  */
 public class Result<T> {
     // hide the private constructor to limit subclass types (Success, Error)
-    private List<T> data;
-    private boolean success;
-    public Result(List<T> data, boolean success) {
+    private final List<T> data;
+    private final boolean success;
+    Result(List<T> data, boolean success) {
         this.data = data;
         this.success = success;
     }
-    public Result(T data, boolean success) {
-        List<T> dataList = new ArrayList<T>();
+    Result(T data, boolean success) {
+        List<T> dataList = new ArrayList<>();
         dataList.add(data);
         this.data = dataList;
         this.success = success;

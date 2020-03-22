@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 
 /**
- * ViewModel provider factory to instantiate LoginViewModel.
- * Required given LoginViewModel has a non-empty constructor
+ * ViewModel provider factory to instantiate LoginViewModel and RegisterViewModel.Required due to
+ * their non-empty constructors.
  */
-public class ViewModelFactory implements ViewModelProvider.Factory {
+class AuthViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     @Override

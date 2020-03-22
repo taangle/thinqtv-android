@@ -2,7 +2,7 @@ package com.thinqtv.thinqtv_android.ui.auth;
 
 import androidx.annotation.Nullable;
 
-public class RegisterFormState {
+class RegisterFormState {
     @Nullable
     private final Integer emailError;
     @Nullable

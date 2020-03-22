@@ -24,7 +24,7 @@ public class RegisterViewModel extends ViewModel {
     LiveData<RegisterFormState> getRegisterFormState() {
         return registerFormState;
     }
-    LiveData<Result> getLoginResult() {
+    LiveData<Result> getResult() {
         return registerResult;
     }
 
@@ -32,7 +32,7 @@ public class RegisterViewModel extends ViewModel {
         registerResult.setValue(result);
     }
 
-    public void registerDataChanged(String email, String name, String permalink,
+    void registerDataChanged(String email, String name, String permalink,
                                     String password, String passwordConfirmation) {
         boolean validForm = true;
         if (!isEmailValid(email)) {
@@ -58,22 +58,26 @@ public class RegisterViewModel extends ViewModel {
         registerFormState.setValue(new RegisterFormState(validForm));
     }
 
-    public void register(String email, String name, String permalink, String password, Context context) {
+    void register(String email, String name, String permalink, String password, Context context) {
         userRepository.register(email, name, permalink, password, context, this);
     }
 
     private boolean isEmailValid(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
     private boolean isNameValid(String name) {
         return (name != null && name.trim().length() > 0);
     }
+
     private boolean isPermalinkValid(String permalink) {
         return (permalink != null && permalink.trim().length() > 0);
     }
+
     private boolean isPasswordValid(String password) {
         return (password != null && password.trim().length() >= 8);
     }
+
     private boolean isPasswordConfirmationValid(String password, String passwordConfirmation) {
         return password.equals(passwordConfirmation);
     }

@@ -6,7 +6,6 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thinqtv.thinqtv_android.R;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
-import com.thinqtv.thinqtv_android.ui.auth.LoggedInUserView;
 import com.thinqtv.thinqtv_android.ui.auth.LoginViewModel;
 import com.thinqtv.thinqtv_android.ui.auth.RegisterViewModel;
 
@@ -16,8 +15,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.StringRes;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -82,9 +79,9 @@ public class UserRepository {
                     }
                 }, error -> {
                     if (error.networkResponse != null && error.networkResponse.statusCode == 401) { // Email or password was wrong.
-                        loginViewModel.setResult(new Result(R.string.login_failed, false));
+                        loginViewModel.setResult(new Result<>(R.string.login_failed, false));
                     } else {
-                        loginViewModel.setResult(new Result(R.string.could_not_reach_server, false));
+                        loginViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
                     }
                 });
 
@@ -118,7 +115,7 @@ public class UserRepository {
                 response -> {
                     try {
                         setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token")));
-                        registerViewModel.setResult(new Result<>(new LoggedInUserView(user.getName()), true));
+                        registerViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
                         registerViewModel.setResult(new Result<>(R.string.server_response_error, false));
@@ -132,6 +129,10 @@ public class UserRepository {
                                 JSONObject response = new JSONObject(new String(error.networkResponse.data));
                                 JSONObject errors = response.getJSONObject("errors");
                                 JSONArray errorArray = errors.names();
+                                if (errorArray == null) {
+                                    registerViewModel.setResult(new Result<>(R.string.server_response_error, false));
+                                    return;
+                                }
                                 for (int i = 0; i < errorArray.length(); i++) {
                                     switch(errorArray.get(i).toString()) {
                                         case "email":
@@ -148,7 +149,7 @@ public class UserRepository {
                                 registerViewModel.setResult(new Result<>(errorMessages, false));
 
                             } catch (JSONException e) {
-
+                                registerViewModel.setResult(new Result<>(R.string.server_response_error, false));
                             }
 
                         }
