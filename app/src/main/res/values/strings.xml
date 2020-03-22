@@ -7,7 +7,16 @@
     <string name="defaultTryConversation">Join the conversation!</string>
     <string name="getInvolved">Get involved</string>
     <string name="upcoming_events">Upcoming events</string>
+    <string name="expand">Expand</string>
+    <string name="hosted_by">Hosted by</string>
+    <string-array name="eventFilters">
+        <item>All Events</item>
+        <item>This Week</item>
+        <item>Next Week</item>
+        <item>Future</item>
+    </string-array>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_register">Sign up</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -21,14 +30,6 @@
     <string name="password_empty">Password must not be empty!</string>
     <string name="login_failed">"Login failed"</string>
     <string name="could_not_reach_server">"Could not reach server"</string>
-    <string name="expand">Expand</string>
-    <string name="hosted_by">Hosted by</string>
-    <string-array name="eventFilters">
-        <item>All Events</item>
-        <item>This Week</item>
-        <item>Next Week</item>
-        <item>Future</item>
-    </string-array>
     <string name="forgot_password">Forgot password?</string>
     <string name="remember_me">Remember me</string>
     <string name="tos_agreement">By signing in, you agree to the Thinq.tv terms of service.</string>

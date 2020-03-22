@@ -1,11 +1,10 @@
-package com.thinqtv.thinqtv_android.ui.login;
+package com.thinqtv.thinqtv_android.ui.auth;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;

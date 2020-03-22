@@ -1,4 +1,4 @@
-package com.thinqtv.thinqtv_android.ui.login;
+package com.thinqtv.thinqtv_android.ui.auth;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;

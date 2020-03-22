@@ -6,10 +6,10 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thinqtv.thinqtv_android.R;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
-import com.thinqtv.thinqtv_android.ui.login.LoggedInUserView;
-import com.thinqtv.thinqtv_android.ui.login.LoginResult;
-import com.thinqtv.thinqtv_android.ui.login.LoginViewModel;
-import com.thinqtv.thinqtv_android.ui.login.RegisterViewModel;
+import com.thinqtv.thinqtv_android.ui.auth.LoggedInUserView;
+import com.thinqtv.thinqtv_android.ui.auth.LoginResult;
+import com.thinqtv.thinqtv_android.ui.auth.LoginViewModel;
+import com.thinqtv.thinqtv_android.ui.auth.RegisterViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.thinqtv.thinqtv_android.ui.login;
+package com.thinqtv.thinqtv_android.ui.auth;
 
 /**
  * Class exposing authenticated user details to the UI.

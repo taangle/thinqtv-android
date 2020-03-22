@@ -1,4 +1,4 @@
-package com.thinqtv.thinqtv_android.ui.login;
+package com.thinqtv.thinqtv_android.ui.auth;
 
 import android.app.Activity;
 
