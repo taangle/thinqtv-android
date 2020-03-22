@@ -19,26 +19,37 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_involve);
-        webpageViewer = findViewById(R.id.webView);
-        webpageViewer.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-        webpageViewer.getSettings().setJavaScriptEnabled(true);
-        webpageViewer.getSettings().setDomStorageEnabled(true);
-        webpageViewer.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onLoadResource(WebView webView, String url) {
-                try {
-                    // remove the nav bar and the footer from each loaded page.
-                    webpageViewer.loadUrl("javascript:(window.onload = function() { " +
-                            "(navBar = document.getElementsByTagName('nav')[0]); navBar.parentNode.removeChild(navBar);" +
-                            "(footer = document.getElementsByTagName('footer')[0]); footer.parentNode.removeChild(footer);" +
-                            "})()");
-                } catch (Exception e) {
-                    e.printStackTrace();
+            setContentView(R.layout.activity_get_involve);
+            webpageViewer = findViewById(R.id.webView);
+            webpageViewer.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+            webpageViewer.getSettings().setJavaScriptEnabled(true);
+            webpageViewer.getSettings().setDomStorageEnabled(true);
+            webpageViewer.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onLoadResource(WebView webView, String url) {
+                    try {
+                        // remove the nav bar and the footer from each loaded page.
+                        webpageViewer.loadUrl("javascript:(window.onload = function() { " +
+                                "(navBar = document.getElementsByTagName('nav')[0]); navBar.parentNode.removeChild(navBar);" +
+                                "(footer = document.getElementsByTagName('footer')[0]); footer.parentNode.removeChild(footer);" +
+                                "})()");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                //the following disable any links on the web page.
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    if (url.equals("https://thinqtv.herokuapp.com/parents")) {
+                        view.loadUrl(url);
+                    }
+                    return true;
+                }
+
             }
-        });
-        webpageViewer.loadUrl("https://thinqtv.herokuapp.com/getinvolved");
+
+            );
+            webpageViewer.loadUrl("https://thinqtv.herokuapp.com/parents");
 
         /*
           - 'spinner' is the actual Spinner object which is our drop down menu
@@ -46,11 +57,12 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
           - line 50 sets the layout of the adapter, which we connect to  'spinner' in line 51
           - Finally, setOnItemSelectedListener allows the app to react to clicks on 'spinner'
          */
-        Spinner spinner = findViewById(R.id.spinner1);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.Pages,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+            Spinner spinner = findViewById(R.id.spinner1);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Pages, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(this);
+
     }
 
     //Identical to load, except can be called when user selects something on spinner.
@@ -72,7 +84,18 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
                     e.printStackTrace();
                 }
             }
+
+            //the following disable any links on the web page.
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.equals(site)) {
+                    view.loadUrl(url);
+                }
+                return true;
+            }
+
         });
+
         webpageViewer.loadUrl(site);
     }
 
@@ -81,6 +104,8 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
         startActivity(i);
         System.out.println(" ''" + v + " ''");
     }
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
