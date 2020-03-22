@@ -23,6 +23,7 @@
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:textSize="18sp"
+        android:autofillHints=".AUTOFILL_HINT_EMAIL_ADDRESS"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/error" />
@@ -38,6 +39,7 @@
         android:hint="@string/prompt_password"
         android:inputType="textPassword"
         android:textSize="18sp"
+        android:autofillHints=".AUTOFILL_HINT_PASSWORD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email" />
@@ -49,7 +51,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/remember_me"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/forgt_password"
+        app:layout_constraintEnd_toStartOf="@+id/forgot_password"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -69,10 +71,9 @@
     <!-- Term of Service text link -->
 
     <CheckedTextView
-        android:id="@+id/forgt_password"
+        android:id="@+id/forgot_password"
         android:layout_width="126dp"
         android:layout_height="34dp"
-        android:autoText="true"
         android:singleLine="true"
         android:text="@string/forgot_password"
         app:layout_constraintBaseline_toBaselineOf="@+id/remember_me"

@@ -9,14 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.thinqtv.thinqtv_android.R;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
+import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -27,7 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        registerViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
+        registerViewModel = ViewModelProviders.of(this, new ViewModelFactory())
                 .get(RegisterViewModel.class);
 
         final EditText emailEditText = findViewById(R.id.email);
@@ -37,49 +36,43 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText passwordConfirmationEditText = findViewById(R.id.password_confirmation);
         final Button registerButton = findViewById(R.id.register_button);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        final TextView errorTextView = findViewById(R.id.error);
 
-        registerViewModel.getRegisterFormState().observe(this, new Observer<RegisterFormState>() {
-            @Override
-            public void onChanged(@Nullable RegisterFormState registerFormState) {
-                if (registerFormState == null) {
-                    return;
-                }
-                registerButton.setEnabled(registerFormState.isDataValid());
-                if (registerFormState.getEmailError() != null) {
-                    emailEditText.setError(getString(registerFormState.getEmailError()));
-                }
-                if (registerFormState.getNameError() != null) {
-                    nameEditText.setError(getString(registerFormState.getNameError()));
-                }
-                if (registerFormState.getPermalinkError() != null) {
-                    permalinkEditText.setError(getString(registerFormState.getPermalinkError()));
-                }
-                if (registerFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(registerFormState.getPasswordError()));
-                }
-                if (registerFormState.getPasswordConfirmationError() != null) {
-                    passwordConfirmationEditText.setError(getString(registerFormState.getPasswordConfirmationError()));
-                }
+        registerViewModel.getRegisterFormState().observe(this, registerFormState -> {
+            if (registerFormState == null) {
+                return;
+            }
+            registerButton.setEnabled(registerFormState.isDataValid());
+            if (registerFormState.getEmailError() != null) {
+                emailEditText.setError(getString(registerFormState.getEmailError()));
+            }
+            if (registerFormState.getNameError() != null) {
+                nameEditText.setError(getString(registerFormState.getNameError()));
+            }
+            if (registerFormState.getPermalinkError() != null) {
+                permalinkEditText.setError(getString(registerFormState.getPermalinkError()));
+            }
+            if (registerFormState.getPasswordError() != null) {
+                passwordEditText.setError(getString(registerFormState.getPasswordError()));
+            }
+            if (registerFormState.getPasswordConfirmationError() != null) {
+                passwordConfirmationEditText.setError(getString(registerFormState.getPasswordConfirmationError()));
             }
         });
 
-        registerViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showRegisterFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
+        registerViewModel.getLoginResult().observe(this, loginResult -> {
+            if (loginResult == null) {
+                return;
+            }
+            loadingProgressBar.setVisibility(View.GONE);
+            if (!loginResult.isSuccess() && loginResult.getData() != null) {
+                List<?> errorList = (List<?>)loginResult.getData();
+                showRegisterFailed(errorList, errorTextView);
+            }
+            if (loginResult.isSuccess()) {
                 setResult(Activity.RESULT_OK);
 
-                //Complete and destroy login activity once successful
+                // Complete and destroy activity on a successful registration.
                 finish();
             }
         });
@@ -102,34 +95,31 @@ public class RegisterActivity extends AppCompatActivity {
                         passwordEditText.getText().toString(), passwordConfirmationEditText.getText().toString());
             }
         };
+
         emailEditText.addTextChangedListener(afterTextChangedListener);
         nameEditText.addTextChangedListener(afterTextChangedListener);
         permalinkEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
         passwordConfirmationEditText.addTextChangedListener(afterTextChangedListener);
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0 // TODO: Make validations start immediately instead of after text changes.
-                && nameEditText.getText().length() != 0 && permalinkEditText.getText().length() != 0
-                && passwordConfirmationEditText.getText().length() != 0) {
-                    loadingProgressBar.setVisibility(View.VISIBLE);
-                    registerViewModel.register(emailEditText.getText().toString(),
-                            nameEditText.getText().toString(), permalinkEditText.getText().toString(),
-                            passwordEditText.getText().toString(), context);
-                }
+        registerButton.setOnClickListener(view -> {
+            if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0 // TODO: Make validations start immediately instead of after text changes.
+            && nameEditText.getText().length() != 0 && permalinkEditText.getText().length() != 0
+            && passwordConfirmationEditText.getText().length() != 0) {
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                registerViewModel.register(emailEditText.getText().toString(),
+                        nameEditText.getText().toString(), permalinkEditText.getText().toString(),
+                        passwordEditText.getText().toString(), context);
             }
         });
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-    }
-
-    private void showRegisterFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    private void showRegisterFailed(List<?> errorList, TextView errorTextView) {
+        if (errorList.size() == 0) {
+            errorTextView.setText(R.string.register_failed);
+        }
+        else {
+            errorTextView.setText((Integer)errorList.get(0));
+        }
     }
 }

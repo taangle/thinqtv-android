@@ -7,12 +7,17 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.thinqtv.thinqtv_android.R;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 import com.thinqtv.thinqtv_android.ui.auth.LoggedInUserView;
-import com.thinqtv.thinqtv_android.ui.auth.LoginResult;
 import com.thinqtv.thinqtv_android.ui.auth.LoginViewModel;
 import com.thinqtv.thinqtv_android.ui.auth.RegisterViewModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.StringRes;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -61,7 +66,7 @@ public class UserRepository {
             userLogin.put("user", loginParams);
         } catch(JSONException e) { // Couldn't form JSON object for request.
             e.printStackTrace();
-            loginViewModel.setLoginResult(new LoginResult(R.string.could_not_reach_server));
+            loginViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
             return;
         }
 
@@ -70,16 +75,16 @@ public class UserRepository {
                 response -> {
                     try {
                         setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token")));
-                        loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(user.getName())));
+                        loginViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
-                        loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+                        loginViewModel.setResult(new Result<>(R.string.login_failed, false));
                     }
                 }, error -> {
                     if (error.networkResponse != null && error.networkResponse.statusCode == 401) { // Email or password was wrong.
-                        loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+                        loginViewModel.setResult(new Result(R.string.login_failed, false));
                     } else {
-                        loginViewModel.setLoginResult(new LoginResult(R.string.could_not_reach_server));
+                        loginViewModel.setResult(new Result(R.string.could_not_reach_server, false));
                     }
                 });
 
@@ -104,7 +109,7 @@ public class UserRepository {
             userRegister.put("user", registerParams);
         } catch(JSONException e) { // Couldn't form JSON object for request.
             e.printStackTrace();
-            registerViewModel.setLoginResult(new LoginResult(R.string.could_not_reach_server));
+            registerViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
             return;
         }
 
@@ -113,20 +118,45 @@ public class UserRepository {
                 response -> {
                     try {
                         setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token")));
-                        registerViewModel.setLoginResult(new LoginResult(new LoggedInUserView(user.getName())));
+                        registerViewModel.setResult(new Result<>(new LoggedInUserView(user.getName()), true));
                     } catch(JSONException e) {
                         e.printStackTrace();
-                        registerViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+                        registerViewModel.setResult(new Result<>(R.string.server_response_error, false));
                     }
                 }, error -> {
-                    if (error.networkResponse.statusCode == 401) { // There was a problem with one of the user-provided inputs.
-                        if (error.networkResponse.data != null) {
-                            String response = new String(error.networkResponse.data);
-                            // req went through, prob with email or pass.
+                    if (error.networkResponse != null) { // There was a problem with one of the user-provided inputs.
+                        if (error.networkResponse.statusCode == 422 && error.networkResponse.data != null) {
+                            List<Integer> errorMessages = new ArrayList<>();
+                            // The server should have sent a list of errors
+                            try {
+                                JSONObject response = new JSONObject(new String(error.networkResponse.data));
+                                JSONObject errors = response.getJSONObject("errors");
+                                JSONArray errorArray = errors.names();
+                                for (int i = 0; i < errorArray.length(); i++) {
+                                    switch(errorArray.get(i).toString()) {
+                                        case "email":
+                                            errorMessages.add(R.string.email_taken);
+                                            break;
+                                        case "permalink":
+                                            errorMessages.add(R.string.permalink_taken);
+                                            break;
+                                        default:
+                                            errorMessages.add(R.string.generic_input_error);
+                                            break;
+                                    }
+                                }
+                                registerViewModel.setResult(new Result<>(errorMessages, false));
+
+                            } catch (JSONException e) {
+
+                            }
+
                         }
-                        registerViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+                        else {
+                            registerViewModel.setResult(new Result<>(R.string.register_failed, false));
+                        }
                     } else {
-                        registerViewModel.setLoginResult(new LoginResult(R.string.could_not_reach_server));
+                        registerViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
                     }
                 });
         DataSource.getInstance().addToRequestQueue(request, context);

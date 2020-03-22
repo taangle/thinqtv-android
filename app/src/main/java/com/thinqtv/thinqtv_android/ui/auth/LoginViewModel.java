@@ -7,13 +7,14 @@ import androidx.lifecycle.ViewModel;
 import android.content.Context;
 import android.util.Patterns;
 
+import com.thinqtv.thinqtv_android.data.Result;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 import com.thinqtv.thinqtv_android.R;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+    private MutableLiveData<Result> loginResult = new MutableLiveData<>();
     private UserRepository userRepository;
 
     LoginViewModel(UserRepository userRepository) {
@@ -24,11 +25,11 @@ public class LoginViewModel extends ViewModel {
         return loginFormState;
     }
 
-    LiveData<LoginResult> getLoginResult() {
+    LiveData<Result> getLoginResult() {
         return loginResult;
     }
 
-    public void setLoginResult(LoginResult result) {
+    public void setResult(Result result) {
         loginResult.setValue(result);
     }
 

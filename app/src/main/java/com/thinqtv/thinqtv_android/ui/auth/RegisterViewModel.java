@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Patterns;
 
 import com.thinqtv.thinqtv_android.R;
+import com.thinqtv.thinqtv_android.data.Result;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 
 import androidx.lifecycle.LiveData;
@@ -12,9 +13,9 @@ import androidx.lifecycle.ViewModel;
 
 public class RegisterViewModel extends ViewModel {
 
-    private MutableLiveData<RegisterFormState> registerFormState = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private UserRepository userRepository;
+    private final MutableLiveData<RegisterFormState> registerFormState = new MutableLiveData<>();
+    private final MutableLiveData<Result> registerResult = new MutableLiveData<>();
+    private final UserRepository userRepository;
 
     RegisterViewModel(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -23,12 +24,12 @@ public class RegisterViewModel extends ViewModel {
     LiveData<RegisterFormState> getRegisterFormState() {
         return registerFormState;
     }
-    LiveData<LoginResult> getLoginResult() {
-        return loginResult;
+    LiveData<Result> getLoginResult() {
+        return registerResult;
     }
 
-    public void setLoginResult(LoginResult result) {
-        loginResult.setValue(result);
+    public void setResult(Result result) {
+        registerResult.setValue(result);
     }
 
     public void registerDataChanged(String email, String name, String permalink,
@@ -55,9 +56,6 @@ public class RegisterViewModel extends ViewModel {
             validForm = false;
         }
         registerFormState.setValue(new RegisterFormState(validForm));
-        /*else {
-            registerFormState.setValue(new RegisterFormState(true));
-        }*/
     }
 
     public void register(String email, String name, String permalink, String password, Context context) {
@@ -68,10 +66,10 @@ public class RegisterViewModel extends ViewModel {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
     private boolean isNameValid(String name) {
-        return true;
+        return (name != null && name.trim().length() > 0);
     }
     private boolean isPermalinkValid(String permalink) {
-        return true;
+        return (permalink != null && permalink.trim().length() > 0);
     }
     private boolean isPasswordValid(String password) {
         return (password != null && password.trim().length() >= 8);

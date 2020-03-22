@@ -10,7 +10,7 @@ import com.thinqtv.thinqtv_android.data.UserRepository;
  * ViewModel provider factory to instantiate LoginViewModel.
  * Required given LoginViewModel has a non-empty constructor
  */
-public class LoginViewModelFactory implements ViewModelProvider.Factory {
+public class ViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     @Override

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
@@ -21,6 +20,8 @@ import android.widget.TextView;
 
 import com.thinqtv.thinqtv_android.R;
 
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
@@ -29,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
+        loginViewModel = ViewModelProviders.of(this, new ViewModelFactory())
                 .get(LoginViewModel.class);
 
         final EditText emailEditText = findViewById(R.id.email);
@@ -39,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
         final Button registerButton = findViewById(R.id.sign_up);
         final TextView errorTextView = findViewById(R.id.error);
 
+        // Can't submit the initial empty form.
+        loginButton.setEnabled(false);
         loginViewModel.getLoginFormState().observe(this, loginFormState -> {
             if (loginFormState == null) {
                 return;
@@ -57,10 +60,11 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             loadingProgressBar.setVisibility(View.GONE);
-            if (loginResult.getError() != null) {
-                showLoginFailed(loginResult.getError(), errorTextView);
+            if (!loginResult.isSuccess() && loginResult.getData() != null) {
+                List<?> errorList = (List<?>)loginResult.getData();
+                showLoginFailed(errorList, errorTextView);
             }
-            if (loginResult.getSuccess() != null) {
+            if (loginResult.isSuccess()) {
                 setResult(Activity.RESULT_OK);
 
                 // Complete and destroy login activity only on a successful login.
@@ -90,19 +94,22 @@ public class LoginActivity extends AppCompatActivity {
 
         Context context = this;
         loginButton.setOnClickListener(view -> {
-            if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString(),
-                        context);
-            }
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            loginViewModel.login(emailEditText.getText().toString(),
+                    passwordEditText.getText().toString(),
+                    context);
         });
 
         registerButton.setOnClickListener(view -> goToRegister());
     }
 
-    private void showLoginFailed(@StringRes Integer errorString, TextView errorTextView) {
-        errorTextView.setText(errorString);
+    private void showLoginFailed(List<?> errorList, TextView errorTextView) {
+        if (errorList.size() == 0) {
+            errorTextView.setText(R.string.login_failed);
+        }
+        else {
+            errorTextView.setText((Integer)errorList.get(0));
+        }
     }
 
     private void goToRegister() {
