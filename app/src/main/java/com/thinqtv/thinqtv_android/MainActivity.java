@@ -20,28 +20,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.thinqtv.thinqtv_android.data.DataSource;
-import com.thinqtv.thinqtv_android.data.LoginRepository;
-import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
-import com.thinqtv.thinqtv_android.ui.login.LoggedInUserView;
+import com.thinqtv.thinqtv_android.data.UserRepository;
 import com.thinqtv.thinqtv_android.ui.login.LoginActivity;
-import com.thinqtv.thinqtv_android.ui.login.LoginResult;
-import com.thinqtv.thinqtv_android.ui.login.RegisterActivity;
 
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         getEventsJSONFile();
 
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
-        if (LoginRepository.getInstance().isLoggedIn()) {
-            lastScreenNameStr = LoginRepository.getInstance().getLoggedInUser().getName();
+        if (UserRepository.getInstance().isLoggedIn()) {
+            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
         }
         else {
             // restore screen name using lastInstanceState if possible
@@ -85,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         EditText screenName = findViewById(R.id.screenName);
         // Check if a user has logged in, and if so, set the screen name.
-        if (LoginRepository.getInstance().isLoggedIn()) {
-            lastScreenNameStr = LoginRepository.getInstance().getLoggedInUser().getName();
+        if (UserRepository.getInstance().isLoggedIn()) {
+            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
@@ -161,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // listener for when a user clicks an event to go to its page
-    private class ViewEventDetails_ClickListener implements View.OnClickListener{
+    private class ViewEventDetails_ClickListener implements View.OnClickListener {
         private Context mContext;
         private String eventCode;
 
@@ -335,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
                 // TODO : ie display error message
             }
         });
-        DataSource.getInstance(this).addToRequestQueue(request);
+        DataSource.getInstance().addToRequestQueue(request, this);
     }
 
     public void expandEventsClick(View v) {

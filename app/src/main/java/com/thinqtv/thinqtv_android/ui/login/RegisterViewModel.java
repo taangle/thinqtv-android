@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Patterns;
 
 import com.thinqtv.thinqtv_android.R;
-import com.thinqtv.thinqtv_android.data.LoginRepository;
+import com.thinqtv.thinqtv_android.data.UserRepository;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,10 +14,10 @@ public class RegisterViewModel extends ViewModel {
 
     private MutableLiveData<RegisterFormState> registerFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+    private UserRepository userRepository;
 
-    RegisterViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    RegisterViewModel(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     LiveData<RegisterFormState> getRegisterFormState() {
@@ -61,7 +61,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void register(String email, String name, String permalink, String password, Context context) {
-        loginRepository.register(email, name, permalink, password, context, this);
+        userRepository.register(email, name, permalink, password, context, this);
     }
 
     private boolean isEmailValid(String email) {

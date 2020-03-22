@@ -7,17 +7,17 @@ import androidx.lifecycle.ViewModel;
 import android.content.Context;
 import android.util.Patterns;
 
-import com.thinqtv.thinqtv_android.data.LoginRepository;
+import com.thinqtv.thinqtv_android.data.UserRepository;
 import com.thinqtv.thinqtv_android.R;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+    private UserRepository userRepository;
 
-    LoginViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    LoginViewModel(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     LiveData<LoginFormState> getLoginFormState() {
@@ -33,7 +33,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void login(String username, String password, Context context) {
-        loginRepository.login(username, password, context, this);
+        userRepository.login(username, password, context, this);
     }
 
     public void loginDataChanged(String username, String password) {

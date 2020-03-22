@@ -12,22 +12,19 @@ import com.android.volley.toolbox.Volley;
 public class DataSource {
     private static DataSource instance;
     private RequestQueue requestQueue;
-    private Context context;
     private static final String url = "https://fast-mountain-02267.herokuapp.com/";
 
-    private DataSource(Context context) {
-        this.context = context;
-        requestQueue = getRequestQueue();
+    private DataSource() {
     }
 
-    public static DataSource getInstance(Context context) {
+    public static DataSource getInstance() {
         if (instance == null) {
-            instance = new DataSource(context);
+            instance = new DataSource();
         }
         return instance;
     }
 
-    public RequestQueue getRequestQueue() {
+    private RequestQueue getRequestQueue(Context context) {
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
         }
@@ -38,7 +35,7 @@ public class DataSource {
         return url;
     }
 
-    public <T> void addToRequestQueue(Request<T> request) {
-        getRequestQueue().add(request);
+    public <T> void addToRequestQueue(Request<T> request, Context context) {
+        getRequestQueue(context).add(request);
     }
 }
