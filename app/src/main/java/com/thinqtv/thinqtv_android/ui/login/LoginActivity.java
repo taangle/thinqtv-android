@@ -2,34 +2,28 @@ package com.thinqtv.thinqtv_android.ui.login;
 
 import android.app.Activity;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.thinqtv.thinqtv_android.R;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
-    private Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,39 +37,33 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = findViewById(R.id.sign_in);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final Button registerButton = findViewById(R.id.sign_up);
+        final TextView errorTextView = findViewById(R.id.error);
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
-            @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    emailEditText.setError(getString(loginFormState.getUsernameError()));
-                }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
+        loginViewModel.getLoginFormState().observe(this, loginFormState -> {
+            if (loginFormState == null) {
+                return;
+            }
+            loginButton.setEnabled(loginFormState.isDataValid());
+            if (loginFormState.getUsernameError() != null) {
+                emailEditText.setError(getString(loginFormState.getUsernameError()));
+            }
+            if (loginFormState.getPasswordError() != null) {
+                passwordEditText.setError(getString(loginFormState.getPasswordError()));
             }
         });
 
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
+        loginViewModel.getLoginResult().observe(this, loginResult -> {
+            if (loginResult == null) {
+                return;
+            }
+            loadingProgressBar.setVisibility(View.GONE);
+            if (loginResult.getError() != null) {
+                showLoginFailed(loginResult.getError(), errorTextView);
+            }
+            if (loginResult.getSuccess() != null) {
                 setResult(Activity.RESULT_OK);
 
-                //Complete and destroy login activity once successful
+                // Complete and destroy login activity only on a successful login.
                 finish();
             }
         });
@@ -99,47 +87,22 @@ public class LoginActivity extends AppCompatActivity {
         };
         emailEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(emailEditText.getText().toString(),
-                            passwordEditText.getText().toString(),
-                            context);
-                }
-                return false;
+        Context context = this;
+        loginButton.setOnClickListener(view -> {
+            if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0) {
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                loginViewModel.login(emailEditText.getText().toString(),
+                        passwordEditText.getText().toString(),
+                        context);
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0) {
-                    loadingProgressBar.setVisibility(View.VISIBLE);
-                    loginViewModel.login(emailEditText.getText().toString(),
-                            passwordEditText.getText().toString(),
-                            context);
-                }
-            }
-        });
-
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToRegister();
-            }
-        });
+        registerButton.setOnClickListener(view -> goToRegister());
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-    }
-
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    private void showLoginFailed(@StringRes Integer errorString, TextView errorTextView) {
+        errorTextView.setText(errorString);
     }
 
     private void goToRegister() {

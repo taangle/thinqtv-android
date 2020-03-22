@@ -76,7 +76,7 @@ public class UserRepository {
                         loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
                     }
                 }, error -> {
-                    if (error.networkResponse.statusCode == 401) { // Email or password was wrong.
+                    if (error.networkResponse != null && error.networkResponse.statusCode == 401) { // Email or password was wrong.
                         loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
                     } else {
                         loginViewModel.setLoginResult(new LoginResult(R.string.could_not_reach_server));
