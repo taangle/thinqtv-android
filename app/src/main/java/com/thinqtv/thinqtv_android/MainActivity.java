@@ -35,6 +35,7 @@ import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 import com.thinqtv.thinqtv_android.ui.login.LoggedInUserView;
 import com.thinqtv.thinqtv_android.ui.login.LoginActivity;
 import com.thinqtv.thinqtv_android.ui.login.LoginResult;
+import com.thinqtv.thinqtv_android.ui.login.RegisterActivity;
 
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
@@ -82,15 +83,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        EditText screenName = findViewById(R.id.screenName);
         // Check if a user has logged in, and if so, set the screen name.
         if (LoginRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = LoginRepository.getInstance().getLoggedInUser().getName();
-        }
-        // restore text inside screen name field if the user hasn't typed anything to override it
-        EditText screenName = findViewById(R.id.screenName);
-        String screenNameStr = screenName.getText().toString();
-        if (screenNameStr.length() == 0) {
             screenName.setText(lastScreenNameStr);
+        }
+        // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
+        else {
+            String screenNameStr = screenName.getText().toString();
+            if (screenNameStr.length() == 0) {
+                screenName.setText(lastScreenNameStr);
+            }
         }
     }
 

@@ -1,22 +1,26 @@
 <resources>
-<string name="app_name">ThinQ TV</string>
-<string name="conference_name_hint">Enter Room Name</string>
-<string name="join_button_hint">Join</string>
-<string name="screen_name_hint">Enter Your Name</string>
-<string name="homescreenHeader">Conversations\nthat make you\nThinQ!</string>
-<string name="defaultTryConversation">Join the conversation!</string>
-<string name="getInvolved">Get involved</string>
-<string name="upcoming_events">Upcoming events</string>
-<string name="title_activity_login">Sign in</string>
-<string name="prompt_email">Email</string>
-<string name="prompt_password">Password</string>
-<string name="action_sign_in">Sign in or register</string>
-<string name="action_sign_in_short">Sign in</string>
-<string name="welcome">"Welcome "</string>
-<string name="invalid_email">Not a valid email</string>
-<string name="password_empty">Password must not be empty!</string>
-<string name="login_failed">"Login failed"</string>
-<string name="could_not_reach_server">"Could not reach server"</string>
+    <string name="app_name">ThinQ TV</string>
+    <string name="conference_name_hint">Enter Room Name</string>
+    <string name="join_button_hint">Join</string>
+    <string name="screen_name_hint">Enter Your Name</string>
+    <string name="homescreenHeader">Conversations\nthat make you\nThinQ!</string>
+    <string name="defaultTryConversation">Join the conversation!</string>
+    <string name="getInvolved">Get involved</string>
+    <string name="upcoming_events">Upcoming events</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome "</string>
+    <string name="invalid_email">Invalid email.</string>
+    <string name="invalid_name">Invalid name.</string>
+    <string name="invalid_permalink">Invalid permalink.</string>
+    <string name="invalid_password">Password must be at least 8 characters.</string>
+    <string name="invalid_password_confirmation">Passwords do not match.</string>
+    <string name="password_empty">Password must not be empty!</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="could_not_reach_server">"Could not reach server"</string>
     <string name="expand">Expand</string>
     <string name="hosted_by">Hosted by</string>
     <string-array name="eventFilters">
@@ -25,9 +29,13 @@
         <item>Next Week</item>
         <item>Future</item>
     </string-array>
-<string name="forgot_password">Forgot password?</string>
-<string name="remember_me">Remember me</string>
-<string name="tos_agreement">By signing in, you agree to the Thinq.tv terms of service.</string>
-<string name="sign_in">Sign In</string>
-<string name="sign_up_prompt">Not a member? Sign up!</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="remember_me">Remember me</string>
+    <string name="tos_agreement">By signing in, you agree to the Thinq.tv terms of service.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up_prompt">Not a member? Sign up!</string>
+    <string name="name_prompt">Name</string>
+    <string name="permalink_prompt">Permalink</string>
+    <string name="confirm_password_prompt">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
 </resources>

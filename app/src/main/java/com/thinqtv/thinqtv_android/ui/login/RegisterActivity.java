@@ -1,66 +1,68 @@
 package com.thinqtv.thinqtv_android.ui.login;
 
-import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.thinqtv.thinqtv_android.R;
 
-public class LoginActivity extends AppCompatActivity {
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
-    private LoginViewModel loginViewModel;
+public class RegisterActivity extends AppCompatActivity {
+    private RegisterViewModel registerViewModel;
     private Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
+        setContentView(R.layout.activity_register);
+        registerViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
+                .get(RegisterViewModel.class);
 
         final EditText emailEditText = findViewById(R.id.email);
+        final EditText nameEditText = findViewById(R.id.name);
+        final EditText permalinkEditText = findViewById(R.id.permalink);
         final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.sign_in);
+        final EditText passwordConfirmationEditText = findViewById(R.id.password_confirmation);
+        final Button registerButton = findViewById(R.id.register_button);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-        final Button registerButton = findViewById(R.id.sign_up);
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+        registerViewModel.getRegisterFormState().observe(this, new Observer<RegisterFormState>() {
             @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
+            public void onChanged(@Nullable RegisterFormState registerFormState) {
+                if (registerFormState == null) {
                     return;
                 }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    emailEditText.setError(getString(loginFormState.getUsernameError()));
+                registerButton.setEnabled(registerFormState.isDataValid());
+                if (registerFormState.getEmailError() != null) {
+                    emailEditText.setError(getString(registerFormState.getEmailError()));
                 }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
+                if (registerFormState.getNameError() != null) {
+                    nameEditText.setError(getString(registerFormState.getNameError()));
+                }
+                if (registerFormState.getPermalinkError() != null) {
+                    permalinkEditText.setError(getString(registerFormState.getPermalinkError()));
+                }
+                if (registerFormState.getPasswordError() != null) {
+                    passwordEditText.setError(getString(registerFormState.getPasswordError()));
+                }
+                if (registerFormState.getPasswordConfirmationError() != null) {
+                    passwordConfirmationEditText.setError(getString(registerFormState.getPasswordConfirmationError()));
                 }
             }
         });
 
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+        /*registerViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+
             @Override
             public void onChanged(@Nullable LoginResult loginResult) {
                 if (loginResult == null) {
@@ -78,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 //Complete and destroy login activity once successful
                 finish();
             }
-        });
+        });*/
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
@@ -93,26 +95,18 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                registerViewModel.registerDataChanged(emailEditText.getText().toString(),
+                        nameEditText.getText().toString(), permalinkEditText.getText().toString(),
+                        passwordEditText.getText().toString(), passwordConfirmationEditText.getText().toString());
             }
         };
         emailEditText.addTextChangedListener(afterTextChangedListener);
+        nameEditText.addTextChangedListener(afterTextChangedListener);
+        permalinkEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        passwordConfirmationEditText.addTextChangedListener(afterTextChangedListener);
 
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(emailEditText.getText().toString(),
-                            passwordEditText.getText().toString(),
-                            context);
-                }
-                return false;
-            }
-        });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        /*registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0) {
@@ -122,16 +116,9 @@ public class LoginActivity extends AppCompatActivity {
                             context);
                 }
             }
-        });
-
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToRegister();
-            }
-        });
+        });*/
     }
-
+/*
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
@@ -140,10 +127,5 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-    }
-
-    private void goToRegister() {
-        Intent i = new Intent(this, RegisterActivity.class);
-        startActivity(i);
-    }
+    }*/
 }
