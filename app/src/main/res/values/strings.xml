@@ -6,7 +6,7 @@
     <string name="homescreenHeader">Conversations\nthat make you\nThinQ!</string>
     <string name="defaultTryConversation">Join the conversation!</string>
     <string name="getInvolved">Get involved</string>
-    <string name="upcoming_events">Upcoming events</string>
+    <string name="upcoming_events">Fellowship Hours</string>
     <string name="expand">Expand</string>
     <string name="hosted_by">Hosted by</string>
     <string-array name="eventFilters">
