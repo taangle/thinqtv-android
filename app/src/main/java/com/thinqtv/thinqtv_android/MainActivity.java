@@ -198,11 +198,12 @@ public class MainActivity extends AppCompatActivity {
                 // gets the host id and sets its values
                 TextView newEvent_host = new TextView(this);    // TODO : CHANGE THIS "name" TO "user_id" WHEN DATABASE INCLUDES PERMALINK
                 newEvent_host.setTextSize(15);
+                newEvent_host.setWidth(600);
                 newEvent_host.setPadding(20, 150, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
                 newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("name")
-                        .substring(0, Math.min(json.getJSONObject(i).getString("name").length(), 18)));
-                if (json.getJSONObject(i).getString("name").length() > 18)
+                        .substring(0, Math.min(json.getJSONObject(i).getString("name").length(), 40)));
+                if (json.getJSONObject(i).getString("name").length() > 40)
                     newEvent_host.setText(newEvent_host.getText() + "...");
 
                 // gets the date of event

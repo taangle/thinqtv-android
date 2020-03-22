@@ -27,8 +27,8 @@
         <activity android:name=".ConferenceActivity"
             android:supportsPictureInPicture="true"
             android:configChanges=
-                "screenSize|smallestScreenSize|screenLayout|orientation" />
-        <activity android:name=".GetInvolvedApplyNowPage" />
+                "screenSize|smallestScreenSize|screenLayout|orientation"
+            ></activity>
         <activity android:name=".GetInvolved" />
         <activity android:name=".EventWebview" />
         <activity android:name=".MainActivity">
