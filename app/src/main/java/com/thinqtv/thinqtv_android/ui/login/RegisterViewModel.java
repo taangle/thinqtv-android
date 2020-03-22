@@ -1,5 +1,6 @@
 package com.thinqtv.thinqtv_android.ui.login;
 
+import android.content.Context;
 import android.util.Patterns;
 
 import com.thinqtv.thinqtv_android.R;
@@ -57,6 +58,10 @@ public class RegisterViewModel extends ViewModel {
         /*else {
             registerFormState.setValue(new RegisterFormState(true));
         }*/
+    }
+
+    public void register(String email, String name, String permalink, String password, Context context) {
+        loginRepository.register(email, name, permalink, password, context, this);
     }
 
     private boolean isEmailValid(String email) {

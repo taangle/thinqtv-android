@@ -1,5 +1,6 @@
 package com.thinqtv.thinqtv_android.ui.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,10 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.thinqtv.thinqtv_android.R;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -61,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        /*registerViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+        registerViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
 
             @Override
             public void onChanged(@Nullable LoginResult loginResult) {
@@ -70,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 loadingProgressBar.setVisibility(View.GONE);
                 if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
+                    showRegisterFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
@@ -80,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                 //Complete and destroy login activity once successful
                 finish();
             }
-        });*/
+        });
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
@@ -106,26 +109,28 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEditText.addTextChangedListener(afterTextChangedListener);
         passwordConfirmationEditText.addTextChangedListener(afterTextChangedListener);
 
-        /*registerButton.setOnClickListener(new View.OnClickListener() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0) {
+                if (emailEditText.getText().length() != 0 && passwordEditText.getText().length() != 0 // TODO: Make validations start immediately instead of after text changes.
+                && nameEditText.getText().length() != 0 && permalinkEditText.getText().length() != 0
+                && passwordConfirmationEditText.getText().length() != 0) {
                     loadingProgressBar.setVisibility(View.VISIBLE);
-                    loginViewModel.login(emailEditText.getText().toString(),
-                            passwordEditText.getText().toString(),
-                            context);
+                    registerViewModel.register(emailEditText.getText().toString(),
+                            nameEditText.getText().toString(), permalinkEditText.getText().toString(),
+                            passwordEditText.getText().toString(), context);
                 }
             }
-        });*/
+        });
     }
-/*
+
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
+    private void showRegisterFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-    }*/
+    }
 }

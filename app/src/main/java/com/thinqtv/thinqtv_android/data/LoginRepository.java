@@ -1,6 +1,7 @@
 package com.thinqtv.thinqtv_android.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -12,6 +13,7 @@ import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 import com.thinqtv.thinqtv_android.ui.login.LoggedInUserView;
 import com.thinqtv.thinqtv_android.ui.login.LoginResult;
 import com.thinqtv.thinqtv_android.ui.login.LoginViewModel;
+import com.thinqtv.thinqtv_android.ui.login.RegisterViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ public class LoginRepository {
     private static volatile LoginRepository instance;
     private LoggedInUser user = null;
     private final String loginUrl = "api/v1/users/sign_in.json";
+    private final String registerUrl = "api/v1/users";
 
     private LoginRepository() {
     }
@@ -88,6 +91,52 @@ public class LoginRepository {
             }
         });
 
+        DataSource.getInstance(context).addToRequestQueue(request);
+    }
+
+    public void register(String email, String name, String permalink, String password,
+                         Context context, RegisterViewModel registerViewModel) {
+        JSONObject userRegister = new JSONObject();
+        JSONObject registerParams = new JSONObject();
+        try {
+            registerParams.put("email", email);
+            registerParams.put("name", name);
+            registerParams.put("permalink", permalink);
+            registerParams.put("password", password);
+            userRegister.put("user", registerParams);
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                DataSource.getServerUrl() + registerUrl, userRegister,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.d("lll", response.getString(name) + " " + response.getString("token"));
+                            setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token")));
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                        registerViewModel.setLoginResult(new LoginResult(new LoggedInUserView(user.getName())));
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 401) {
+                            NetworkResponse networkResponse = error.networkResponse;
+                            if (networkResponse != null && networkResponse.data != null) {
+                                String response = new String(networkResponse.data);
+                                // req went through, prob with email or pass.
+                            }
+                            registerViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+                        } else {
+                            registerViewModel.setLoginResult(new LoginResult(R.string.could_not_reach_server));
+                        }
+                    }
+
+            });
         DataSource.getInstance(context).addToRequestQueue(request);
     }
 }

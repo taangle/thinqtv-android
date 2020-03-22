@@ -33,7 +33,6 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void login(String username, String password, Context context) {
-
         loginRepository.login(username, password, context, this);
     }
 
