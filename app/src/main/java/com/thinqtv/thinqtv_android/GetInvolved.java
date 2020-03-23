@@ -69,8 +69,9 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
     public void changeSite(String site){
         webpageViewer = findViewById(R.id.webView);
         webpageViewer.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-        webpageViewer.getSettings().setJavaScriptEnabled(true);
         webpageViewer.getSettings().setDomStorageEnabled(true);
+        webpageViewer.getSettings().setJavaScriptEnabled(true);
+        webpageViewer.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webpageViewer.setWebViewClient(new WebViewClient() {
             @Override
             public void onLoadResource(WebView webView, String url) {
@@ -88,7 +89,9 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
             //the following disable any links on the web page.
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.equals(site)) {
+                if (url.equals(site) || url.equals(("https://thinqtv.herokuapp.com/boardofdirectors")) ||
+                url.equals("https://thinqtv.herokuapp.com/parents") || url.equals("https://thinqtv.herokuapp.com/drschaeferspeaking")
+                || url.equals("https://thinqtv.herokuapp.com/aboutus")) {
                     view.loadUrl(url);
                 }
                 return true;
@@ -117,9 +120,6 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
                 changeSite("https://thinqtv.herokuapp.com/drschaeferspeaking");
                 break;
             case 2:
-                changeSite("https://thinqtv.herokuapp.com/bystanderguidelines");
-                break;
-            case 3:
                 changeSite("https://thinqtv.herokuapp.com/aboutus");
                 break;
         }
