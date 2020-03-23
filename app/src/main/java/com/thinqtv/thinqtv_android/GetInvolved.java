@@ -45,12 +45,9 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
                     }
                     return true;
                 }
-
             }
-
             );
             webpageViewer.loadUrl("https://thinqtv.herokuapp.com/parents");
-
         /*
           - 'spinner' is the actual Spinner object which is our drop down menu
           - 'adapter' fills 'spinner' with the strings in the string array pages under res/values/strings.xml
@@ -62,7 +59,6 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener(this);
-
     }
 
     //Identical to load, except can be called when user selects something on spinner.
@@ -85,7 +81,6 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
                     e.printStackTrace();
                 }
             }
-
             //the following disable any links on the web page.
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -107,8 +102,6 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
         startActivity(i);
         System.out.println(" ''" + v + " ''");
     }
-
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
