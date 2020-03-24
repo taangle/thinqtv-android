@@ -38,6 +38,7 @@
     <string name="remember_me">Remember me</string>
     <string name="tos_agreement">By signing in, you agree to the Thinq.tv terms of service.</string>
     <string name="sign_in">Sign In</string>
+    <string name="sign_out">Sign Out</string>
     <string name="sign_up_prompt">Not a member? Sign up!</string>
     <string name="name_prompt">Name</string>
     <string name="permalink_prompt">Permalink</string>

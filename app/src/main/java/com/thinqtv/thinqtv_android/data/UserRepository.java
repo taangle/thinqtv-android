@@ -88,6 +88,10 @@ public class UserRepository {
         DataSource.getInstance().addToRequestQueue(request, context);
     }
 
+    public void logout() {
+        setLoggedInUser(null);
+    }
+
     /**
      * Takes in the information provided by the user and creates a request to create a new user.
      * The result is sent back to the login view model. If the registration was successful, the

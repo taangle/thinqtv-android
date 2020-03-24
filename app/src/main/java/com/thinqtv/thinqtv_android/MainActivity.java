@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
+            findViewById(R.id.logout).setVisibility(View.VISIBLE);
         }
         else {
             // restore screen name using lastInstanceState if possible
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 String defaultValue = lastScreenNameStr;
                 lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
             }
+            findViewById(R.id.login).setVisibility(View.VISIBLE);
         }
     }
 
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
+            findViewById(R.id.logout).setVisibility(View.VISIBLE);
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
         else {
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
             if (screenNameStr.length() == 0) {
                 screenName.setText(lastScreenNameStr);
             }
+            findViewById(R.id.login).setVisibility(View.VISIBLE);
         }
     }
 
@@ -148,6 +152,14 @@ public class MainActivity extends AppCompatActivity {
     public void goToLogin(View v) {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
+    }
+
+    public void logout(View v) {
+        UserRepository.getInstance().logout();
+        Button loginButton = findViewById(R.id.login);
+        Button logoutButton = findViewById(R.id.logout);
+        logoutButton.setVisibility(View.GONE);
+        loginButton.setVisibility(View.VISIBLE);
     }
 
     // listener for when a user clicks an event to go to its page
