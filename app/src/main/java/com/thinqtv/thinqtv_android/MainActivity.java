@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getEventsJSONfile();
-        setContentView(R.layout.activity_main);
-        getEventsJSONfile();
         
         // restore screen name using lastInstanceState if possible
         if (savedInstanceState != null) {
