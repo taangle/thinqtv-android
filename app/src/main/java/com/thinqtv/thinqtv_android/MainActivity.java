@@ -204,12 +204,12 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_time.setTextColor(getResources().getColor(R.color.colorPrimary));
 
                 // formats the date from above into viewable format (BUT NOW ITS START TIME)
-                displayFormat = new SimpleDateFormat("hh:mm");
+                displayFormat = new SimpleDateFormat("h:mm aa");
                 TextView newEvent_starttime = new TextView(this);
-                newEvent_starttime.setText("Starts at " + displayFormat.format(date));
+                newEvent_starttime.setText(displayFormat.format(date));
                 newEvent_starttime.setTextSize(15);
                 newEvent_starttime.setPadding(750, 150, 0, 0);
-                newEvent_host.setTextColor(Color.GRAY);
+                newEvent_starttime.setTextColor(Color.GRAY);
 
                 // Now you have all your TextViews, create a ConstraintLayout for each one
                 ConstraintLayout constraintLayout = new ConstraintLayout(this);
