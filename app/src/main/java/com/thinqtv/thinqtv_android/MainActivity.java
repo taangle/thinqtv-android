@@ -203,6 +203,14 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_time.setPadding(750, 80, 0, 0);
                 newEvent_time.setTextColor(getResources().getColor(R.color.colorPrimary));
 
+                // formats the date from above into viewable format (BUT NOW ITS START TIME)
+                displayFormat = new SimpleDateFormat("hh:mm");
+                TextView newEvent_starttime = new TextView(this);
+                newEvent_starttime.setText("Starts at " + displayFormat.format(date));
+                newEvent_starttime.setTextSize(15);
+                newEvent_starttime.setPadding(750, 150, 0, 0);
+                newEvent_host.setTextColor(Color.GRAY);
+
                 // Now you have all your TextViews, create a ConstraintLayout for each one
                 ConstraintLayout constraintLayout = new ConstraintLayout(this);
                 constraintLayout.setLayoutParams(new LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100f, getResources().getDisplayMetrics())));
@@ -211,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 constraintLayout.addView(newEvent_name);
                 constraintLayout.addView(newEvent_host);
                 constraintLayout.addView(newEvent_time);
+                constraintLayout.addView(newEvent_starttime);
 
                 // Add simple divider to put in between ConstraintLayouts (ie events)
                 View viewDivider = new View(this);
