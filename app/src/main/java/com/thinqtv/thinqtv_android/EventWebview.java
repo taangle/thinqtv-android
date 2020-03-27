@@ -15,6 +15,11 @@ public class EventWebview extends AppCompatActivity {
         setContentView(R.layout.event_webview);
 
         view = findViewById(R.id.webView);
+        String code = "";
+        if(getIntent().getExtras() !=null)
+            code = getIntent().getExtras().getString("eventCode");
+
+        String address = "https://thinqtv.herokuapp.com/events/" + code;
 
         view.getSettings().setJavaScriptEnabled(true);
         view.setWebViewClient(new WebViewClient() {
@@ -30,16 +35,13 @@ public class EventWebview extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            public boolean shouldOverrideUrlLoading(WebView view, String url)
+            {
+                view.loadUrl(address);
                 return true;
             }
         });
 
-        String code = "";
-        if(getIntent().getExtras() !=null)
-            code = getIntent().getExtras().getString("eventCode");
-
-        String address = "https://thinqtv.herokuapp.com/events/" + code;
         view.loadUrl(address);
     }
 }
