@@ -24,7 +24,8 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string-array name="sidebar_menu">
-        <item>Register/Login</item>
+        <item>Register</item>
+        <item>Login</item>
         <item>Get Involved</item>
     </string-array>
 </resources>

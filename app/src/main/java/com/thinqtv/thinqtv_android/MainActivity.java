@@ -190,9 +190,9 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_host.setWidth(600);
                 newEvent_host.setPadding(20, 150, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
-                newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("name")
-                        .substring(0, Math.min(json.getJSONObject(i).getString("name").length(), 40)));
-                if (json.getJSONObject(i).getString("name").length() > 40)
+                newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("username")
+                        .substring(0, Math.min(json.getJSONObject(i).getString("username").length(), 40)));
+                if (json.getJSONObject(i).getString("username").length() > 40)
                     newEvent_host.setText(newEvent_host.getText() + "...");
 
                 // gets the date of event
@@ -410,12 +410,13 @@ public class MainActivity extends AppCompatActivity {
 
         String[] osArray = getResources().getStringArray(R.array.sidebar_menu);
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
             }
         });
 
