@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_name.setOnClickListener(new ViewEventDetails_ClickListener(this, json.getJSONObject(i).getString("id")));
 
                 // gets the host id and sets its values
-                TextView newEvent_host = new TextView(this);    // TODO : CHANGE THIS "name" TO "user_id" WHEN DATABASE INCLUDES PERMALINK
+                TextView newEvent_host = new TextView(this);
                 newEvent_host.setTextSize(15);
                 newEvent_host.setWidth(600);
                 newEvent_host.setPadding(20, 150, 0, 0);
@@ -240,12 +240,54 @@ public class MainActivity extends AppCompatActivity {
                 {
                     case ("All Events") :
                     {
+                        Date end_time = new Date();
+                        try {
+                            end_time = dateFormat.parse(json.getJSONObject(i).getString("end_at"));
+                        } catch (ParseException e) { e.printStackTrace(); }
+
+                        Date current_time = mCalendar.getTime();
+
+                        if (date.before(current_time) && end_time.after(current_time))
+                        {
+                            constraintLayout.removeView(newEvent_time);
+                            constraintLayout.removeView(newEvent_starttime);
+
+                            TextView happening_now = new TextView(this);
+                            happening_now.setTextSize(22);
+                            happening_now.setPadding(20, 70, 0, 0);
+                            happening_now.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            happening_now.setText("Happening Now!");
+
+                            constraintLayout.addView(happening_now);
+                        }
+
                         linearLayout.addView(constraintLayout);
                         linearLayout.addView(viewDivider);
                         break;
                     }
                     case ("This Week") :
                     {
+                        Date end_time = new Date();
+                        try {
+                            end_time = dateFormat.parse(json.getJSONObject(i).getString("end_at"));
+                        } catch (ParseException e) { e.printStackTrace(); }
+
+                        Date current_time = mCalendar.getTime();
+
+                        if (date.before(current_time) && end_time.after(current_time))
+                        {
+                            constraintLayout.removeView(newEvent_time);
+                            constraintLayout.removeView(newEvent_starttime);
+
+                            TextView happening_now = new TextView(this);
+                            happening_now.setTextSize(22);
+                            happening_now.setPadding(20, 70, 0, 0);
+                            happening_now.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            happening_now.setText("Happening Now!");
+
+                            constraintLayout.addView(happening_now);
+                        }
+                        
                         mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
                         Date filterDate = mCalendar.getTime();
 
@@ -400,7 +442,8 @@ public class MainActivity extends AppCompatActivity {
         header.setLayoutParams(params);
     }
 
-    private void generateSidebar() {
+    private void generateSidebar()
+    {
         ListView mDrawerList = (ListView)findViewById(R.id.navList);
         DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         ArrayAdapter<String> mAdapter;
