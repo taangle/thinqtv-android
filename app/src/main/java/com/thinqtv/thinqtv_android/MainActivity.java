@@ -256,7 +256,13 @@ public class MainActivity extends AppCompatActivity {
                             happening_now.setTextSize(22);
                             happening_now.setPadding(20, 70, 0, 0);
                             happening_now.setTextColor(getResources().getColor(R.color.colorPrimary));
-                            happening_now.setText("Happening Now!");
+                            happening_now.setText("Happening Now,\nClick to Join!");
+
+                            happening_now.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    onJoinClick(v);
+                                }
+                            });
 
                             constraintLayout.addView(happening_now);
                         }
@@ -283,11 +289,17 @@ public class MainActivity extends AppCompatActivity {
                             happening_now.setTextSize(22);
                             happening_now.setPadding(20, 70, 0, 0);
                             happening_now.setTextColor(getResources().getColor(R.color.colorPrimary));
-                            happening_now.setText("Happening Now!");
+                            happening_now.setText("Happening Now,\nClick to Join!");
+
+                            happening_now.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    onJoinClick(v);
+                                }
+                            });
 
                             constraintLayout.addView(happening_now);
                         }
-                        
+
                         mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
                         Date filterDate = mCalendar.getTime();
 
