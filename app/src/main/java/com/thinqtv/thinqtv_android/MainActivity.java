@@ -417,6 +417,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+
+                if (position == 2)
+                {
+                    goGetInvolved(view);
+                }
             }
         });
 

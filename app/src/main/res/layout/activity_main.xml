@@ -71,23 +71,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/screenName" />
 
-    <!--  GET INVOLVED BUTTON TO LEARN MORE  -->
-        <Button
-            android:id="@+id/get_involved"
-            android:layout_width="125dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/rounded_button"
-            android:onClick="goGetInvolved"
-            android:text="@string/getInvolved"
-            android:textAllCaps="false"
-            android:textColor="#ffffff"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/defaultJoinButton" />
-
-    <!--  HEADER FOR UPCOMING EVENTS, ITS JUST TEXT  -->
+        <!--  HEADER FOR UPCOMING EVENTS, ITS JUST TEXT  -->
         <TextView
             android:id="@+id/upcoming_events_header"
             android:layout_width="wrap_content"
