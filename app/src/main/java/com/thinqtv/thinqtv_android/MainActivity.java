@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getEventsJSONfile();
+        initializeEvents();
         
         // restore screen name using lastInstanceState if possible
         if (savedInstanceState != null) {
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initializeEvents();
 
         // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
@@ -286,22 +287,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void getEventsJSONfile()
     {
-        // get the spinner filter and the layout that's inside of it
-        Spinner eventFilter = (Spinner) findViewById(R.id.eventsSpinner);
-        LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
-
-        // add listener for whenever a user changes filter
-        eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                layout.removeAllViews();
-                getEventsJSONfile();
-            }
-
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                // this doesn't ever happen but i need to override the virtual class
-            }
-        });
-
         // where you get the JSON file
         final String url = "https://thinqtv.herokuapp.com/events.json";
 
@@ -329,6 +314,25 @@ public class MainActivity extends AppCompatActivity {
         //Add the request to the Queue
         //This is essentially telling it to execute
         mRequestQueue.add(mStringRequest);
+    }
+
+    public void initializeEvents()
+    {
+        // get the spinner filter and the layout that's inside of it
+        Spinner eventFilter = (Spinner) findViewById(R.id.eventsSpinner);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
+
+        // add listener for whenever a user changes filter
+        eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                layout.removeAllViews();
+                getEventsJSONfile();
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // this doesn't ever happen but i need to override the virtual class
+            }
+        });
     }
 
     public void expandEventsClick(View v) {
