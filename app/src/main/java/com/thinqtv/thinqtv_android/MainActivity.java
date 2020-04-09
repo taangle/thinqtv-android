@@ -350,7 +350,6 @@ public class MainActivity extends AppCompatActivity {
         // Link any buttons
         TextView carrot = (TextView) findViewById(R.id.expandButton);
         Button joinButton = findViewById(R.id.defaultJoinButton);
-        Button involvedButton = findViewById(R.id.get_involved);
 
         // if the Upcoming Events are expanded, minimize
         if (eventsExpanded)
@@ -366,7 +365,6 @@ public class MainActivity extends AppCompatActivity {
             // the buttons are always visible under the ScrollView for some reason
             // because of this, they must be set to invisible when you expand the Events
             joinButton.setVisibility(View.VISIBLE);
-            involvedButton.setVisibility(View.VISIBLE);
 
             // make it twist
             carrot.setRotation(0);
@@ -389,7 +387,6 @@ public class MainActivity extends AppCompatActivity {
             params.topMargin = (int) headerMarginLarge;
 
             joinButton.setVisibility(View.INVISIBLE);
-            involvedButton.setVisibility(View.INVISIBLE);
             carrot.setRotation(180);
             ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
             lparams.verticalBias = 0.48f;
