@@ -9,10 +9,12 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         initializeEvents();
+        addDrawerItems();
 
         // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
@@ -394,5 +397,15 @@ public class MainActivity extends AppCompatActivity {
         // move header based on the values set in the if-else statement
         // other items are linked to the header so they will move as well
         header.setLayoutParams(params);
+    }
+
+    private void addDrawerItems() {
+        ListView mDrawerList;
+        ArrayAdapter<String> mAdapter;
+        mDrawerList = (ListView)findViewById(R.id.navList);
+
+        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
     }
 }
