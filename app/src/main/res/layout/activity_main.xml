@@ -170,6 +170,6 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="left|start"
-        android:background="#d3d3d3" />
+        android:background="#fafafa" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
