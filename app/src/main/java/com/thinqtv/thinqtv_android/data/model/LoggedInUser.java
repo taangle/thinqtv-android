@@ -4,10 +4,12 @@ public class LoggedInUser {
 
     private final String name;
     private final String authToken;
+    private final String permalink;
 
-    public LoggedInUser(String name, String authToken) {
+    public LoggedInUser(String name, String authToken, String permalink) {
         this.name = name;
         this.authToken = authToken;
+        this.permalink = permalink;
     }
 
     public String getName() {

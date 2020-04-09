@@ -71,7 +71,7 @@ public class UserRepository {
                 DataSource.getServerUrl() + loginUrl, userLogin,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token")));
+                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink")));
                         loginViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -118,7 +118,7 @@ public class UserRepository {
                 DataSource.getServerUrl() + registerUrl, userRegister,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token")));
+                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink")));
                         registerViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
