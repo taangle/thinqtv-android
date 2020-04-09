@@ -82,7 +82,11 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
-            findViewById(R.id.logout).setVisibility(View.VISIBLE);
+            Button loginButton = findViewById(R.id.login);
+            if (loginButton.getVisibility() == View.VISIBLE) {
+                loginButton.setVisibility(View.INVISIBLE);
+                findViewById(R.id.logout).setVisibility(View.VISIBLE);
+            }
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
         else {
@@ -90,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
             if (screenNameStr.length() == 0) {
                 screenName.setText(lastScreenNameStr);
             }
-            findViewById(R.id.login).setVisibility(View.VISIBLE);
         }
     }
 
