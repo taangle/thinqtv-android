@@ -341,7 +341,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void expandEventsClick(View v) {
+    public void expandEventsClick(View v)
+    {
         // Link the header TextView
         TextView header = (TextView) findViewById(R.id.upcoming_events_header);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) header.getLayoutParams();
@@ -407,7 +408,7 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         ArrayAdapter<String> mAdapter;
 
-        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
+        String[] osArray = getResources().getStringArray(R.array.sidebar_menu);
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
 
