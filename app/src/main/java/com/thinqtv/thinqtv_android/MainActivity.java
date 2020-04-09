@@ -368,8 +368,13 @@ public class MainActivity extends AppCompatActivity {
             // because of this, they must be set to invisible when you expand the Events
             joinButton.setVisibility(View.VISIBLE);
             involvedButton.setVisibility(View.VISIBLE);
-            loginButton.setVisibility(View.VISIBLE);
-            logoutButton.setVisibility(View.VISIBLE);
+            if (UserRepository.getInstance().getLoggedInUser() != null) {
+                logoutButton.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                loginButton.setVisibility(View.VISIBLE);
+            }
 
             // make it twist
             carrot.setRotation(0);
