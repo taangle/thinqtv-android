@@ -351,6 +351,7 @@ public class MainActivity extends AppCompatActivity {
         Button joinButton = findViewById(R.id.defaultJoinButton);
         Button involvedButton = findViewById(R.id.get_involved);
         Button loginButton = findViewById(R.id.login);
+        Button logoutButton = findViewById(R.id.logout);
 
         // if the Upcoming Events are expanded, minimize
         if (eventsExpanded)
@@ -368,6 +369,7 @@ public class MainActivity extends AppCompatActivity {
             joinButton.setVisibility(View.VISIBLE);
             involvedButton.setVisibility(View.VISIBLE);
             loginButton.setVisibility(View.VISIBLE);
+            logoutButton.setVisibility(View.VISIBLE);
 
             // make it twist
             carrot.setRotation(0);
@@ -392,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
             joinButton.setVisibility(View.INVISIBLE);
             involvedButton.setVisibility(View.INVISIBLE);
             loginButton.setVisibility(View.INVISIBLE);
+            logoutButton.setVisibility(View.INVISIBLE);
             carrot.setRotation(180);
             ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
             lparams.verticalBias = 0.48f;
