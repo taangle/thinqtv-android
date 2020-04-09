@@ -359,8 +359,12 @@ public class MainActivity extends AppCompatActivity {
         mStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                // If you receive a response, set the fullEventsJSON string to the response
-                // Then call setUpcomingEvents() to fill in ScrollView data
+                // If you receive a response, the JSON data is saved in response
+                // Clear the linearLayout
+                LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
+                layout.removeAllViews();
+
+                //fill it back in with the response data
                 setUpcomingEvents(response);
             }
         }, new Response.ErrorListener() {
@@ -380,12 +384,10 @@ public class MainActivity extends AppCompatActivity {
     {
         // get the spinner filter and the layout that's inside of it
         Spinner eventFilter = (Spinner) findViewById(R.id.eventsSpinner);
-        LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
 
         // add listener for whenever a user changes filter
         eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                layout.removeAllViews();
                 getEventsJSONfile();
             }
 
@@ -411,10 +413,10 @@ public class MainActivity extends AppCompatActivity {
             // convert pixels to dp and set the margin
             float headerMarginSmall = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
-                    450f,
+                    200f,
                     getResources().getDisplayMetrics()
             );
-            params.topMargin = (int) headerMarginSmall;
+            params.bottomMargin = (int) headerMarginSmall;
 
             // the buttons are always visible under the ScrollView for some reason
             // because of this, they must be set to invisible when you expand the Events
@@ -435,10 +437,10 @@ public class MainActivity extends AppCompatActivity {
         {
             float headerMarginLarge = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
-                    215f,
+                    450f,
                     getResources().getDisplayMetrics()
             );
-            params.topMargin = (int) headerMarginLarge;
+            params.bottomMargin = (int) headerMarginLarge;
 
             joinButton.setVisibility(View.INVISIBLE);
             carrot.setRotation(180);

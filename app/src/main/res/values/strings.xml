@@ -3,7 +3,7 @@
     <string name="conference_name_hint">Enter Room Name</string>
     <string name="join_button_hint">Join</string>
     <string name="screen_name_hint">Enter Your Name</string>
-    <string name="homescreenHeader">Conversations\nthat make you\nThinQ!</string>
+    <string name="homescreenHeader">Conversations that make you ThinQ!</string>
     <string name="defaultTryConversation">Join the conversation!</string>
     <string name="getInvolved">Get involved</string>
     <string name="upcoming_events">Fellowship Hours</string>
@@ -27,5 +27,8 @@
         <item>Register</item>
         <item>Login</item>
         <item>Get Involved</item>
+        <item>FAQ</item>
+        <item>About ThinQ</item>
+        <item>Contact us</item>
     </string-array>
 </resources>

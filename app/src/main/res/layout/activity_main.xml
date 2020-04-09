@@ -2,65 +2,73 @@
 
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ic_launcher_background"
         tools:context=".MainActivity">
 
     <!--  HEADER TEXT AT THE TOP OF HOME SCREEN  -->
+
+        <!--  GOLD BRAIN ICON IN THE HEADER  -->
+
         <TextView
-            android:id="@+id/headerText"
-            android:layout_width="351dp"
-            android:layout_height="223dp"
-            android:layout_marginTop="16dp"
+            android:id="@+id/title_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="ThinQ.tv"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorAccent"
+            android:textSize="80sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--  SCREEN NAME TEXT THAT USER FILLS IN  -->
+        <TextView
+            android:id="@+id/desc_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
             android:text="@string/homescreenHeader"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorAccent"
-            android:textSize="50sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <!--  GOLD BRAIN ICON IN THE HEADER  -->
-        <ImageView
-            android:id="@+id/goldIcon"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_marginTop="130dp"
-            android:layout_marginEnd="40dp"
-            app:layout_constraintEnd_toEndOf="@+id/headerText"
-            app:layout_constraintTop_toTopOf="@+id/headerText"
-            app:srcCompat="@drawable/ic_launcher_foreground_gold" />
-
-    <!--  SCREEN NAME TEXT THAT USER FILLS IN  -->
         <EditText
             android:id="@+id/screenName"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
             android:ems="10"
             android:hint="@string/screen_name_hint"
             android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerText" />
+            app:layout_constraintBottom_toTopOf="@+id/defaultJoinButton"
+            app:layout_constraintStart_toStartOf="@+id/defaultJoinButton" />
 
-    <!--  JOIN BUTTON TO JOIN A CONVERSATION  -->
+        <!--  JOIN BUTTON TO JOIN A CONVERSATION  -->
+
+        <!--  HEADER FOR UPCOMING EVENTS, ITS JUST TEXT  -->
         <Button
             android:id="@+id/defaultJoinButton"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="45dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="275dp"
             android:background="@drawable/rounded_button"
             android:onClick="onJoinClick"
             android:text="@string/defaultTryConversation"
@@ -68,34 +76,26 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/screenName" />
+            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <!--  HEADER FOR UPCOMING EVENTS, ITS JUST TEXT  -->
         <TextView
             android:id="@+id/upcoming_events_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="450dp"
+            android:layout_marginBottom="200dp"
             android:onClick="expandEventsClick"
             android:text="@string/upcoming_events"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <!--  DIVIDER THAT'S RIGHT BELOW UPCOMING EVENTS HEADER  -->
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorAccent"
-            app:layout_constraintTop_toBottomOf="@+id/upcoming_events_header"
-            tools:layout_editor_absoluteX="-16dp" />
-
-    <!--  CARROT FOR EXPANDING UPCOMING EVENTS  -->
         <TextView
             android:id="@+id/expandButton"
             android:layout_width="wrap_content"
@@ -109,6 +109,27 @@
             app:layout_constraintStart_toEndOf="@+id/upcoming_events_header"
             app:layout_constraintTop_toTopOf="@+id/upcoming_events_header"
             app:layout_constraintVertical_bias=".4" />
+
+        <Spinner
+            android:id="@+id/eventsSpinner"
+            android:layout_width="131dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/eventFilters"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/upcoming_events_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/upcoming_events_header" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent"
+            app:layout_constraintTop_toBottomOf="@+id/upcoming_events_header"
+            tools:layout_editor_absoluteX="-16dp" />
+
+    <!--  CARROT FOR EXPANDING UPCOMING EVENTS  -->
 
         <!--  SCROLLVIEW THAT HOLDS ALL OF THE UPCOMING EVENTS  -->
         <ScrollView
@@ -127,20 +148,20 @@
                 android:id="@+id/upcoming_events_linearView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/loading_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="10dp"
+                    android:text="Loading..."
+                    android:textSize="18sp" />
+            </LinearLayout>
         </ScrollView>
 
     <!--  Spinner to filter upcoming events  -->
-        <Spinner
-            android:id="@+id/eventsSpinner"
-            android:layout_width="131dp"
-            android:layout_height="wrap_content"
-            android:entries="@array/eventFilters"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/upcoming_events_header"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/upcoming_events_header" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -149,6 +170,6 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="left|start"
-        android:background="#ffeeeeee"/>
+        android:background="#d3d3d3" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
