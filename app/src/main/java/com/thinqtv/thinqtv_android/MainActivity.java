@@ -21,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // listener for when a user clicks an event to go to its page
-    private class ViewEventDetails_ClickListener implements View.OnClickListener{
+    private class ViewEventDetails_ClickListener implements View.OnClickListener {
         private Context mContext;
         private String eventCode;
 
