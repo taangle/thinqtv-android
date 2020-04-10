@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 // gets the name and sets its values
                 TextView newEvent_name = new TextView(this);
                 newEvent_name.setTextSize(22);
-                newEvent_name.setPadding(20, 70, 0, 0);
+                newEvent_name.setPadding(20, 40, 0, 0);
                 newEvent_name.setTextColor(getResources().getColor(R.color.colorPrimary));
                 newEvent_name.setText(json.getJSONObject(i).getString("name")
                         .substring(0, Math.min(json.getJSONObject(i).getString("name").length(), 18)));
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView newEvent_host = new TextView(this);
                 newEvent_host.setTextSize(15);
                 newEvent_host.setWidth(600);
-                newEvent_host.setPadding(20, 150, 0, 0);
+                newEvent_host.setPadding(20, 110, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
                 newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("username")
                         .substring(0, Math.min(json.getJSONObject(i).getString("username").length(), 40)));
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat displayFormat = new SimpleDateFormat("EEE, MMM dd");
                 newEvent_time.setText(displayFormat.format(date));
                 newEvent_time.setTextSize(20);
-                newEvent_time.setPadding(750, 80, 0, 0);
+                newEvent_time.setPadding(750, 45, 0, 0);
                 newEvent_time.setTextColor(getResources().getColor(R.color.colorPrimary));
 
                 // formats the date from above into viewable format (BUT NOW ITS START TIME)
@@ -215,12 +215,12 @@ public class MainActivity extends AppCompatActivity {
                 TextView newEvent_starttime = new TextView(this);
                 newEvent_starttime.setText(displayFormat.format(date));
                 newEvent_starttime.setTextSize(15);
-                newEvent_starttime.setPadding(750, 150, 0, 0);
+                newEvent_starttime.setPadding(750, 110, 0, 0);
                 newEvent_starttime.setTextColor(Color.GRAY);
 
                 // Now you have all your TextViews, create a ConstraintLayout for each one
                 ConstraintLayout constraintLayout = new ConstraintLayout(this);
-                constraintLayout.setLayoutParams(new LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100f, getResources().getDisplayMetrics())));
+                constraintLayout.setLayoutParams(new LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75f, getResources().getDisplayMetrics())));
 
                 // Add your TextViews to the ConstraintLayout
                 constraintLayout.addView(newEvent_name);
@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
             // convert pixels to dp and set the margin
             float headerMarginSmall = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
-                    200f,
+                    250f,
                     getResources().getDisplayMetrics()
             );
             params.bottomMargin = (int) headerMarginSmall;
@@ -437,7 +437,7 @@ public class MainActivity extends AppCompatActivity {
         {
             float headerMarginLarge = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
-                    450f,
+                    400f,
                     getResources().getDisplayMetrics()
             );
             params.bottomMargin = (int) headerMarginLarge;
