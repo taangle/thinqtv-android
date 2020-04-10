@@ -437,7 +437,7 @@ public class MainActivity extends AppCompatActivity {
         {
             float headerMarginLarge = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
-                    400f,
+                    450f,
                     getResources().getDisplayMetrics()
             );
             params.bottomMargin = (int) headerMarginLarge;
