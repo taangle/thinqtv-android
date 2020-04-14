@@ -83,24 +83,23 @@ public class ControlPanelActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode != RESULT_CANCELED) {
+            Bitmap selectedImage = null;
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
-                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        imageView.setImageBitmap(Bitmap.createScaledBitmap(selectedImage, imageView.getWidth(), imageView.getHeight(), true));
+                        selectedImage = (Bitmap) data.getExtras().get("data");
                     }
                     break;
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
+                        Uri imageUri = data.getData();
+                        if (imageUri != null) {
                             try {
-                                InputStream inputStream = getContentResolver().openInputStream(selectedImage);
-                                Bitmap myImage = BitmapFactory.decodeStream(inputStream);
+                                InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                                selectedImage = BitmapFactory.decodeStream(inputStream);
                                 inputStream.close();
-                                imageView.setImageBitmap(Bitmap.createScaledBitmap(myImage, imageView.getWidth(), imageView.getHeight(), true));
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
@@ -109,6 +108,20 @@ public class ControlPanelActivity extends AppCompatActivity {
                         }
                     }
                     break;
+            }
+            if (selectedImage != null) {
+
+                // Crop the bitmap into a square from the middle.
+                int width = selectedImage.getWidth();
+                int height = selectedImage.getHeight();
+                if (width > height) {
+                    selectedImage = Bitmap.createBitmap(selectedImage, width / 2 - height / 2, 0, height, height);
+                }
+                else if (width < height) {
+                    selectedImage = Bitmap.createBitmap(selectedImage, 0, height / 2 - width / 2, width, width);
+                }
+
+                imageView.setImageBitmap(Bitmap.createScaledBitmap(selectedImage, imageView.getWidth(), imageView.getHeight(), true));
             }
         }
     }
