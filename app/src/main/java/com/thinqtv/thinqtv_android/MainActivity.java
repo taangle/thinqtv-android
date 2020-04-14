@@ -37,6 +37,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 public class MainActivity extends AppCompatActivity {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Go to login page.
     public void goToLogin(View v) {
-        Intent i = new Intent(this, LoginActivity.class);
+        Intent i = new Intent(this, ControlPanelActivity.class);
         startActivity(i);
     }
 

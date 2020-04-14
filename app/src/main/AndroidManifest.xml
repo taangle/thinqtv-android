@@ -4,6 +4,8 @@
     <!-- This permission is required in order to get JSON files using Hudson's API -->
     <!-- Without it, the app cannot access the internet and get outside data -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
