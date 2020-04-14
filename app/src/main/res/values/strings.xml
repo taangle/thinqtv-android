@@ -47,6 +47,13 @@
     <string name="email_taken">Email has already been taken.</string>
     <string name="permalink_taken">Permalink has already been taken.</string>
     <string name="generic_input_error">There is a problem with your input</string>
-    <string name="profile_image_label">Profile Image (150px x 150px)</string>
+    <string name="profile_image_label">Profile Image (150px x 150px is best)</string>
     <string name="choose_image">Choose Image</string>
+    <string name="about_you">About You</string>
+    <string name="fellowship_topics">Fellowship Topics</string>
+    <string name="topic_1">Topic 1</string>
+    <string name="topic_2">Topic 2</string>
+    <string name="topic_3">Topic 3</string>
+    <string name="banner_image_label">Banner Image (1500px x 300px is best)</string>
+    <string name="save_changes">Save Changes</string>
 </resources>
