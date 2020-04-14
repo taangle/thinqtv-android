@@ -88,7 +88,7 @@ public class ControlPanelActivity extends AppCompatActivity {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        imageView.setImageBitmap(selectedImage);
+                        imageView.setImageBitmap(Bitmap.createScaledBitmap(selectedImage, imageView.getWidth(), imageView.getHeight(), true));
                     }
                     break;
                 case 1:
@@ -96,25 +96,15 @@ public class ControlPanelActivity extends AppCompatActivity {
                         Uri selectedImage = data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
-                            //imageView.setImageURI(selectedImage);
-                            /*Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-                                File file = new File(picturePath);
-                                cursor.close();
-                                BitmapFactory.decodeFile(file.getPath());
-                            }*/
                             try {
                                 InputStream inputStream = getContentResolver().openInputStream(selectedImage);
                                 Bitmap myImage = BitmapFactory.decodeStream(inputStream);
                                 inputStream.close();
-                                imageView.setImageBitmap(myImage);
+                                imageView.setImageBitmap(Bitmap.createScaledBitmap(myImage, imageView.getWidth(), imageView.getHeight(), true));
                             } catch (FileNotFoundException e) {
-
+                                e.printStackTrace();
                             } catch (IOException e) {
-
+                                e.printStackTrace();
                             }
                         }
                     }
