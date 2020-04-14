@@ -20,6 +20,11 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class ControlPanelActivity extends AppCompatActivity {
 
     private ImageView imageView;
@@ -70,7 +75,7 @@ public class ControlPanelActivity extends AppCompatActivity {
     }
     private void getPictureFromStorage() {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        String[] mimeTypes = {"image/jpeg", "image/png"};
+        String[] mimeTypes = {"image/jpeg", "image/png", "image/jpg"};
         pickPhoto.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         startActivityForResult(pickPhoto, 1);
     }
@@ -89,18 +94,29 @@ public class ControlPanelActivity extends AppCompatActivity {
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
                         Uri selectedImage = data.getData();
-                        imageView.setImageURI(selectedImage);
-                        /*String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
-                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                            //imageView.setImageURI(selectedImage);
+                            /*Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                             if (cursor != null) {
                                 cursor.moveToFirst();
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
-                                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                File file = new File(picturePath);
                                 cursor.close();
+                                BitmapFactory.decodeFile(file.getPath());
+                            }*/
+                            try {
+                                InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+                                Bitmap myImage = BitmapFactory.decodeStream(inputStream);
+                                inputStream.close();
+                                imageView.setImageBitmap(myImage);
+                            } catch (FileNotFoundException e) {
+
+                            } catch (IOException e) {
+
                             }
-                        }*/
+                        }
                     }
                     break;
             }
