@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent loadSavedUser = new Intent(this, StartupLoadingActivity.class);
+        startActivity(loadSavedUser);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getEventsJSONFile();

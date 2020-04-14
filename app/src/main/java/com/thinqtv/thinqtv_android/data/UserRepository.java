@@ -1,10 +1,13 @@
 package com.thinqtv.thinqtv_android.data;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thinqtv.thinqtv_android.R;
+import com.thinqtv.thinqtv_android.StartupLoadingActivity;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 import com.thinqtv.thinqtv_android.ui.auth.LoginViewModel;
 import com.thinqtv.thinqtv_android.ui.auth.RegisterViewModel;
@@ -15,6 +18,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -71,7 +76,7 @@ public class UserRepository {
                 DataSource.getServerUrl() + loginUrl, userLogin,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink")));
+                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email")));
                         loginViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -118,7 +123,7 @@ public class UserRepository {
                 DataSource.getServerUrl() + registerUrl, userRegister,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink")));
+                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email")));
                         registerViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -164,6 +169,42 @@ public class UserRepository {
                         registerViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
                     }
                 });
+        DataSource.getInstance().addToRequestQueue(request, context);
+    }
+
+    public void loadSavedUser(StartupLoadingActivity activity) {
+        final String loginUrl = "api/v1/users/sign_in.json";
+        Context context = (Context)activity;
+
+        SharedPreferences pref = context.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
+        String email = pref.getString("email", null);
+        String authToken = pref.getString("token", null);
+
+        JSONObject userLogin = new JSONObject();
+        JSONObject loginParams = new JSONObject();
+        try {
+            loginParams.put("email", email);
+            loginParams.put("token", authToken);
+            userLogin.put("user", loginParams);
+        } catch(JSONException e) { // Couldn't form JSON object for request.
+            e.printStackTrace();
+            activity.finish();
+            return;
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                DataSource.getServerUrl() + loginUrl, userLogin,
+                response -> {
+                    try {
+                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email")));
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
+                    activity.finish();
+                }, error -> {
+            activity.finish();
+        });
+
         DataSource.getInstance().addToRequestQueue(request, context);
     }
 }
