@@ -107,14 +107,14 @@
             android:id="@+id/tos_agreement"
             android:layout_width="wrap_content"
             android:layout_height="26dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="8dp"
             android:text="@string/tos_agreement"
             android:textColor="@color/colorPrimary"
             android:textColorLink="#91183F"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password" />
+            app:layout_constraintTop_toBottomOf="@+id/loading" />
 
         <Button
             android:id="@+id/sign_up"
