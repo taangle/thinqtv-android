@@ -9,27 +9,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class ControlPanelActivity extends AppCompatActivity {
 
-    private ImageView imageView;
     private final int PERMISSIONS_READ_FILES = 1;
     private final int PERMISSIONS_CAMERA = 2;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +33,15 @@ public class ControlPanelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_control_panel);
 
         Button profileImageButton = findViewById(R.id.choose_image_button);
-        imageView = findViewById(R.id.profile_image_view);
         Context context = this;
         profileImageButton.setOnClickListener(view -> {
+            imageView = findViewById(R.id.profile_image_view);
+            selectImage(context);
+        });
+
+        Button bannerButton = findViewById(R.id.choose_banner_image);
+        bannerButton.setOnClickListener(view -> {
+            imageView = findViewById(R.id.banner_image_view);
             selectImage(context);
         });
     }
@@ -47,7 +49,7 @@ public class ControlPanelActivity extends AppCompatActivity {
     private void selectImage(Context context) {
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Choose your profile picture");
+        builder.setTitle(getString(R.string.choose_image));
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -112,6 +114,7 @@ public class ControlPanelActivity extends AppCompatActivity {
             if (selectedImage != null) {
 
                 // Crop the bitmap into a square from the middle.
+                // Crop the bitmap from the middle, to match the ratio of the imageView.
                 int width = selectedImage.getWidth();
                 int height = selectedImage.getHeight();
                 if (width > height) {
@@ -120,7 +123,6 @@ public class ControlPanelActivity extends AppCompatActivity {
                 else if (width < height) {
                     selectedImage = Bitmap.createBitmap(selectedImage, 0, height / 2 - width / 2, width, width);
                 }
-
                 imageView.setImageBitmap(Bitmap.createScaledBitmap(selectedImage, imageView.getWidth(), imageView.getHeight(), true));
             }
         }
