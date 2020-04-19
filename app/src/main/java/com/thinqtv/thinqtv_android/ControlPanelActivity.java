@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -111,17 +112,31 @@ public class ControlPanelActivity extends AppCompatActivity {
                     }
                     break;
             }
-            if (selectedImage != null) {
+            if (selectedImage != null && imageView != null) {
 
                 // Crop the bitmap into a square from the middle.
                 // Crop the bitmap from the middle, to match the ratio of the imageView.
+
                 int width = selectedImage.getWidth();
                 int height = selectedImage.getHeight();
-                if (width > height) {
+                double realRatio = (width * 1.0) / height;
+                double idealRatio = (imageView.getWidth() * 1.0) / imageView.getHeight();
+                /*if (width > height) {
                     selectedImage = Bitmap.createBitmap(selectedImage, width / 2 - height / 2, 0, height, height);
+                }*/
+                if (realRatio > idealRatio) { // uploaded image is too wide
+                    int newWidth = (int)(idealRatio * height);
+                    Log.e("width","r:" + realRatio + "o:" + width + "n:" + newWidth);
+                    selectedImage = Bitmap.createBitmap(selectedImage, (width / 2) - (newWidth / 2), 0, newWidth, height);
                 }
-                else if (width < height) {
+
+
+                /*else if (width < height) {
                     selectedImage = Bitmap.createBitmap(selectedImage, 0, height / 2 - width / 2, width, width);
+                }*/
+                else if (realRatio < idealRatio) { // uploaded image is too tall
+                    int newHeight = (int)(width / idealRatio);
+                    selectedImage = Bitmap.createBitmap(selectedImage, 0, (height / 2) - (newHeight / 2), width, newHeight);
                 }
                 imageView.setImageBitmap(Bitmap.createScaledBitmap(selectedImage, imageView.getWidth(), imageView.getHeight(), true));
             }
