@@ -2,7 +2,11 @@ package com.thinqtv.thinqtv_android.data;
 
 import android.content.Context;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thinqtv.thinqtv_android.R;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
@@ -14,7 +18,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -165,5 +171,34 @@ public class UserRepository {
                     }
                 });
         DataSource.getInstance().addToRequestQueue(request, context);
+    }
+
+    public void update() {
+        final String url = "api/v1/users/test10.json";
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, DataSource.getServerUrl() + url,
+                new Response.Listener<NetworkResponse>() {
+            public void onResponse(NetworkResponse response) {
+                String responseString = new String(response.data);
+                try {
+                    JSONObject result = new JSONObject(responseString);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+                }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse response = error.networkResponse;
+                String errorMessage = "Unknown error";
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                return params;
+            }
+        };
     }
 }
