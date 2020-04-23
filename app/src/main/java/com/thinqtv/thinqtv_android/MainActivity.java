@@ -370,8 +370,8 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO : ADD SOMETHING TO HAPPEN WHEN JSON IS NOT REACHABLE
-                // TODO : ie display error message
+                TextView loading = findViewById(R.id.loading_placeholder);
+                loading.setText("Error : Unable to load fellowship information");
             }
         });
 
