@@ -6,7 +6,7 @@ import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class EventWebview extends AppCompatActivity {
+public class AnyWebview extends AppCompatActivity {
     private WebView view;
 
     @Override
@@ -15,11 +15,11 @@ public class EventWebview extends AppCompatActivity {
         setContentView(R.layout.event_webview);
 
         view = findViewById(R.id.webView);
-        String code = "";
+        String link = "";
         if(getIntent().getExtras() !=null)
-            code = getIntent().getExtras().getString("eventCode");
+            link = getIntent().getExtras().getString("webviewLink");
 
-        String address = "https://thinqtv.herokuapp.com/events/" + code;
+        String address = link;
 
         view.getSettings().setJavaScriptEnabled(true);
         view.setWebViewClient(new WebViewClient() {

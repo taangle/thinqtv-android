@@ -25,11 +25,11 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string-array name="sidebar_menu">
-        <item>Register</item>
-        <item>Login</item>
+        <item>Register/Login</item>
         <item>Get Involved</item>
-        <item>FAQ</item>
+        <item>Have us on your Podcast</item>
         <item>About ThinQ</item>
-        <item>Contact us</item>
+        <item>Join the Team</item>
+        <item>FAQ</item>
     </string-array>
 </resources>

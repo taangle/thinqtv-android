@@ -19,7 +19,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -140,19 +139,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // listener for when a user clicks an event to go to its page
-    private class ViewEventDetails_ClickListener implements View.OnClickListener{
+    private class goToWebview_ClickListener implements View.OnClickListener{
         private Context mContext;
-        private String eventCode;
+        private String webviewLink;
 
-        public ViewEventDetails_ClickListener(Context context, String eventID){
+        public goToWebview_ClickListener(Context context, String address){
             mContext = context;
-            eventCode = eventID;
+            webviewLink = address;
         }
 
         @Override
         public void onClick(View v){
-            Intent i = new Intent(mContext, EventWebview.class);
-            i.putExtra("eventCode", eventCode); //Optional parameters
+            Intent i = new Intent(mContext, AnyWebview.class);
+            i.putExtra("webviewLink", webviewLink); //Optional parameters
             startActivity(i);
         }
     }
@@ -183,7 +182,8 @@ public class MainActivity extends AppCompatActivity {
                     newEvent_name.setText(newEvent_name.getText() + "...");
 
                 // add listener to the name, so when the user clicks an event it will bring them to the event page
-                newEvent_name.setOnClickListener(new ViewEventDetails_ClickListener(this, json.getJSONObject(i).getString("id")));
+                newEvent_name.setOnClickListener(new goToWebview_ClickListener(this,
+                        "http://www.thinq.tv/" + json.getJSONObject(i).getString("permalink")));
 
                 // gets the host id and sets its values
                 TextView newEvent_host = new TextView(this);
@@ -477,11 +477,47 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
 
-                if (position == 2)
+                switch (position)
                 {
-                    goGetInvolved(view);
+                    case 0:
+                    {
+                        //THIS IS THE CODE THAT WILL LINK TO THE REGISTER/LOGIN BUTTON
+                        break;
+                    }
+                    case 1:
+                    {
+                        goGetInvolved(view);
+                        break;
+                    }
+                    case 2:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/drschaeferspeaking"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 3:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/aboutus"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 4:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/jointheteam"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 5:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/faq"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
                 }
             }
         });
