@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             if (loginResult == null) {
                 return;
             }
-            loadingProgressBar.setVisibility(View.GONE);
+            loadingProgressBar.setVisibility(View.INVISIBLE);
             if (!loginResult.isSuccess() && loginResult.getData() != null) {
                 List<?> errorList = (List<?>)loginResult.getData();
                 showLoginFailed(errorList, errorTextView);
