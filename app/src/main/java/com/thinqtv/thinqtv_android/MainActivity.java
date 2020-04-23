@@ -410,13 +410,7 @@ public class MainActivity extends AppCompatActivity {
         // if the Upcoming Events are expanded, minimize
         if (eventsExpanded)
         {
-            // convert pixels to dp and set the margin
-            float headerMarginSmall = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    250f,
-                    getResources().getDisplayMetrics()
-            );
-            params.bottomMargin = (int) headerMarginSmall;
+            params.verticalBias = 0.6f;
 
             // the buttons are always visible under the ScrollView for some reason
             // because of this, they must be set to invisible when you expand the Events
@@ -435,14 +429,10 @@ public class MainActivity extends AppCompatActivity {
         // it's just the opposite of the above code essentially
         else
         {
-            float headerMarginLarge = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    450f,
-                    getResources().getDisplayMetrics()
-            );
-            params.bottomMargin = (int) headerMarginLarge;
+            params.verticalBias = 0.3f;
 
             joinButton.setVisibility(View.INVISIBLE);
+
             carrot.setRotation(180);
             ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
             lparams.verticalBias = 0.48f;
