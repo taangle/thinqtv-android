@@ -150,13 +150,13 @@ public class MainActivity extends AppCompatActivity {
 
     // go to get involved page
     public void goGetInvolved(View V){
-        Intent i = new Intent(this, GetInvolved.class);
+        Intent i = new Intent(this, ControlPanelActivity.class);
         startActivity(i);
     }
 
     // Go to login page.
     public void goToLogin(View v) {
-        Intent i = new Intent(this, ControlPanelActivity.class);
+        Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
 

@@ -85,7 +85,7 @@ public class UserRepository {
                 DataSource.getServerUrl() + loginUrl, userLogin,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink")));
+                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email")));
                         loginViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -132,7 +132,7 @@ public class UserRepository {
                 DataSource.getServerUrl() + registerUrl, userRegister,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink")));
+                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email")));
                         registerViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -182,13 +182,14 @@ public class UserRepository {
     }
 
     public void update(Context context, ImageView profilePic) {
-        final String url = "api/v1/users/test10.json";
+        final String url = "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
         VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, DataSource.getServerUrl() + url,
                 new Response.Listener<NetworkResponse>() {
             public void onResponse(NetworkResponse response) {
                 String responseString = new String(response.data);
                 try {
                     JSONObject result = new JSONObject(responseString);
+                    Log.e("yyyyaaaayyyy", responseString);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -201,6 +202,8 @@ public class UserRepository {
         }) {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
+                params.put("user_email", UserRepository.getInstance().getLoggedInUser().getEmail());
+                params.put("user_token", UserRepository.getInstance().getLoggedInUser().getAuthToken());
                 return params;
             }
             protected Map<String, DataPart> getByteData() {
