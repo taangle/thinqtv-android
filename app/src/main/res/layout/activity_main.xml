@@ -14,10 +14,7 @@
         android:background="@color/ic_launcher_background"
         tools:context=".MainActivity">
 
-    <!--  HEADER TEXT AT THE TOP OF HOME SCREEN  -->
-
-        <!--  GOLD BRAIN ICON IN THE HEADER  -->
-
+        <!--  HEADER TEXT AT THE TOP OF HOME SCREEN  -->
         <TextView
             android:id="@+id/title_header"
             android:layout_width="match_parent"
@@ -33,8 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.05" />
 
-        <!--  SCREEN NAME TEXT THAT USER FILLS IN  -->
-
+        <!--  CONVERSATIONS THAT MAKE YOU THINQ  -->
         <TextView
             android:id="@+id/desc_header"
             android:layout_width="match_parent"
@@ -48,6 +44,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_header" />
 
+        <!--  SCREEN NAME TEXT THAT USER FILLS IN  -->
         <EditText
             android:id="@+id/screenName"
             android:layout_width="150dp"
@@ -59,8 +56,6 @@
             app:layout_constraintStart_toStartOf="@+id/defaultJoinButton" />
 
         <!--  JOIN BUTTON TO JOIN A CONVERSATION  -->
-
-        <!--  HEADER FOR UPCOMING EVENTS, ITS JUST TEXT  -->
         <Button
             android:id="@+id/defaultJoinButton"
             android:layout_width="250dp"
@@ -77,6 +72,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!--  HEADER FOR UPCOMING EVENTS, ITS JUST TEXT  -->
         <TextView
             android:id="@+id/upcoming_events_header"
             android:layout_width="wrap_content"
@@ -92,7 +88,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.6" />
 
-        <!--  DIVIDER THAT'S RIGHT BELOW UPCOMING EVENTS HEADER  -->
+        <!--  CARROT TO EXPAND THE UPCOMING EVENTS  -->
         <TextView
             android:id="@+id/expandButton"
             android:layout_width="wrap_content"
@@ -107,6 +103,7 @@
             app:layout_constraintTop_toTopOf="@+id/upcoming_events_header"
             app:layout_constraintVertical_bias=".4" />
 
+        <!--    SPINNER TO FILTER EVENTS    -->
         <Spinner
             android:id="@+id/eventsSpinner"
             android:layout_width="131dp"
@@ -118,6 +115,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/upcoming_events_header" />
 
+        <!--  DIVIDER THAT'S RIGHT BELOW UPCOMING EVENTS HEADER  -->
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
@@ -125,8 +123,6 @@
             android:background="@color/colorAccent"
             app:layout_constraintTop_toBottomOf="@+id/upcoming_events_header"
             tools:layout_editor_absoluteX="-16dp" />
-
-    <!--  CARROT FOR EXPANDING UPCOMING EVENTS  -->
 
         <!--  SCROLLVIEW THAT HOLDS ALL OF THE UPCOMING EVENTS  -->
         <ScrollView
@@ -140,7 +136,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/upcoming_events_header">
 
-    <!--    THIS IS THE LINEAR LAYOUT THAT GETS PROPAGATED WITH THE UPCOMING EVENTS TEXTVIEWS    -->
+            <!--  THIS IS THE LINEAR LAYOUT THAT GETS PROPAGATED WITH THE UPCOMING EVENTS TEXTVIEWS  -->
             <LinearLayout
                 android:id="@+id/upcoming_events_linearView"
                 android:layout_width="match_parent"
@@ -157,9 +153,6 @@
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
-
-    <!--  Spinner to filter upcoming events  -->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
