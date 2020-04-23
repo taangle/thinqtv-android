@@ -18,6 +18,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.thinqtv.thinqtv_android.data.UserRepository;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +46,11 @@ public class ControlPanelActivity extends AppCompatActivity {
         bannerButton.setOnClickListener(view -> {
             imageView = findViewById(R.id.banner_image_view);
             selectImage(context);
+        });
+
+        Button saveButton = findViewById(R.id.save_changes_button);
+        saveButton.setOnClickListener(view -> {
+            UserRepository.getInstance().update(context, findViewById(R.id.profile_image_view));
         });
     }
 

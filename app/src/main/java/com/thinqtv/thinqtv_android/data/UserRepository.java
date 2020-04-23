@@ -1,6 +1,11 @@
 package com.thinqtv.thinqtv_android.data;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.widget.ImageView;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -17,10 +22,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -173,7 +181,7 @@ public class UserRepository {
         DataSource.getInstance().addToRequestQueue(request, context);
     }
 
-    public void update() {
+    public void update(Context context, ImageView profilePic) {
         final String url = "api/v1/users/test10.json";
         VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, DataSource.getServerUrl() + url,
                 new Response.Listener<NetworkResponse>() {
@@ -197,8 +205,24 @@ public class UserRepository {
             }
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
+                params.put("profilepic", new DataPart("profile_pic.jpg", getFileDataFromDrawable(context, profilePic.getDrawable()), "image/jpeg"));
                 return params;
             }
         };
+        DataSource.getInstance().addToRequestQueue(request, context);
+    }
+
+    public static byte[] getFileDataFromDrawable(Context context, int id) {
+        Drawable drawable = ContextCompat.getDrawable(context, id);
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+    public static byte[] getFileDataFromDrawable(Context context, Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }
