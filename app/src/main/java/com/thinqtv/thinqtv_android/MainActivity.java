@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -220,7 +221,9 @@ public class MainActivity extends AppCompatActivity {
 
                 // Now you have all your TextViews, create a ConstraintLayout for each one
                 ConstraintLayout constraintLayout = new ConstraintLayout(this);
-                constraintLayout.setLayoutParams(new LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75f, getResources().getDisplayMetrics())));
+                constraintLayout.setLayoutParams(new LayoutParams
+                        (ConstraintLayout.LayoutParams.MATCH_PARENT,
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75f, getResources().getDisplayMetrics())));
 
                 // Add your TextViews to the ConstraintLayout
                 constraintLayout.addView(newEvent_name);
@@ -249,14 +252,21 @@ public class MainActivity extends AppCompatActivity {
 
                         if (date.before(current_time) && end_time.after(current_time))
                         {
-                            constraintLayout.removeView(newEvent_time);
-                            constraintLayout.removeView(newEvent_starttime);
+                            constraintLayout.setLayoutParams(new LayoutParams
+                                (ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 125f, getResources().getDisplayMetrics())));
 
-                            TextView happening_now = new TextView(this);
-                            happening_now.setTextSize(22);
-                            happening_now.setPadding(20, 70, 0, 0);
-                            happening_now.setTextColor(getResources().getColor(R.color.colorPrimary));
-                            happening_now.setText("Happening Now,\nClick to Join!");
+                            Button happening_now = new Button(this);
+                            happening_now.setBackground(getDrawable(R.drawable.rounded_button));
+                            happening_now.setTextSize(15);
+                            happening_now.setTextColor(Color.WHITE);
+                            happening_now.setText(R.string.happening_now);
+                            happening_now.setTransformationMethod(null);
+                            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(800, 120);
+                            happening_now.setLayoutParams(params);
+                            happening_now.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+                            happening_now.setY((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70f, getResources().getDisplayMetrics()));
+                            happening_now.setX((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50f, getResources().getDisplayMetrics()));
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
@@ -282,14 +292,21 @@ public class MainActivity extends AppCompatActivity {
 
                         if (date.before(current_time) && end_time.after(current_time))
                         {
-                            constraintLayout.removeView(newEvent_time);
-                            constraintLayout.removeView(newEvent_starttime);
+                            constraintLayout.setLayoutParams(new LayoutParams
+                                    (ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 125f, getResources().getDisplayMetrics())));
 
-                            TextView happening_now = new TextView(this);
-                            happening_now.setTextSize(22);
-                            happening_now.setPadding(20, 70, 0, 0);
-                            happening_now.setTextColor(getResources().getColor(R.color.colorPrimary));
-                            happening_now.setText("Happening Now,\nClick to Join!");
+                            Button happening_now = new Button(this);
+                            happening_now.setBackground(getDrawable(R.drawable.rounded_button));
+                            happening_now.setTextSize(15);
+                            happening_now.setTextColor(Color.WHITE);
+                            happening_now.setText(R.string.happening_now);
+                            happening_now.setTransformationMethod(null);
+                            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(800, 120);
+                            happening_now.setLayoutParams(params);
+                            happening_now.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+                            happening_now.setY((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70f, getResources().getDisplayMetrics()));
+                            happening_now.setX((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50f, getResources().getDisplayMetrics()));
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {

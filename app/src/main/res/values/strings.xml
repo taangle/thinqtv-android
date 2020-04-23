@@ -9,6 +9,7 @@
     <string name="upcoming_events">Fellowship Hours</string>
     <string name="expand">Expand</string>
     <string name="hosted_by">Hosted by</string>
+    <string name="happening_now">Happening now - Join the Conversation!</string>
     <string-array name="eventFilters">
         <item>All Events</item>
         <item>This Week</item>
