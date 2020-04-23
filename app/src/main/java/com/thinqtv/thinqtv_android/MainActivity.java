@@ -191,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
                 newEvent_host.setPadding(20, 110, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
                 newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("username")
-                        .substring(0, Math.min(json.getJSONObject(i).getString("username").length(), 40)));
-                if (json.getJSONObject(i).getString("username").length() > 40)
+                        .substring(0, Math.min(json.getJSONObject(i).getString("username").length(), 18)));
+                if (json.getJSONObject(i).getString("username").length() > 18)
                     newEvent_host.setText(newEvent_host.getText() + "...");
 
                 // gets the date of event
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 // formats the date from above into viewable format (BUT NOW ITS START TIME)
                 displayFormat = new SimpleDateFormat("h:mm aa");
                 TextView newEvent_starttime = new TextView(this);
-                newEvent_starttime.setText(displayFormat.format(date));
+                newEvent_starttime.setText(displayFormat.format(date) + " PDT");
                 newEvent_starttime.setTextSize(15);
                 newEvent_starttime.setPadding(750, 110, 0, 0);
                 newEvent_starttime.setTextColor(Color.GRAY);
