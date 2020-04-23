@@ -1,8 +1,10 @@
 package com.thinqtv.thinqtv_android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,9 +48,11 @@ public class MainActivity extends AppCompatActivity {
     //used to expand and collapse the Events ScrollView, changes with each click
     boolean eventsExpanded = false;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         getEventsJSONFile();
 
