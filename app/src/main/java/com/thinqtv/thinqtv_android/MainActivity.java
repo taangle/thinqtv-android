@@ -483,6 +483,8 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                     {
                         //THIS IS THE CODE THAT WILL LINK TO THE REGISTER/LOGIN BUTTON
+                        //IF THE USER IS LOGGED IN, YOU CAN CHANGE THE TEXT/CODE TO "VIEW PROFILE"
+                        //BUT DON'T FORGET TO ADD THE LOGOUT TEXT/CODE TO THE END
                         break;
                     }
                     case 1:
@@ -516,6 +518,11 @@ public class MainActivity extends AppCompatActivity {
                         Intent i = new Intent(MainActivity.this, AnyWebview.class);
                         i.putExtra("webviewLink", "http://www.thinq.tv/faq"); //Optional parameters
                         startActivity(i);
+                        break;
+                    }
+                    case 6:
+                    {
+                        //THIS IS WHERE YOU COULD PUT THE CODE FOR THE LOGOUT BUTTON
                         break;
                     }
                 }
