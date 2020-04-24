@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initializeEvents();
         generateSidebar();
+        setDrawerToggle();
 
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
@@ -162,18 +163,19 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, GetInvolved.class);
         startActivity(i);
     }
-//TODO
+
     // Go to login page.
     public void goToLogin(View v) {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
-//TODO
+
     public void logout(View v) {
         UserRepository.getInstance().logout();
 
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
+        finish();
+        overridePendingTransition(R.anim.catalyst_fade_in, R.anim.catalyst_fade_out);
+        startActivity(getIntent());
     }
 
     // listener for when a user clicks an event to go to its page
@@ -401,22 +403,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void getEventsJSONfile()
     {
-        // get the spinner filter and the layout that's inside of it
-        Spinner eventFilter = (Spinner) findViewById(R.id.eventsSpinner);
-        LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
-
-        // add listener for whenever a user changes filter
-        eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                layout.removeAllViews();
-                getEventsJSONfile();
-            }
-
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                // this doesn't ever happen but i need to override the virtual class
-            }
-        });
-
         // where you get the JSON file
         final String url = "https://thinqtv.herokuapp.com/events.json";
 
@@ -597,6 +583,11 @@ public class MainActivity extends AppCompatActivity {
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+    }
+
+    private void setDrawerToggle()
+    {
+        DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
