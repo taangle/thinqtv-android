@@ -57,28 +57,49 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initializeEvents();
         generateSidebar();
-        
-        // restore screen name using lastInstanceState if possible
-        if (savedInstanceState != null) {
-            lastScreenNameStr = savedInstanceState.getString(screenNameKey);
+//TODO
+        // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
+        if (UserRepository.getInstance().isLoggedIn()) {
+            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
+            findViewById(R.id.logout).setVisibility(View.VISIBLE);
         }
-        // else try to restore it using SharedPreferences
         else {
-            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-            String defaultValue = lastScreenNameStr;
-            lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
+            // restore screen name using lastInstanceState if possible
+            if (savedInstanceState != null) {
+                lastScreenNameStr = savedInstanceState.getString(screenNameKey);
+            }
+            // else try to restore it using SharedPreferences
+            else {
+                SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                String defaultValue = lastScreenNameStr;
+                lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
+            }
+            findViewById(R.id.login).setVisibility(View.VISIBLE);
         }
     }
-
+//TODO
     @Override
     protected void onResume() {
         super.onResume();
 
         // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
-        String screenNameStr = screenName.getText().toString();
-        if (screenNameStr.length() == 0) {
+        // Check if a user has logged in, and if so, set the screen name.
+        if (UserRepository.getInstance().isLoggedIn()) {
+            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
+            Button loginButton = findViewById(R.id.login);
+            if (loginButton.getVisibility() == View.VISIBLE) {
+                loginButton.setVisibility(View.INVISIBLE);
+                findViewById(R.id.logout).setVisibility(View.VISIBLE);
+            }
+        }
+        // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
+        else {
+            String screenNameStr = screenName.getText().toString();
+            if (screenNameStr.length() == 0) {
+                screenName.setText(lastScreenNameStr);
+            }
         }
     }
 
@@ -136,6 +157,20 @@ public class MainActivity extends AppCompatActivity {
     public void goGetInvolved(View V){
         Intent i = new Intent(this, GetInvolved.class);
         startActivity(i);
+    }
+//TODO
+    // Go to login page.
+    public void goToLogin(View v) {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+    }
+//TODO
+    public void logout(View v) {
+        UserRepository.getInstance().logout();
+        Button loginButton = findViewById(R.id.login);
+        Button logoutButton = findViewById(R.id.logout);
+        logoutButton.setVisibility(View.GONE);
+        loginButton.setVisibility(View.VISIBLE);
     }
 
     // listener for when a user clicks an event to go to its page
