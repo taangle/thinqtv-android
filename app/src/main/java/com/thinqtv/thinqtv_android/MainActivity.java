@@ -72,17 +72,6 @@ public class MainActivity extends AppCompatActivity {
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
-/*
-            ListView mDrawerList = (ListView)findViewById(R.id.navList);
-            mDrawerList.invalidate();
-            String[] osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
-            ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-            mAdapter.notifyDataSetChanged();
-            mDrawerList.setAdapter(mAdapter);
-
-            ((BaseAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
-
- */
         }
         else {
             // restore screen name using lastInstanceState if possible
@@ -108,19 +97,7 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
-generateSidebar2();
-/*
-            ListView mDrawerList = (ListView)findViewById(R.id.navList);
-            mDrawerList.invalidate();
-            String[] osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
-            ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-
-            mDrawerList.setAdapter(mAdapter);
-            mDrawerList.deferNotifyDataSetChanged();
-
-            ((BaseAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
-
- */
+            generateSidebar();
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
         else {
@@ -195,14 +172,9 @@ generateSidebar2();
 //TODO
     public void logout(View v) {
         UserRepository.getInstance().logout();
-        generateSidebar();
-/*
-        ListView mDrawerList = (ListView)findViewById(R.id.navList);
-        String[] osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
 
- */
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
     // listener for when a user clicks an event to go to its page
@@ -527,7 +499,12 @@ generateSidebar2();
         DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         ArrayAdapter<String> mAdapter;
 
-        String[] osArray = getResources().getStringArray(R.array.sidebar_menu);
+        String[] osArray;
+        if (UserRepository.getInstance().isLoggedIn())
+            osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
+        else
+            osArray = getResources().getStringArray(R.array.sidebar_menu);
+
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
 
         mDrawerList.setAdapter(mAdapter);
@@ -550,7 +527,9 @@ generateSidebar2();
                     }
                     case 1:
                     {
-                        goGetInvolved(view);
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/getinvolved"); //Optional parameters
+                        startActivity(i);
                         break;
                     }
                     case 2:
@@ -626,96 +605,5 @@ generateSidebar2();
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void generateSidebar2()
-    {
-        ListView mDrawerList = (ListView)findViewById(R.id.navList);
-        DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        ArrayAdapter<String> mAdapter;
-
-        String[] osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-
-        mDrawerList.setAdapter(mAdapter);
-
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                switch (position)
-                {
-                    case 0:
-                    {
-                        if (UserRepository.getInstance().isLoggedIn())
-                        {
-                            //THIS IS WHERE THE CODE FOR "VIEW PROFILE" GOES
-                        }
-                        else
-                            goToLogin(view);
-                        break;
-                    }
-                    case 1:
-                    {
-                        goGetInvolved(view);
-                        break;
-                    }
-                    case 2:
-                    {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/drschaeferspeaking"); //Optional parameters
-                        startActivity(i);
-                        break;
-                    }
-                    case 3:
-                    {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/aboutus"); //Optional parameters
-                        startActivity(i);
-                        break;
-                    }
-                    case 4:
-                    {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/jointheteam"); //Optional parameters
-                        startActivity(i);
-                        break;
-                    }
-                    case 5:
-                    {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/faq"); //Optional parameters
-                        startActivity(i);
-                        break;
-                    }
-                    case 6:
-                    {
-                        logout(view);
-                        break;
-                    }
-                }
-            }
-        });
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
     }
 }
