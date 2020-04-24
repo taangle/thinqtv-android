@@ -1,8 +1,10 @@
 package com.thinqtv.thinqtv_android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,11 +29,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.thinqtv.thinqtv_android.data.DataSource;
+import com.thinqtv.thinqtv_android.data.UserRepository;
+import com.thinqtv.thinqtv_android.ui.auth.LoginActivity;
 
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
@@ -51,9 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
     boolean eventsExpanded = false; //used to expand and collapse the Events ScrollView, changes with each click
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         initializeEvents();
         generateSidebar();
@@ -68,6 +73,26 @@ public class MainActivity extends AppCompatActivity {
             String defaultValue = lastScreenNameStr;
             lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
         }
+        getEventsJSONfile();
+
+        // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
+        if (UserRepository.getInstance().isLoggedIn()) {
+            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
+            findViewById(R.id.logout).setVisibility(View.VISIBLE);
+        }
+        else {
+            // restore screen name using lastInstanceState if possible
+            if (savedInstanceState != null) {
+                lastScreenNameStr = savedInstanceState.getString(screenNameKey);
+            }
+            // else try to restore it using SharedPreferences
+            else {
+                SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                String defaultValue = lastScreenNameStr;
+                lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
+            }
+            findViewById(R.id.login).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -76,9 +101,22 @@ public class MainActivity extends AppCompatActivity {
 
         // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
-        String screenNameStr = screenName.getText().toString();
-        if (screenNameStr.length() == 0) {
+        // Check if a user has logged in, and if so, set the screen name.
+        if (UserRepository.getInstance().isLoggedIn()) {
+            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
+            Button loginButton = findViewById(R.id.login);
+            if (loginButton.getVisibility() == View.VISIBLE) {
+                loginButton.setVisibility(View.INVISIBLE);
+                findViewById(R.id.logout).setVisibility(View.VISIBLE);
+            }
+        }
+        // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
+        else {
+            String screenNameStr = screenName.getText().toString();
+            if (screenNameStr.length() == 0) {
+                screenName.setText(lastScreenNameStr);
+            }
         }
     }
 
@@ -138,6 +176,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    // Go to login page.
+    public void goToLogin(View v) {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+    }
+
+    public void logout(View v) {
+        UserRepository.getInstance().logout();
+        Button loginButton = findViewById(R.id.login);
+        Button logoutButton = findViewById(R.id.logout);
+        logoutButton.setVisibility(View.GONE);
+        loginButton.setVisibility(View.VISIBLE);
+    }
+
     // listener for when a user clicks an event to go to its page
     private class goToWebview_ClickListener implements View.OnClickListener{
         private Context mContext;
@@ -157,12 +209,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Use EventsJSON file to fill in ScrollView
-    public void setUpcomingEvents(String fullEventsJSON)
+    public void setUpcomingEvents(JSONArray json)
     {
         try {
             //link layout and JSON file
             LinearLayout linearLayout = findViewById(R.id.upcoming_events_linearView);
-            JSONArray json = new JSONArray(fullEventsJSON);
 
             // Get the selected event filter text
             Spinner eventFilter_spinner = (Spinner)findViewById(R.id.eventsSpinner);
@@ -364,18 +415,28 @@ public class MainActivity extends AppCompatActivity {
 
     public void getEventsJSONfile()
     {
+        // get the spinner filter and the layout that's inside of it
+        Spinner eventFilter = (Spinner) findViewById(R.id.eventsSpinner);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
+
+        // add listener for whenever a user changes filter
+        eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                layout.removeAllViews();
+                getEventsJSONfile();
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // this doesn't ever happen but i need to override the virtual class
+            }
+        });
+
         // where you get the JSON file
         final String url = "https://thinqtv.herokuapp.com/events.json";
 
-        //RequestQueue initialized
-        RequestQueue mRequestQueue;
-        mRequestQueue = Volley.newRequestQueue(this);
-
-        //String Request initialized
-        StringRequest mStringRequest;
-        mStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONArray response) {
                 // If you receive a response, the JSON data is saved in response
                 // Clear the linearLayout
                 LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
@@ -391,10 +452,7 @@ public class MainActivity extends AppCompatActivity {
                 loading.setText("Error : Unable to load fellowship information");
             }
         });
-
-        //Add the request to the Queue
-        //This is essentially telling it to execute
-        mRequestQueue.add(mStringRequest);
+        DataSource.getInstance().addToRequestQueue(request, this);
     }
 
     public void initializeEvents()
@@ -432,6 +490,13 @@ public class MainActivity extends AppCompatActivity {
             // the buttons are always visible under the ScrollView for some reason
             // because of this, they must be set to invisible when you expand the Events
             joinButton.setVisibility(View.VISIBLE);
+            if (UserRepository.getInstance().getLoggedInUser() != null) {
+                logoutButton.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                loginButton.setVisibility(View.VISIBLE);
+            }
 
             // make it twist
             carrot.setRotation(0);
@@ -449,6 +514,8 @@ public class MainActivity extends AppCompatActivity {
             params.verticalBias = 0.3f;
 
             joinButton.setVisibility(View.INVISIBLE);
+            loginButton.setVisibility(View.INVISIBLE);
+            logoutButton.setVisibility(View.INVISIBLE);
 
             carrot.setRotation(180);
             ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
