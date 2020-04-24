@@ -476,7 +476,7 @@ public class MainActivity extends AppCompatActivity {
         // it's just the opposite of the above code essentially
         else
         {
-            params.verticalBias = 0.3f;
+            params.verticalBias = 0.25f;
 
             joinButton.setVisibility(View.INVISIBLE);
 
