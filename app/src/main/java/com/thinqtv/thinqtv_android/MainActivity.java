@@ -1,8 +1,10 @@
 package com.thinqtv.thinqtv_android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +35,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.thinqtv.thinqtv_android.data.DataSource;
+import com.thinqtv.thinqtv_android.data.UserRepository;
+import com.thinqtv.thinqtv_android.ui.auth.LoginActivity;
+
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import org.json.JSONArray;
@@ -40,6 +47,7 @@ import org.json.JSONException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -57,11 +65,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initializeEvents();
         generateSidebar();
-//TODO
+//TODO //DONE
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
-            findViewById(R.id.logout).setVisibility(View.VISIBLE);
+
+            String[] sidebarItems = getResources().getStringArray(R.array.sidebar_menu);
+            sidebarItems[6] = "Logout";
+            sidebarItems[0] = "View Profile";
         }
         else {
             // restore screen name using lastInstanceState if possible
@@ -74,10 +85,13 @@ public class MainActivity extends AppCompatActivity {
                 String defaultValue = lastScreenNameStr;
                 lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
             }
-            findViewById(R.id.login).setVisibility(View.VISIBLE);
+
+            String[] sidebarItems = getResources().getStringArray(R.array.sidebar_menu);
+            sidebarItems[6] = null;
+            sidebarItems[0] = "Register/Login";
         }
     }
-//TODO
+//TODO DONE
     @Override
     protected void onResume() {
         super.onResume();
@@ -88,10 +102,11 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
-            Button loginButton = findViewById(R.id.login);
-            if (loginButton.getVisibility() == View.VISIBLE) {
-                loginButton.setVisibility(View.INVISIBLE);
-                findViewById(R.id.logout).setVisibility(View.VISIBLE);
+
+            String[] sidebarItems = getResources().getStringArray(R.array.sidebar_menu);
+            if (sidebarItems[0] == "Register/Login") {
+                sidebarItems[6] = "Logout";
+                sidebarItems[0] = "View Profile";
             }
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
@@ -167,10 +182,9 @@ public class MainActivity extends AppCompatActivity {
 //TODO
     public void logout(View v) {
         UserRepository.getInstance().logout();
-        Button loginButton = findViewById(R.id.login);
-        Button logoutButton = findViewById(R.id.logout);
-        logoutButton.setVisibility(View.GONE);
-        loginButton.setVisibility(View.VISIBLE);
+        String[] sidebarItems = getResources().getStringArray(R.array.sidebar_menu);
+        sidebarItems[6] = null;
+        sidebarItems[0] = "Register/Login";
     }
 
     // listener for when a user clicks an event to go to its page
@@ -517,9 +531,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     case 0:
                     {
-                        //THIS IS THE CODE THAT WILL LINK TO THE REGISTER/LOGIN BUTTON
-                        //IF THE USER IS LOGGED IN, YOU CAN CHANGE THE TEXT/CODE TO "VIEW PROFILE"
-                        //BUT DON'T FORGET TO ADD THE LOGOUT TEXT/CODE TO THE END
+                        goToLogin(view);
                         break;
                     }
                     case 1:
@@ -557,7 +569,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case 6:
                     {
-                        //THIS IS WHERE YOU COULD PUT THE CODE FOR THE LOGOUT BUTTON
+                        logout(view);
                         break;
                     }
                 }
