@@ -189,7 +189,6 @@ public class UserRepository {
                 String responseString = new String(response.data);
                 try {
                     JSONObject result = new JSONObject(responseString);
-                    Log.e("yyyyaaaayyyy", responseString);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

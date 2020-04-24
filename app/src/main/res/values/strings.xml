@@ -56,4 +56,8 @@
     <string name="topic_3">Topic 3</string>
     <string name="banner_image_label">Banner Image (1500px x 300px is best)</string>
     <string name="save_changes">Save Changes</string>
+    <string name="add_event_title">Post a time to host live video Fellowship Hours</string>
+    <string name="event_title_prompt">Conversation Title</string>
+    <string name="date_prompt">Date</string>
+    <string name="time_prompt">Time</string>
 </resources>
