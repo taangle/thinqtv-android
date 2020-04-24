@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,6 +32,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.thinqtv.thinqtv_android.data.DataSource;
 import com.thinqtv.thinqtv_android.data.UserRepository;
@@ -43,6 +47,7 @@ import org.json.JSONException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -62,18 +67,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initializeEvents();
         generateSidebar();
-        
-        // restore screen name using lastInstanceState if possible
-        if (savedInstanceState != null) {
-            lastScreenNameStr = savedInstanceState.getString(screenNameKey);
-        }
-        // else try to restore it using SharedPreferences
-        else {
-            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-            String defaultValue = lastScreenNameStr;
-            lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
-        }
-        getEventsJSONfile();
 
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
@@ -96,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        generateSidebar();
 
         // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
@@ -168,15 +162,18 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, GetInvolved.class);
         startActivity(i);
     }
-
+//TODO
     // Go to login page.
     public void goToLogin(View v) {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
-
+//TODO
     public void logout(View v) {
         UserRepository.getInstance().logout();
+
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
     // listener for when a user clicks an event to go to its page
@@ -474,7 +471,7 @@ public class MainActivity extends AppCompatActivity {
         // if the Upcoming Events are expanded, minimize
         if (eventsExpanded)
         {
-            params.verticalBias = 0.6f;
+            params.verticalBias = 0.5f;
 
             // the buttons are always visible under the ScrollView for some reason
             // because of this, they must be set to invisible when you expand the Events
@@ -493,7 +490,7 @@ public class MainActivity extends AppCompatActivity {
         // it's just the opposite of the above code essentially
         else
         {
-            params.verticalBias = 0.3f;
+            params.verticalBias = 0.25f;
 
             joinButton.setVisibility(View.INVISIBLE);
 
@@ -516,7 +513,12 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         ArrayAdapter<String> mAdapter;
 
-        String[] osArray = getResources().getStringArray(R.array.sidebar_menu);
+        String[] osArray;
+        if (UserRepository.getInstance().isLoggedIn())
+            osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
+        else
+            osArray = getResources().getStringArray(R.array.sidebar_menu);
+
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
 
         mDrawerList.setAdapter(mAdapter);
@@ -529,12 +531,19 @@ public class MainActivity extends AppCompatActivity {
                 {
                     case 0:
                     {
-                        goToLogin(view);
+                        if (UserRepository.getInstance().isLoggedIn())
+                        {
+                            //THIS IS WHERE THE CODE FOR "VIEW PROFILE" GOES
+                        }
+                        else
+                            goToLogin(view);
                         break;
                     }
                     case 1:
                     {
-                        goGetInvolved(view);
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/getinvolved"); //Optional parameters
+                        startActivity(i);
                         break;
                     }
                     case 2:
