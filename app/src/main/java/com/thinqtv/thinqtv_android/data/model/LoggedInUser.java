@@ -2,7 +2,7 @@ package com.thinqtv.thinqtv_android.data.model;
 
 public class LoggedInUser {
 
-    private final String name;
+    private String name;
     private String authToken;
     private final String permalink;
     private final String email;
@@ -16,6 +16,9 @@ public class LoggedInUser {
 
     public String getName() {
         return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
     public String getEmail() { return email; }
     public void setAuthToken(String authToken) {

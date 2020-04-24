@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import androidx.core.content.ContextCompat;
 
@@ -181,7 +182,8 @@ public class UserRepository {
         DataSource.getInstance().addToRequestQueue(request, context);
     }
 
-    public void update(Context context, ImageView profilePic) {
+    public void update(Context context, String name, ImageView profilePic, String about, String topic1,
+                       String topic2, String topic3, ImageView bannerPic) {
         final String url = "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
         VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, DataSource.getServerUrl() + url,
                 new Response.Listener<NetworkResponse>() {
@@ -189,6 +191,12 @@ public class UserRepository {
                 String responseString = new String(response.data);
                 try {
                     JSONObject result = new JSONObject(responseString);
+                    getLoggedInUser().setAuthToken(result.getString("token"));
+                    if (result.has("name")) {
+                        getLoggedInUser().setName(result.getString("name"));
+                    }
+                    if (result.has("pic")) {
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -203,11 +211,33 @@ public class UserRepository {
                 Map<String, String> params = new HashMap<>();
                 params.put("user_email", UserRepository.getInstance().getLoggedInUser().getEmail());
                 params.put("user_token", UserRepository.getInstance().getLoggedInUser().getAuthToken());
+
+                if (!name.equals("")) {
+                    params.put("name", name);
+                }
+                if (!about.equals("")) {
+                    params.put("about", about);
+                }
+                if (!topic1.equals("")) {
+                    params.put("genre1", topic1);
+                }
+                if (!topic2.equals("")) {
+                    params.put("genre2", topic2);
+                }
+                if (!topic3.equals("")) {
+                    params.put("genre3", topic3);
+                }
                 return params;
             }
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
-                params.put("profilepic", new DataPart("profile_pic.jpg", getFileDataFromDrawable(context, profilePic.getDrawable()), "image/jpeg"));
+                Random rand = new Random();
+                if (profilePic.getDrawable() != null) {
+                    params.put("profilepic", new DataPart("profile_pic" + rand.nextInt(10000) + ".jpeg", getFileDataFromDrawable(context, profilePic.getDrawable()), "image/jpeg"));
+                }
+                if (bannerPic.getDrawable() != null) {
+                    params.put("bannerpic", new DataPart("banner_pic" + rand.nextInt(10000) + ".jpeg", getFileDataFromDrawable(context, bannerPic.getDrawable()), "image/jpeg"));
+                }
                 return params;
             }
         };

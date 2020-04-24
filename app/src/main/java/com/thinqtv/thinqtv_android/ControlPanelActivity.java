@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.thinqtv.thinqtv_android.data.UserRepository;
@@ -29,11 +30,23 @@ public class ControlPanelActivity extends AppCompatActivity {
     private final int PERMISSIONS_READ_FILES = 1;
     private final int PERMISSIONS_CAMERA = 2;
     private ImageView imageView;
+    private String profilePicName;
+    private String bannerPicName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_panel);
+
+        EditText name = findViewById(R.id.name);
+        EditText about = findViewById(R.id.about_you);
+        EditText topic1 = findViewById(R.id.topic_1);
+        EditText topic2 = findViewById(R.id.topic_2);
+        EditText topic3 = findViewById(R.id.topic_3);
+        String profilePicName;
+        String bannerPicName;
+        imageView = null;
+
 
         Button profileImageButton = findViewById(R.id.choose_image_button);
         Context context = this;
@@ -50,7 +63,9 @@ public class ControlPanelActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.save_changes_button);
         saveButton.setOnClickListener(view -> {
-            UserRepository.getInstance().update(context, findViewById(R.id.profile_image_view));
+            UserRepository.getInstance().update(context, name.getText().toString(), findViewById(R.id.profile_image_view),
+                    about.getText().toString(), topic1.getText().toString(), topic2.getText().toString(),
+                    topic3.getText().toString(), findViewById(R.id.banner_image_view));
         });
     }
 
@@ -133,7 +148,6 @@ public class ControlPanelActivity extends AppCompatActivity {
                 }*/
                 if (realRatio > idealRatio) { // uploaded image is too wide
                     int newWidth = (int)(idealRatio * height);
-                    Log.e("width","r:" + realRatio + "o:" + width + "n:" + newWidth);
                     selectedImage = Bitmap.createBitmap(selectedImage, (width / 2) - (newWidth / 2), 0, newWidth, height);
                 }
 
