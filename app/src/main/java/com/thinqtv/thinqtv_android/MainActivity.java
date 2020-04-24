@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        generateSidebar();
 
         // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
@@ -97,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
-            generateSidebar();
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
         else {
