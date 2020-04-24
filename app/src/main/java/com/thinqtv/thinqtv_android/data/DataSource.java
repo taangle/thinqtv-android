@@ -12,7 +12,7 @@ import com.android.volley.toolbox.Volley;
 public class DataSource {
     private static DataSource instance;
     private RequestQueue requestQueue;
-    private static final String url = "https://fast-mountain-02267.herokuapp.com/"; //https://fast-mountain-02267.herokuapp.com/";
+    private static final String url = "https://fast-mountain-02267.herokuapp.com/";
 
     private DataSource() {
     }
