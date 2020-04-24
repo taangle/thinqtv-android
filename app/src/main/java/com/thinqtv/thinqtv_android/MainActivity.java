@@ -539,7 +539,12 @@ public class MainActivity extends AppCompatActivity {
                 {
                     case 0:
                     {
-                        goToLogin(view);
+                        if (UserRepository.getInstance().isLoggedIn())
+                        {
+                            //THIS IS WHERE THE CODE FOR "VIEW PROFILE" GOES
+                        }
+                        else
+                            goToLogin(view);
                         break;
                     }
                     case 1:
