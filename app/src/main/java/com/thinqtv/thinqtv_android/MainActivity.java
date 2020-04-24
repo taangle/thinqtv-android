@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
-            findViewById(R.id.logout).setVisibility(View.VISIBLE);
         }
         else {
             // restore screen name using lastInstanceState if possible
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 String defaultValue = lastScreenNameStr;
                 lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
             }
-            findViewById(R.id.login).setVisibility(View.VISIBLE);
         }
     }
 
@@ -105,11 +103,6 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
-            Button loginButton = findViewById(R.id.login);
-            if (loginButton.getVisibility() == View.VISIBLE) {
-                loginButton.setVisibility(View.INVISIBLE);
-                findViewById(R.id.logout).setVisibility(View.VISIBLE);
-            }
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
         else {
@@ -184,10 +177,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void logout(View v) {
         UserRepository.getInstance().logout();
-        Button loginButton = findViewById(R.id.login);
-        Button logoutButton = findViewById(R.id.logout);
-        logoutButton.setVisibility(View.GONE);
-        loginButton.setVisibility(View.VISIBLE);
     }
 
     // listener for when a user clicks an event to go to its page
@@ -490,13 +479,6 @@ public class MainActivity extends AppCompatActivity {
             // the buttons are always visible under the ScrollView for some reason
             // because of this, they must be set to invisible when you expand the Events
             joinButton.setVisibility(View.VISIBLE);
-            if (UserRepository.getInstance().getLoggedInUser() != null) {
-                logoutButton.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                loginButton.setVisibility(View.VISIBLE);
-            }
 
             // make it twist
             carrot.setRotation(0);
@@ -514,8 +496,6 @@ public class MainActivity extends AppCompatActivity {
             params.verticalBias = 0.3f;
 
             joinButton.setVisibility(View.INVISIBLE);
-            loginButton.setVisibility(View.INVISIBLE);
-            logoutButton.setVisibility(View.INVISIBLE);
 
             carrot.setRotation(180);
             ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
@@ -549,9 +529,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     case 0:
                     {
-                        //THIS IS THE CODE THAT WILL LINK TO THE REGISTER/LOGIN BUTTON
-                        //IF THE USER IS LOGGED IN, YOU CAN CHANGE THE TEXT/CODE TO "VIEW PROFILE"
-                        //BUT DON'T FORGET TO ADD THE LOGOUT TEXT/CODE TO THE END
+                        goToLogin(view);
                         break;
                     }
                     case 1:
@@ -589,7 +567,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case 6:
                     {
-                        //THIS IS WHERE YOU COULD PUT THE CODE FOR THE LOGOUT BUTTON
+                        logout(view);
                         break;
                     }
                 }

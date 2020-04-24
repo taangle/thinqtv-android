@@ -31,6 +31,7 @@
         <item>About ThinQ</item>
         <item>Join the Team</item>
         <item>FAQ</item>
+        <item>Logout</item>
     </string-array>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Sign up</string>
