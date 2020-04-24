@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
-
+generateSidebar2();
 /*
             ListView mDrawerList = (ListView)findViewById(R.id.navList);
             mDrawerList.invalidate();
@@ -195,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
 //TODO
     public void logout(View v) {
         UserRepository.getInstance().logout();
+        generateSidebar();
 /*
         ListView mDrawerList = (ListView)findViewById(R.id.navList);
         String[] osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
@@ -484,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
         // if the Upcoming Events are expanded, minimize
         if (eventsExpanded)
         {
-            params.verticalBias = 0.6f;
+            params.verticalBias = 0.5f;
 
             // the buttons are always visible under the ScrollView for some reason
             // because of this, they must be set to invisible when you expand the Events
@@ -625,5 +626,96 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void generateSidebar2()
+    {
+        ListView mDrawerList = (ListView)findViewById(R.id.navList);
+        DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        ArrayAdapter<String> mAdapter;
+
+        String[] osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+
+        mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                switch (position)
+                {
+                    case 0:
+                    {
+                        if (UserRepository.getInstance().isLoggedIn())
+                        {
+                            //THIS IS WHERE THE CODE FOR "VIEW PROFILE" GOES
+                        }
+                        else
+                            goToLogin(view);
+                        break;
+                    }
+                    case 1:
+                    {
+                        goGetInvolved(view);
+                        break;
+                    }
+                    case 2:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/drschaeferspeaking"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 3:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/aboutus"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 4:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/jointheteam"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 5:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/faq"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 6:
+                    {
+                        logout(view);
+                        break;
+                    }
+                }
+            }
+        });
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 }
