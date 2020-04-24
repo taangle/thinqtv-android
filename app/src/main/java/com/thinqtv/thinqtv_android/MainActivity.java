@@ -60,16 +60,17 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
     boolean eventsExpanded = false; //used to expand and collapse the Events ScrollView, changes with each click
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         initializeEvents();
         generateSidebar();
 //TODO //DONE
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
-            Log.i("test", "hello there 1");
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
 /*
             ListView mDrawerList = (ListView)findViewById(R.id.navList);
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
  */
         }
         else {
-            Log.i("test", "hello there 2");
             // restore screen name using lastInstanceState if possible
             if (savedInstanceState != null) {
                 lastScreenNameStr = savedInstanceState.getString(screenNameKey);
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
-            Log.i("test","it knows im logged in");
+
 /*
             ListView mDrawerList = (ListView)findViewById(R.id.navList);
             mDrawerList.invalidate();
@@ -223,12 +223,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Use EventsJSON file to fill in ScrollView
-    public void setUpcomingEvents(String fullEventsJSON)
+    public void setUpcomingEvents(JSONArray json)
     {
         try {
             //link layout and JSON file
             LinearLayout linearLayout = findViewById(R.id.upcoming_events_linearView);
-            JSONArray json = new JSONArray(fullEventsJSON);
 
             // Get the selected event filter text
             Spinner eventFilter_spinner = (Spinner)findViewById(R.id.eventsSpinner);
@@ -433,15 +432,9 @@ public class MainActivity extends AppCompatActivity {
         // where you get the JSON file
         final String url = "https://thinqtv.herokuapp.com/events.json";
 
-        //RequestQueue initialized
-        RequestQueue mRequestQueue;
-        mRequestQueue = Volley.newRequestQueue(this);
-
-        //String Request initialized
-        StringRequest mStringRequest;
-        mStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONArray response) {
                 // If you receive a response, the JSON data is saved in response
                 // Clear the linearLayout
                 LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
@@ -458,9 +451,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Add the request to the Queue
-        //This is essentially telling it to execute
-        mRequestQueue.add(mStringRequest);
+        DataSource.getInstance().addToRequestQueue(request, this);
     }
 
     public void initializeEvents()
