@@ -20,4 +20,31 @@
         <item>Invite Us To Speak</item>
         <item>About Us</item>
     </string-array>
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_register">Sign up</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="invalid_email">Invalid email.</string>
+    <string name="invalid_name">Invalid name.</string>
+    <string name="invalid_permalink">Invalid permalink.</string>
+    <string name="invalid_password">Password must be at least 8 characters.</string>
+    <string name="invalid_password_confirmation">Passwords do not match.</string>
+    <string name="password_empty">Password must not be empty!</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="register_failed">Register failed</string>
+    <string name="could_not_reach_server">"Could not reach server"</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="remember_me">Remember me</string>
+    <string name="tos_agreement">By signing in, you agree to the Thinq.tv terms of service.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_up_prompt">Not a member? Sign up!</string>
+    <string name="name_prompt">Name</string>
+    <string name="permalink_prompt">Permalink</string>
+    <string name="confirm_password_prompt">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="server_response_error">Problem with server response.</string>
+    <string name="email_taken">Email has already been taken.</string>
+    <string name="permalink_taken">Permalink has already been taken.</string>
+    <string name="generic_input_error">There is a problem with your input</string>
 </resources>
