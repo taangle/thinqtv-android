@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -68,13 +69,22 @@ public class MainActivity extends AppCompatActivity {
 //TODO //DONE
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
+            Log.i("test", "hello there 1");
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
+/*
+            ListView mDrawerList = (ListView)findViewById(R.id.navList);
+            mDrawerList.invalidate();
+            String[] osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
+            ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+            mAdapter.notifyDataSetChanged();
+            mDrawerList.setAdapter(mAdapter);
 
-            String[] sidebarItems = getResources().getStringArray(R.array.sidebar_menu);
-            sidebarItems[6] = "Logout";
-            sidebarItems[0] = "View Profile";
+            ((BaseAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
+
+ */
         }
         else {
+            Log.i("test", "hello there 2");
             // restore screen name using lastInstanceState if possible
             if (savedInstanceState != null) {
                 lastScreenNameStr = savedInstanceState.getString(screenNameKey);
@@ -85,10 +95,6 @@ public class MainActivity extends AppCompatActivity {
                 String defaultValue = lastScreenNameStr;
                 lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
             }
-
-            String[] sidebarItems = getResources().getStringArray(R.array.sidebar_menu);
-            sidebarItems[6] = null;
-            sidebarItems[0] = "Register/Login";
         }
     }
 //TODO DONE
@@ -102,12 +108,19 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
+            Log.i("test","it knows im logged in");
+/*
+            ListView mDrawerList = (ListView)findViewById(R.id.navList);
+            mDrawerList.invalidate();
+            String[] osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
+            ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
 
-            String[] sidebarItems = getResources().getStringArray(R.array.sidebar_menu);
-            if (sidebarItems[0] == "Register/Login") {
-                sidebarItems[6] = "Logout";
-                sidebarItems[0] = "View Profile";
-            }
+            mDrawerList.setAdapter(mAdapter);
+            mDrawerList.deferNotifyDataSetChanged();
+
+            ((BaseAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
+
+ */
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
         else {
@@ -182,9 +195,13 @@ public class MainActivity extends AppCompatActivity {
 //TODO
     public void logout(View v) {
         UserRepository.getInstance().logout();
-        String[] sidebarItems = getResources().getStringArray(R.array.sidebar_menu);
-        sidebarItems[6] = null;
-        sidebarItems[0] = "Register/Login";
+/*
+        ListView mDrawerList = (ListView)findViewById(R.id.navList);
+        String[] osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
+        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+
+ */
     }
 
     // listener for when a user clicks an event to go to its page
