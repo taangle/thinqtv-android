@@ -31,7 +31,12 @@
                 "screenSize|smallestScreenSize|screenLayout|orientation"
             ></activity>
         <activity android:name=".GetInvolved" />
-        <activity android:name=".AnyWebview" />
+        <activity
+            android:name=".AnyWebview">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.thinqtv.thinqtv_android.MainActivity"/>
+        </activity>
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
