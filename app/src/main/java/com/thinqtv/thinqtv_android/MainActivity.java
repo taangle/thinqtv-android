@@ -21,6 +21,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -497,7 +498,12 @@ public class MainActivity extends AppCompatActivity {
 
         String[] osArray;
         if (UserRepository.getInstance().isLoggedIn())
+        {
             osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
+
+            //TODO: when a user can view profile, take below line out
+            osArray[0] = UserRepository.getInstance().getLoggedInUser().getName();
+        }
         else
             osArray = getResources().getStringArray(R.array.sidebar_menu);
 
@@ -515,7 +521,7 @@ public class MainActivity extends AppCompatActivity {
                     {
                         if (UserRepository.getInstance().isLoggedIn())
                         {
-                            //THIS IS WHERE THE CODE FOR "VIEW PROFILE" GOES
+                            Toast.makeText(getApplicationContext(),"Coming soon: View your Profile!",Toast.LENGTH_SHORT).show();
                         }
                         else
                             goToLogin(view);
