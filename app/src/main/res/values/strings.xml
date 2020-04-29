@@ -3,12 +3,13 @@
     <string name="conference_name_hint">Enter Room Name</string>
     <string name="join_button_hint">Join</string>
     <string name="screen_name_hint">Enter Your Name</string>
-    <string name="homescreenHeader">Conversations\nthat make you\nThinQ!</string>
+    <string name="homescreenHeader">Conversations that make you ThinQ!</string>
     <string name="defaultTryConversation">Join the conversation!</string>
     <string name="getInvolved">Get involved</string>
-    <string name="upcoming_events">Fellowship Hours</string>
+    <string name="upcoming_events">Conversations</string>
     <string name="expand">Expand</string>
     <string name="hosted_by">Hosted by</string>
+    <string name="happening_now">Happening now - Join the Conversation!</string>
     <string-array name="eventFilters">
         <item>All Events</item>
         <item>This Week</item>
@@ -20,6 +21,25 @@
         <item>Invite Us To Speak</item>
         <item>About Us</item>
     </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string-array name="sidebar_menu">
+        <item>Register/Login</item>
+        <item>Get Involved</item>
+        <item>Have us on your Podcast</item>
+        <item>About ThinQ</item>
+        <item>Join the Team</item>
+    </string-array>
+    <string-array name="sidebar_menu_loggedIn">
+        <item>View Profile</item>
+        <item>Get Involved</item>
+        <item>Have us on your Podcast</item>
+        <item>About ThinQ</item>
+        <item>Join the Team</item>
+        <item>Logout</item>
+    </string-array>
+
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Sign up</string>
     <string name="prompt_email">Email</string>
