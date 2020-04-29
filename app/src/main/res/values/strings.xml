@@ -30,7 +30,6 @@
         <item>Have us on your Podcast</item>
         <item>About ThinQ</item>
         <item>Join the Team</item>
-        <item>FAQ</item>
     </string-array>
     <string-array name="sidebar_menu_loggedIn">
         <item>View Profile</item>
@@ -38,7 +37,6 @@
         <item>Have us on your Podcast</item>
         <item>About ThinQ</item>
         <item>Join the Team</item>
-        <item>FAQ</item>
         <item>Logout</item>
     </string-array>
 

@@ -30,6 +30,7 @@ public class AnyWebview extends AppCompatActivity {
                     view.loadUrl("javascript:(window.onload = function() { " +
                             "(navBar = document.getElementsByTagName('nav')[0]); navBar.parentNode.removeChild(navBar);" +
                             "(footer = document.getElementsByTagName('footer')[0]); footer.parentNode.removeChild(footer);" +
+                            "(label = document.getElementsByClassName('box')[0]); label.parentNode.removeChild(label);" +
                             "})()");
                 } catch (Exception e) {
                     e.printStackTrace();

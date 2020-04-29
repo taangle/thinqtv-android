@@ -551,13 +551,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case 5:
                     {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/faq"); //Optional parameters
-                        startActivity(i);
-                        break;
-                    }
-                    case 6:
-                    {
                         logout(view);
                         break;
                     }
