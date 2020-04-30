@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent loadSavedUser = new Intent(this, StartupLoadingActivity.class);
+        startActivity(loadSavedUser);
+
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
