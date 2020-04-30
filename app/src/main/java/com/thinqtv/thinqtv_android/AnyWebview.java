@@ -46,7 +46,6 @@ public class AnyWebview extends AppCompatActivity {
             }
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(address);
                 return true;
             }
         });

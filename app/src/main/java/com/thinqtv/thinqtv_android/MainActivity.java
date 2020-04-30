@@ -417,8 +417,11 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                TextView loading = findViewById(R.id.loading_placeholder);
-                loading.setText("Error : Unable to load fellowship information");
+                LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
+                layout.removeView(findViewById(R.id.loading_events));
+
+                TextView loadingError = findViewById(R.id.loading_placeholder);
+                loadingError.setVisibility(View.VISIBLE);
             }
         });
         DataSource.getInstance().addToRequestQueue(request, this);
