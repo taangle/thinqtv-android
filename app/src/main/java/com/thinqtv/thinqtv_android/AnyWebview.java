@@ -1,22 +1,27 @@
 package com.thinqtv.thinqtv_android;
 
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AnyWebview extends AppCompatActivity {
     private AnyWebview webViewActivity = this;
+    private ProgressBar loading;
     private WebView view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_webview);
+        loading = findViewById(R.id.loading);
 
         view = findViewById(R.id.webView);
         view.setVisibility(WebView.INVISIBLE);
+        loading.setVisibility(View.VISIBLE);
         String link = "";
         if (getIntent().getExtras() != null)
             link = getIntent().getExtras().getString("webviewLink");
@@ -61,6 +66,7 @@ public class AnyWebview extends AppCompatActivity {
             webViewActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    loading.setVisibility(View.INVISIBLE);
                     view.setVisibility(WebView.VISIBLE);
                 }
             });
