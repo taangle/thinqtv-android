@@ -9,8 +9,8 @@ public class LoggedInUser {
 
     private String name;
     private String authToken;
-    private final String permalink;
-    private final String email;
+    private String permalink;
+    private String email;
     private final SharedPreferences pref;
     private String profilePic;
     private String about;
@@ -52,6 +52,10 @@ public class LoggedInUser {
         this.genre2 = genre2;
         this.genre3 = genre3;
         this.bannerPic = bannerPic;
+    }
+    public void updateAccount(String email, String permalink) {
+        this.email = email;
+        this.permalink = permalink;
     }
     public void logout() {
         pref.edit().remove("email").apply();

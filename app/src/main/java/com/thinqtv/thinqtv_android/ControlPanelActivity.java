@@ -63,7 +63,7 @@ public class ControlPanelActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.save_changes_button);
         saveButton.setOnClickListener(view -> {
-            UserRepository.getInstance().update(context, name.getText().toString(), findViewById(R.id.profile_image_view),
+            UserRepository.getInstance().updateProfile(context, name.getText().toString(), findViewById(R.id.profile_image_view),
                     about.getText().toString(), topic1.getText().toString(), topic2.getText().toString(),
                     topic3.getText().toString(), findViewById(R.id.banner_image_view));
         });

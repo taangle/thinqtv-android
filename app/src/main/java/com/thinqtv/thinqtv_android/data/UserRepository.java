@@ -42,6 +42,7 @@ import static android.content.Context.MODE_PRIVATE;
  * requests registration of new users.
  */
 public class UserRepository {
+    final String updateUrl = "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
 
     private static volatile UserRepository instance;
     private LoggedInUser user = null;
@@ -224,10 +225,33 @@ public class UserRepository {
         DataSource.getInstance().addToRequestQueue(request, context);
     }
 
-    public void update(Context context, String name, ImageView profilePic, String about, String topic1,
+    public void updateAccount(Context context, String email, String currentPassword, String newPassword,
+                       String newPasswordConfirm, String permalink) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("user_email", getLoggedInUser().getEmail());
+            params.put("user_token", getLoggedInUser().getAuthToken());
+            params.put("email", email);
+            params.put("current_password", currentPassword);
+            params.put("password", newPassword);
+            params.put("password_confirmation", newPasswordConfirm);
+            params.put("permalink", permalink);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, updateUrl, params, response -> {
+            try {
+                getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            }, error -> {
+        });
+        DataSource.getInstance().addToRequestQueue(request, context);
+    }
+    public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
                        String topic2, String topic3, ImageView bannerPic) {
-        final String url = "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, DataSource.getServerUrl() + url,
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, DataSource.getServerUrl() + updateUrl,
                 new Response.Listener<NetworkResponse>() {
             public void onResponse(NetworkResponse response) {
                 String responseString = new String(response.data);

@@ -94,4 +94,7 @@
     <string name="click_to_set">Click To Set</string>
     <string name="length_label">Length</string>
     <string name="initial_length">1:00</string>
+    <string name="current_password">Current Password (Required)</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
 </resources>
