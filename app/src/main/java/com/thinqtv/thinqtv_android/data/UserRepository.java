@@ -42,7 +42,6 @@ import static android.content.Context.MODE_PRIVATE;
  * requests registration of new users.
  */
 public class UserRepository {
-    final String updateUrl = "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
 
     private static volatile UserRepository instance;
     private LoggedInUser user = null;
@@ -92,7 +91,11 @@ public class UserRepository {
                 DataSource.getServerUrl() + loginUrl, userLogin,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email")));
+                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email"), response.getString("id")));
+                        getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
+                        getLoggedInUser().updateProfile(response.getString("name"), response.getString("profpic"),
+                                response.getString("about"), response.getString("genre1"), response.getString("genre2"),
+                                response.getString("genre3"), response.getString("bannerpic"));
                         loginViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -140,7 +143,7 @@ public class UserRepository {
                 DataSource.getServerUrl() + registerUrl, userRegister,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email")));
+                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email"), response.getString("id")));
                         registerViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -213,7 +216,11 @@ public class UserRepository {
                 DataSource.getServerUrl() + loginUrl, userLogin,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email")));
+                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email"), response.getString("id")));
+                        getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
+                        getLoggedInUser().updateProfile(response.getString("name"), response.getString("profpic"),
+                                response.getString("about"), response.getString("genre1"), response.getString("genre2"),
+                                response.getString("genre3"), response.getString("bannerpic"));
                     } catch(JSONException e) {
                         e.printStackTrace();
                     }
@@ -239,9 +246,12 @@ public class UserRepository {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, updateUrl, params, response -> {
+        String url = "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, params, response -> {
             try {
+                getLoggedInUser().updateToken(response.getString("token"));
                 getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
+                ((Activity)context).finish();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -251,7 +261,8 @@ public class UserRepository {
     }
     public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
                        String topic2, String topic3, ImageView bannerPic) {
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, DataSource.getServerUrl() + updateUrl,
+        String url = "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, DataSource.getServerUrl() + url,
                 new Response.Listener<NetworkResponse>() {
             public void onResponse(NetworkResponse response) {
                 String responseString = new String(response.data);
@@ -266,6 +277,7 @@ public class UserRepository {
                     }
                     if (result.has("pic")) {
                     }
+                    ((Activity)context).finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

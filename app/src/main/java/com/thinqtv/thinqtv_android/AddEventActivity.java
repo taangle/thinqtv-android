@@ -1,5 +1,6 @@
 package com.thinqtv.thinqtv_android;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -151,6 +152,8 @@ public class AddEventActivity extends AppCompatActivity{
             event.put("end_at", end);
             event.put("desc", desc);
             params.put("event", event);
+            params.put("user_email", UserRepository.getInstance().getLoggedInUser().getEmail());
+            params.put("user_token", UserRepository.getInstance().getLoggedInUser().getAuthToken());
         } catch(JSONException e) {
             e.printStackTrace();
             return;
@@ -160,73 +163,17 @@ public class AddEventActivity extends AppCompatActivity{
                 DataSource.getServerUrl() + url, params, response -> {
             try {
                 UserRepository.getInstance().getLoggedInUser().updateToken(response.getString("token"));
+                ((Activity)context).finish();
             } catch(JSONException e) {
                 e.printStackTrace();
             }
         }, error -> {
             if (error.networkResponse != null) {
-                Log.e("errrr", error.networkResponse.toString());
             }
             else {
-                Log.e("er", error.toString());
             }
         });
         DataSource.getInstance().addToRequestQueue(request, context);
     }
-    /*public void register(String email, String name, String permalink, String password,
-                         Context context, RegisterViewModel registerViewModel) {
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                DataSource.getServerUrl() + registerUrl, userRegister,
-                response -> {
-                    try {
-                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email")));
-                        registerViewModel.setResult(new Result<>(null, true));
-                    } catch(JSONException e) {
-                        e.printStackTrace();
-                        registerViewModel.setResult(new Result<>(R.string.server_response_error, false));
-                    }
-                }, error -> {
-            if (error.networkResponse != null) { // There was a problem with one of the user-provided inputs.
-                if (error.networkResponse.statusCode == 422 && error.networkResponse.data != null) {
-                    List<Integer> errorMessages = new ArrayList<>();
-                    // The server should have sent a list of errors
-                    try {
-                        JSONObject response = new JSONObject(new String(error.networkResponse.data));
-                        JSONObject errors = response.getJSONObject("errors");
-                        JSONArray errorArray = errors.names();
-                        if (errorArray == null) {
-                            registerViewModel.setResult(new Result<>(R.string.server_response_error, false));
-                            return;
-                        }
-                        for (int i = 0; i < errorArray.length(); i++) {
-                            switch(errorArray.get(i).toString()) {
-                                case "email":
-                                    errorMessages.add(R.string.email_taken);
-                                    break;
-                                case "permalink":
-                                    errorMessages.add(R.string.permalink_taken);
-                                    break;
-                                default:
-                                    errorMessages.add(R.string.generic_input_error);
-                                    break;
-                            }
-                        }
-                        registerViewModel.setResult(new Result<>(errorMessages, false));
-
-                    } catch (JSONException e) {
-                        registerViewModel.setResult(new Result<>(R.string.server_response_error, false));
-                    }
-
-                }
-                else {
-                    registerViewModel.setResult(new Result<>(R.string.register_failed, false));
-                }
-            } else {
-                registerViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
-            }
-        });
-        DataSource.getInstance().addToRequestQueue(request, context);
-    }*/
 }
 

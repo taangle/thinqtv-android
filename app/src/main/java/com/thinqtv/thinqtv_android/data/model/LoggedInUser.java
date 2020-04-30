@@ -18,12 +18,14 @@ public class LoggedInUser {
     private String genre2;
     private String genre3;
     private String bannerPic;
+    private String id;
 
-    public LoggedInUser(Context context, String name, String authToken, String permalink, String email) {
+    public LoggedInUser(Context context, String name, String authToken, String permalink, String email, String id) {
         this.name = name;
         this.authToken = authToken;
         this.permalink = permalink;
         this.email = email;
+        this.id = id;
         pref = context.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
         pref.edit().putString("email", email).apply();
         updateToken(authToken);
