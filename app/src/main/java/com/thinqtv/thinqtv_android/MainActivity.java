@@ -1,28 +1,38 @@
 package com.thinqtv.thinqtv_android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.thinqtv.thinqtv_android.data.DataSource;
 import com.thinqtv.thinqtv_android.data.UserRepository;
@@ -44,19 +54,22 @@ public class MainActivity extends AppCompatActivity {
     private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
     private static String lastScreenNameStr = "";
 
-    //used to expand and collapse the Events ScrollView, changes with each click
-    boolean eventsExpanded = false;
+    private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
+    boolean eventsExpanded = false; //used to expand and collapse the Events ScrollView, changes with each click
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-        getEventsJSONFile();
+        initializeEvents();
+        generateSidebar();
+        setDrawerToggle();
 
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
-            findViewById(R.id.logout).setVisibility(View.VISIBLE);
         }
         else {
             // restore screen name using lastInstanceState if possible
@@ -69,13 +82,13 @@ public class MainActivity extends AppCompatActivity {
                 String defaultValue = lastScreenNameStr;
                 lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
             }
-            findViewById(R.id.login).setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        generateSidebar();
 
         // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
@@ -83,11 +96,6 @@ public class MainActivity extends AppCompatActivity {
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
             screenName.setText(lastScreenNameStr);
-            Button loginButton = findViewById(R.id.login);
-            if (loginButton.getVisibility() == View.VISIBLE) {
-                loginButton.setVisibility(View.INVISIBLE);
-                findViewById(R.id.logout).setVisibility(View.VISIBLE);
-            }
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
         else {
@@ -162,26 +170,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void logout(View v) {
         UserRepository.getInstance().logout();
-        Button loginButton = findViewById(R.id.login);
-        Button logoutButton = findViewById(R.id.logout);
-        logoutButton.setVisibility(View.GONE);
-        loginButton.setVisibility(View.VISIBLE);
+
+        finish();
+        overridePendingTransition(R.anim.catalyst_fade_in, R.anim.catalyst_fade_out);
+        startActivity(getIntent());
     }
 
     // listener for when a user clicks an event to go to its page
-    private class ViewEventDetails_ClickListener implements View.OnClickListener {
+    private class goToWebview_ClickListener implements View.OnClickListener{
         private Context mContext;
-        private String eventCode;
+        private String webviewLink;
 
-        public ViewEventDetails_ClickListener(Context context, String eventID){
+        public goToWebview_ClickListener(Context context, String address){
             mContext = context;
-            eventCode = eventID;
+            webviewLink = address;
         }
 
         @Override
         public void onClick(View v){
-            Intent i = new Intent(mContext, EventWebview.class);
-            i.putExtra("eventCode", eventCode); //Optional parameters
+            Intent i = new Intent(mContext, AnyWebview.class);
+            i.putExtra("webviewLink", webviewLink); //Optional parameters
             startActivity(i);
         }
     }
@@ -203,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 // gets the name and sets its values
                 TextView newEvent_name = new TextView(this);
                 newEvent_name.setTextSize(22);
-                newEvent_name.setPadding(20, 70, 0, 0);
+                newEvent_name.setPadding(20, 40, 0, 0);
                 newEvent_name.setTextColor(getResources().getColor(R.color.colorPrimary));
                 newEvent_name.setText(json.getJSONObject(i).getString("name")
                         .substring(0, Math.min(json.getJSONObject(i).getString("name").length(), 18)));
@@ -211,17 +219,18 @@ public class MainActivity extends AppCompatActivity {
                     newEvent_name.setText(newEvent_name.getText() + "...");
 
                 // add listener to the name, so when the user clicks an event it will bring them to the event page
-                newEvent_name.setOnClickListener(new ViewEventDetails_ClickListener(this, json.getJSONObject(i).getString("id")));
+                newEvent_name.setOnClickListener(new goToWebview_ClickListener(this,
+                        "http://www.thinq.tv/" + json.getJSONObject(i).getString("permalink")));
 
                 // gets the host id and sets its values
-                TextView newEvent_host = new TextView(this);    // TODO : CHANGE THIS "name" TO "user_id" WHEN DATABASE INCLUDES PERMALINK
+                TextView newEvent_host = new TextView(this);
                 newEvent_host.setTextSize(15);
                 newEvent_host.setWidth(600);
-                newEvent_host.setPadding(20, 150, 0, 0);
+                newEvent_host.setPadding(20, 110, 0, 0);
                 newEvent_host.setTextColor(Color.GRAY);
-                newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("name")
-                        .substring(0, Math.min(json.getJSONObject(i).getString("name").length(), 40)));
-                if (json.getJSONObject(i).getString("name").length() > 40)
+                newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("username")
+                        .substring(0, Math.min(json.getJSONObject(i).getString("username").length(), 18)));
+                if (json.getJSONObject(i).getString("username").length() > 18)
                     newEvent_host.setText(newEvent_host.getText() + "...");
 
                 // gets the date of event
@@ -236,20 +245,22 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat displayFormat = new SimpleDateFormat("EEE, MMM dd");
                 newEvent_time.setText(displayFormat.format(date));
                 newEvent_time.setTextSize(20);
-                newEvent_time.setPadding(750, 80, 0, 0);
+                newEvent_time.setPadding(750, 45, 0, 0);
                 newEvent_time.setTextColor(getResources().getColor(R.color.colorPrimary));
 
                 // formats the date from above into viewable format (BUT NOW ITS START TIME)
                 displayFormat = new SimpleDateFormat("h:mm aa");
                 TextView newEvent_starttime = new TextView(this);
-                newEvent_starttime.setText(displayFormat.format(date));
+                newEvent_starttime.setText(displayFormat.format(date) + " PDT");
                 newEvent_starttime.setTextSize(15);
-                newEvent_starttime.setPadding(750, 150, 0, 0);
+                newEvent_starttime.setPadding(750, 110, 0, 0);
                 newEvent_starttime.setTextColor(Color.GRAY);
 
                 // Now you have all your TextViews, create a ConstraintLayout for each one
                 ConstraintLayout constraintLayout = new ConstraintLayout(this);
-                constraintLayout.setLayoutParams(new LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100f, getResources().getDisplayMetrics())));
+                constraintLayout.setLayoutParams(new LayoutParams
+                        (ConstraintLayout.LayoutParams.MATCH_PARENT,
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75f, getResources().getDisplayMetrics())));
 
                 // Add your TextViews to the ConstraintLayout
                 constraintLayout.addView(newEvent_name);
@@ -269,12 +280,80 @@ public class MainActivity extends AppCompatActivity {
                 {
                     case ("All Events") :
                     {
+                        Date end_time = new Date();
+                        try {
+                            end_time = dateFormat.parse(json.getJSONObject(i).getString("end_at"));
+                        } catch (ParseException e) { e.printStackTrace(); }
+
+                        Date current_time = mCalendar.getTime();
+
+                        if (date.before(current_time) && end_time.after(current_time))
+                        {
+                            constraintLayout.setLayoutParams(new LayoutParams
+                                (ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 125f, getResources().getDisplayMetrics())));
+
+                            Button happening_now = new Button(this);
+                            happening_now.setBackground(getDrawable(R.drawable.rounded_button));
+                            happening_now.setTextSize(15);
+                            happening_now.setTextColor(Color.WHITE);
+                            happening_now.setText(R.string.happening_now);
+                            happening_now.setTransformationMethod(null);
+                            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(800, 120);
+                            happening_now.setLayoutParams(params);
+                            happening_now.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+                            happening_now.setY((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70f, getResources().getDisplayMetrics()));
+                            happening_now.setX((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50f, getResources().getDisplayMetrics()));
+
+                            happening_now.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    onJoinClick(v);
+                                }
+                            });
+
+                            constraintLayout.addView(happening_now);
+                        }
+
                         linearLayout.addView(constraintLayout);
                         linearLayout.addView(viewDivider);
                         break;
                     }
                     case ("This Week") :
                     {
+                        Date end_time = new Date();
+                        try {
+                            end_time = dateFormat.parse(json.getJSONObject(i).getString("end_at"));
+                        } catch (ParseException e) { e.printStackTrace(); }
+
+                        Date current_time = mCalendar.getTime();
+
+                        if (date.before(current_time) && end_time.after(current_time))
+                        {
+                            constraintLayout.setLayoutParams(new LayoutParams
+                                    (ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 125f, getResources().getDisplayMetrics())));
+
+                            Button happening_now = new Button(this);
+                            happening_now.setBackground(getDrawable(R.drawable.rounded_button));
+                            happening_now.setTextSize(15);
+                            happening_now.setTextColor(Color.WHITE);
+                            happening_now.setText(R.string.happening_now);
+                            happening_now.setTransformationMethod(null);
+                            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(800, 120);
+                            happening_now.setLayoutParams(params);
+                            happening_now.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+                            happening_now.setY((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70f, getResources().getDisplayMetrics()));
+                            happening_now.setX((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50f, getResources().getDisplayMetrics()));
+
+                            happening_now.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    onJoinClick(v);
+                                }
+                            });
+
+                            constraintLayout.addView(happening_now);
+                        }
+
                         mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
                         Date filterDate = mCalendar.getTime();
 
@@ -320,43 +399,51 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) { e.printStackTrace(); }
     }
 
-    public void getEventsJSONFile()
+    public void getEventsJSONfile()
     {
-        // get the spinner filter and the layout that's inside of it
-        Spinner eventFilter = (Spinner) findViewById(R.id.eventsSpinner);
-        LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
-
-        // add listener for whenever a user changes filter
-        eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                layout.removeAllViews();
-                getEventsJSONFile();
-            }
-
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                // this doesn't ever happen but i need to override the virtual class
-            }
-        });
-
         // where you get the JSON file
         final String url = "https://thinqtv.herokuapp.com/events.json";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                // If you receive a response, the JSON data is saved in response
+                // Clear the linearLayout
+                LinearLayout layout = (LinearLayout) findViewById(R.id.upcoming_events_linearView);
+                layout.removeAllViews();
+
+                //fill it back in with the response data
                 setUpcomingEvents(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO : ADD SOMETHING TO HAPPEN WHEN JSON IS NOT REACHABLE
-                // TODO : ie display error message
+                TextView loading = findViewById(R.id.loading_placeholder);
+                loading.setText("Error : Unable to load fellowship information");
             }
         });
         DataSource.getInstance().addToRequestQueue(request, this);
     }
 
-    public void expandEventsClick(View v) {
+    public void initializeEvents()
+    {
+        // get the spinner filter and the layout that's inside of it
+        Spinner eventFilter = (Spinner) findViewById(R.id.eventsSpinner);
+
+        // add listener for whenever a user changes filter
+        eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                getEventsJSONfile();
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // this doesn't ever happen but i need to override the virtual class
+            }
+        });
+    }
+
+    public void expandEventsClick(View v)
+    {
         // Link the header TextView
         TextView header = (TextView) findViewById(R.id.upcoming_events_header);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) header.getLayoutParams();
@@ -364,32 +451,15 @@ public class MainActivity extends AppCompatActivity {
         // Link any buttons
         TextView carrot = (TextView) findViewById(R.id.expandButton);
         Button joinButton = findViewById(R.id.defaultJoinButton);
-        Button involvedButton = findViewById(R.id.get_involved);
-        Button loginButton = findViewById(R.id.login);
-        Button logoutButton = findViewById(R.id.logout);
 
         // if the Upcoming Events are expanded, minimize
         if (eventsExpanded)
         {
-            // convert pixels to dp and set the margin
-            float headerMarginSmall = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    450f,
-                    getResources().getDisplayMetrics()
-            );
-            params.topMargin = (int) headerMarginSmall;
+            params.verticalBias = 0.5f;
 
             // the buttons are always visible under the ScrollView for some reason
             // because of this, they must be set to invisible when you expand the Events
             joinButton.setVisibility(View.VISIBLE);
-            involvedButton.setVisibility(View.VISIBLE);
-            if (UserRepository.getInstance().getLoggedInUser() != null) {
-                logoutButton.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                loginButton.setVisibility(View.VISIBLE);
-            }
 
             // make it twist
             carrot.setRotation(0);
@@ -404,17 +474,10 @@ public class MainActivity extends AppCompatActivity {
         // it's just the opposite of the above code essentially
         else
         {
-            float headerMarginLarge = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    215f,
-                    getResources().getDisplayMetrics()
-            );
-            params.topMargin = (int) headerMarginLarge;
+            params.verticalBias = 0.25f;
 
             joinButton.setVisibility(View.INVISIBLE);
-            involvedButton.setVisibility(View.INVISIBLE);
-            loginButton.setVisibility(View.INVISIBLE);
-            logoutButton.setVisibility(View.INVISIBLE);
+
             carrot.setRotation(180);
             ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
             lparams.verticalBias = 0.48f;
@@ -426,5 +489,122 @@ public class MainActivity extends AppCompatActivity {
         // move header based on the values set in the if-else statement
         // other items are linked to the header so they will move as well
         header.setLayoutParams(params);
+    }
+
+    private void generateSidebar()
+    {
+        ListView mDrawerList = (ListView)findViewById(R.id.navList);
+        DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        ArrayAdapter<String> mAdapter;
+
+        String[] osArray;
+        if (UserRepository.getInstance().isLoggedIn())
+        {
+            osArray = getResources().getStringArray(R.array.sidebar_menu_loggedIn);
+
+            //TODO: when a user can view profile, take below line out
+            osArray[0] = UserRepository.getInstance().getLoggedInUser().getName();
+        }
+        else
+            osArray = getResources().getStringArray(R.array.sidebar_menu);
+
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+
+        mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                switch (position)
+                {
+                    case 0:
+                    {
+                        if (UserRepository.getInstance().isLoggedIn())
+                        {
+                            Toast.makeText(getApplicationContext(),"Coming soon: View your Profile!",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            goToLogin(view);
+                        break;
+                    }
+                    case 1:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/getinvolved"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 2:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/drschaeferspeaking"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 3:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/aboutus"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 4:
+                    {
+                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                        i.putExtra("webviewLink", "http://www.thinq.tv/jointheteam"); //Optional parameters
+                        startActivity(i);
+                        break;
+                    }
+                    case 5:
+                    {
+                        logout(view);
+                        break;
+                    }
+                }
+            }
+        });
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+    }
+
+    private void setDrawerToggle()
+    {
+        DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Activate the navigation drawer toggle
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
