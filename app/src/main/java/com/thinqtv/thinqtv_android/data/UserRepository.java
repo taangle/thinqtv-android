@@ -94,6 +94,7 @@ public class UserRepository {
     }
 
     public void logout() {
+        getLoggedInUser().logout();
         setLoggedInUser(null);
     }
 

@@ -15,11 +15,11 @@ public class LoggedInUser {
 
     public LoggedInUser(Context context, String name, String authToken, String permalink, String email) {
         this.name = name;
-        updateToken(authToken);
         this.permalink = permalink;
         this.email = email;
         pref = context.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
         pref.edit().putString("email", email).apply();
+        updateToken(authToken);
     }
 
     public String getName() {
@@ -32,5 +32,9 @@ public class LoggedInUser {
     }
     public String getAuthToken() {
         return authToken;
+    }
+    public void logout() {
+        pref.edit().remove("email").apply();
+        pref.edit().remove("token").apply();
     }
 }
