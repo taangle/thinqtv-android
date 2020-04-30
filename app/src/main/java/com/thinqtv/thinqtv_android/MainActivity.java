@@ -515,52 +515,36 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                switch (position)
-                {
-                    case 0:
-                    {
-                        if (UserRepository.getInstance().isLoggedIn())
-                        {
-                            Toast.makeText(getApplicationContext(),"Coming soon: View your Profile!",Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                            goToLogin(view);
-                        break;
-                    }
-                    case 1:
-                    {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/getinvolved"); //Optional parameters
-                        startActivity(i);
-                        break;
-                    }
-                    case 2:
-                    {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/drschaeferspeaking"); //Optional parameters
-                        startActivity(i);
-                        break;
-                    }
-                    case 3:
-                    {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/aboutus"); //Optional parameters
-                        startActivity(i);
-                        break;
-                    }
-                    case 4:
-                    {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/jointheteam"); //Optional parameters
-                        startActivity(i);
-                        break;
-                    }
-                    case 5:
-                    {
-                        logout(view);
-                        break;
-                    }
+                String choice = parent.getItemAtPosition(position).toString();
+                if (choice.equals(getResources().getString(R.string.sidebar_register_login))) {
+                    goToLogin(view);
+                }
+                else if (choice.equals(getResources().getString(R.string.sidebar_get_involved))) {
+                    Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                    i.putExtra("webviewLink", "http://www.thinq.tv/getinvolved"); //Optional parameters
+                    startActivity(i);
+                }
+                else if (choice.equals(getResources().getString(R.string.sidebar_podcast))) {
+                    Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                    i.putExtra("webviewLink", "http://www.thinq.tv/drschaeferspeaking"); //Optional parameters
+                    startActivity(i);
+                }
+                else if (choice.equals(getResources().getString(R.string.sidebar_about))) {
+                    Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                    i.putExtra("webviewLink", "http://www.thinq.tv/aboutus"); //Optional parameters
+                    startActivity(i);
+                }
+                else if (choice.equals(getResources().getString(R.string.sidebar_join_the_team))) {
+                    Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                    i.putExtra("webviewLink", "http://www.thinq.tv/jointheteam"); //Optional parameters
+                    startActivity(i);
+                }
+                else if (choice.equals(getResources().getString(R.string.sidebar_account))) {
+                    Intent i = new Intent(MainActivity.this, ControlPanelActivity.class);
+                    startActivity(i);
+                }
+                else if (choice.equals(getResources().getString(R.string.sidebar_logout))) {
+                    logout(view);
                 }
             }
         });

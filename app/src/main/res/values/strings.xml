@@ -33,12 +33,21 @@
     </string-array>
     <string-array name="sidebar_menu_loggedIn">
         <item>View Profile</item>
+        <item>Account</item>
         <item>Get Involved</item>
         <item>Have us on your Podcast</item>
         <item>About ThinQ</item>
         <item>Join the Team</item>
         <item>Logout</item>
     </string-array>
+    <string name="sidebar_register_login">Register/Login</string>
+    <string name="sidebar_get_involved">Get Involved</string>
+    <string name="sidebar_podcast">Have us on your Podcast</string>
+    <string name="sidebar_about">About ThinQ</string>
+    <string name="sidebar_join_the_team">Join the Team</string>
+    <string name="sidebar_profile">View Profile</string>
+    <string name="sidebar_account">Account</string>
+    <string name="sidebar_logout">Logout</string>
 
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Sign up</string>
