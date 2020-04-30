@@ -1,6 +1,8 @@
 package com.thinqtv.thinqtv_android;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -15,6 +17,7 @@ public class AnyWebview extends AppCompatActivity {
         setContentView(R.layout.event_webview);
 
         view = findViewById(R.id.webView);
+        view.setVisibility(View.INVISIBLE);
         String link = "";
         if(getIntent().getExtras() !=null)
             link = getIntent().getExtras().getString("webviewLink");
@@ -32,6 +35,12 @@ public class AnyWebview extends AppCompatActivity {
                             "(footer = document.getElementsByTagName('footer')[0]); footer.parentNode.removeChild(footer);" +
                             "(label = document.getElementsByClassName('box')[0]); label.parentNode.removeChild(label);" +
                             "})()");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.setVisibility(View.VISIBLE);
+                        }
+                    }, 500);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
