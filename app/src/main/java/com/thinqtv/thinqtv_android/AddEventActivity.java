@@ -92,14 +92,19 @@ public class AddEventActivity extends AppCompatActivity{
         );
 
         Button sendButton = findViewById(R.id.send);
+        Context context = this;
         sendButton.setOnClickListener(view -> {
+            String name = ((EditText) findViewById(R.id.event_title)).getText().toString();
+            String desc = ((EditText) findViewById(R.id.description)).getText().toString();
             Date date = calendar.getTime();
             LocalDateTime start = DateTimeUtils.toInstant(date).atZone(ZoneId.systemDefault()).toLocalDateTime();
             int length = (lengthSlider.getProgress() + 1) * 15;
             ZonedDateTime zoned_start = start.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("America/Phoenix"));
+            ZonedDateTime zoned_end = zoned_start.plusMinutes(length);
 
-            Log.e("start_datetime", zoned_start.toString());
-            Log.e("end_datetime", zoned_start.plusMinutes(length).toString());
+            String start_string = zoned_start.toLocalDateTime().toString();
+            String end_string = zoned_start.plusMinutes(length).toLocalDateTime().toString();
+            makeRequest(context, name, start_string, end_string, desc);
         });
     }
 
@@ -136,15 +141,15 @@ public class AddEventActivity extends AppCompatActivity{
         }
     }
 
-    public void makeRequest(Context context) {
+    public void makeRequest(Context context, String name, String start, String end, String desc) {
         final String url = "api/v1/events";
         JSONObject event = new JSONObject();
         JSONObject params = new JSONObject();
         try {
-            event.put("name", "");
-            event.put("start_at", "");
-            event.put("end_at", "");
-            event.put("desc", "");
+            event.put("name", name);
+            event.put("start_at", start);
+            event.put("end_at", end);
+            event.put("desc", desc);
             params.put("event", event);
         } catch(JSONException e) {
             e.printStackTrace();
@@ -154,7 +159,7 @@ public class AddEventActivity extends AppCompatActivity{
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 DataSource.getServerUrl() + url, params, response -> {
             try {
-                UserRepository.getInstance().getLoggedInUser().setAuthToken(response.getString("token"));
+                UserRepository.getInstance().getLoggedInUser().updateToken(response.getString("token"));
             } catch(JSONException e) {
                 e.printStackTrace();
             }

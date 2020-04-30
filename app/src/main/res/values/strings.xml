@@ -25,20 +25,21 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string-array name="sidebar_menu">
-        <item>Register/Login</item>
-        <item>Get Involved</item>
-        <item>Have us on your Podcast</item>
-        <item>About ThinQ</item>
-        <item>Join the Team</item>
+        <item>@string/sidebar_register_login</item>
+        <item>@string/sidebar_get_involved</item>
+        <item>@string/sidebar_podcast</item>
+        <item>@string/sidebar_about</item>
+        <item>@string/sidebar_join_the_team</item>
     </string-array>
     <string-array name="sidebar_menu_loggedIn">
-        <item>View Profile</item>
-        <item>Account</item>
-        <item>Get Involved</item>
-        <item>Have us on your Podcast</item>
-        <item>About ThinQ</item>
-        <item>Join the Team</item>
-        <item>Logout</item>
+        <item>@string/sidebar_profile</item>
+        <item>@string/sidebar_account</item>
+        <item>@string/sidebar_add_event</item>
+        <item>@string/sidebar_get_involved</item>
+        <item>@string/sidebar_podcast</item>
+        <item>@string/sidebar_about</item>
+        <item>@string/sidebar_join_the_team</item>
+        <item>@string/sidebar_logout</item>
     </string-array>
     <string name="sidebar_register_login">Register/Login</string>
     <string name="sidebar_get_involved">Get Involved</string>
@@ -48,6 +49,7 @@
     <string name="sidebar_profile">View Profile</string>
     <string name="sidebar_account">Account</string>
     <string name="sidebar_logout">Logout</string>
+    <string name="sidebar_add_event">Add Event</string>
 
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Sign up</string>

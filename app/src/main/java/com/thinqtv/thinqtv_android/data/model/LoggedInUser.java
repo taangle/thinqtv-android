@@ -12,6 +12,12 @@ public class LoggedInUser {
     private final String permalink;
     private final String email;
     private final SharedPreferences pref;
+    private String profilePic;
+    private String about;
+    private String genre1;
+    private String genre2;
+    private String genre3;
+    private String bannerPic;
 
     public LoggedInUser(Context context, String name, String authToken, String permalink, String email) {
         this.name = name;
@@ -30,9 +36,6 @@ public class LoggedInUser {
         this.name = name;
     }
     public String getEmail() { return email; }
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
-    }
     public String getAuthToken() {
         return authToken;
     }
@@ -40,6 +43,15 @@ public class LoggedInUser {
     public void updateToken(String authToken) {
         this.authToken = authToken;
         pref.edit().putString("token", authToken).apply();
+    }
+    public void updateProfile(String name, String profilePic, String about, String genre1, String genre2, String genre3, String bannerPic) {
+        this.name = name;
+        this.profilePic = profilePic;
+        this.about = about;
+        this.genre1 = genre1;
+        this.genre2 = genre2;
+        this.genre3 = genre3;
+        this.bannerPic = bannerPic;
     }
     public void logout() {
         pref.edit().remove("email").apply();

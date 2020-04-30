@@ -549,6 +549,10 @@ public class MainActivity extends AppCompatActivity {
                 else if (choice.equals(getResources().getString(R.string.sidebar_logout))) {
                     logout(view);
                 }
+                else if (choice.equals(getResources().getString(R.string.sidebar_add_event))) {
+                    Intent i = new Intent(MainActivity.this, AddEventActivity.class);
+                    startActivity(i);
+                }
             }
         });
 

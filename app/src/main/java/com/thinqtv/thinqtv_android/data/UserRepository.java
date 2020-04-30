@@ -233,7 +233,10 @@ public class UserRepository {
                 String responseString = new String(response.data);
                 try {
                     JSONObject result = new JSONObject(responseString);
-                    getLoggedInUser().setAuthToken(result.getString("token"));
+                    getLoggedInUser().updateToken(result.getString("token"));
+                    getLoggedInUser().updateProfile(result.getString("name"), result.getString("profpic"),
+                            result.getString("about"), result.getString("genre1"), result.getString("genre2"),
+                            result.getString("genre3"), result.getString("bannerpic"));
                     if (result.has("name")) {
                         getLoggedInUser().setName(result.getString("name"));
                     }
