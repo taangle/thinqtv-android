@@ -26,7 +26,7 @@ public class AnyWebview extends AppCompatActivity {
         view.getSettings().setJavaScriptEnabled(true);
         view.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageFinished(WebView webView, String url) {
+            public void onLoadResource(WebView webView, String url) {
                 try {
                     // remove the nav bar and the footer from each loaded page.
                     webView.loadUrl("javascript:(window.onload = function() { " +
