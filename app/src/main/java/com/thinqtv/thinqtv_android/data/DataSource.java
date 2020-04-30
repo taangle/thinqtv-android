@@ -31,7 +31,7 @@ public class DataSource {
         return requestQueue;
     }
 
-    static String getServerUrl() {
+    public static String getServerUrl() {
         return url;
     }
 

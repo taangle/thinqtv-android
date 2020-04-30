@@ -61,4 +61,6 @@
     <string name="date_prompt">Date</string>
     <string name="time_prompt">Time</string>
     <string name="click_to_set">Click To Set</string>
+    <string name="length_label">Length</string>
+    <string name="initial_length">1:00</string>
 </resources>
