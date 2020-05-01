@@ -52,6 +52,7 @@
             android:ems="10"
             android:hint="@string/name_prompt"
             android:inputType="textPersonName"
+            android:autofillHints="name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -62,6 +63,7 @@
             android:layout_height="100dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
+            android:contentDescription="@string/profile_picture_description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_image_label"
             tools:src="@tools:sample/avatars" />
@@ -76,6 +78,7 @@
             android:ems="10"
             android:hint="@string/about_you"
             android:inputType="textPersonName"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
@@ -100,6 +103,7 @@
             android:ems="10"
             android:hint="@string/topic_1"
             android:inputType="textPersonName"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fellowship_label" />
@@ -113,6 +117,7 @@
             android:ems="10"
             android:hint="@string/topic_2"
             android:inputType="textPersonName"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topic_1" />
@@ -126,6 +131,7 @@
             android:ems="10"
             android:hint="@string/topic_3"
             android:inputType="textPersonName"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topic_2" />
@@ -146,6 +152,7 @@
             android:layout_width="375dp"
             android:layout_height="75dp"
             android:layout_marginTop="8dp"
+            android:contentDescription="@string/banner_picture_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/choose_banner_image"

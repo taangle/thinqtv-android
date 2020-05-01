@@ -97,4 +97,7 @@
     <string name="current_password">Current Password (Required)</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
+    <string name="profile_picture_description">profile picture</string>
+    <string name="banner_picture_description">banner picture</string>
+    <string name="description_prompt">description</string>
 </resources>

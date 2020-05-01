@@ -1,5 +1,6 @@
 package com.thinqtv.thinqtv_android;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -15,7 +16,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,33 +70,29 @@ public class ControlPanelActivity extends AppCompatActivity {
         });
 
         Button saveButton = findViewById(R.id.save_changes_button);
-        saveButton.setOnClickListener(view -> {
-            UserRepository.getInstance().updateProfile(context, name.getText().toString(), findViewById(R.id.profile_image_view),
-                    about.getText().toString(), topic1.getText().toString(), topic2.getText().toString(),
-                    topic3.getText().toString(), findViewById(R.id.banner_image_view));
-        });
+        saveButton.setOnClickListener(view ->
+                UserRepository.getInstance().updateProfile(context, name.getText().toString(), findViewById(R.id.profile_image_view),
+                about.getText().toString(), topic1.getText().toString(), topic2.getText().toString(),
+                topic3.getText().toString(), findViewById(R.id.banner_image_view)));
     }
 
     private void selectImage(Context context) {
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(getString(R.string.choose_image));
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo")) {
-                    if (isPermissionGrantedForCamera()) {
-                        getPictureFromCamera();
-                    }
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals("Take Photo")) {
+                if (isPermissionGrantedForCamera()) {
+                    getPictureFromCamera();
                 }
-                else if (options[item].equals("Choose from Gallery")) {
-                    if (isPermissionGrantedForExternalStorage()) {
-                        getPictureFromStorage();
-                    }
+            }
+            else if (options[item].equals("Choose from Gallery")) {
+                if (isPermissionGrantedForExternalStorage()) {
+                    getPictureFromStorage();
                 }
-                else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
+            }
+            else if (options[item].equals("Cancel")) {
+                dialog.dismiss();
             }
         });
         builder.show();
@@ -122,7 +118,11 @@ public class ControlPanelActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
-                        selectedImage = (Bitmap) data.getExtras().get("data");
+                        try {
+                            selectedImage = (Bitmap) data.getExtras().get("data");
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
                     }
                     break;
                 case 1:
@@ -133,9 +133,7 @@ public class ControlPanelActivity extends AppCompatActivity {
                                 InputStream inputStream = getContentResolver().openInputStream(imageUri);
                                 selectedImage = BitmapFactory.decodeStream(inputStream);
                                 inputStream.close();
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -194,7 +192,7 @@ public class ControlPanelActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSIONS_CAMERA:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -209,7 +207,7 @@ public class ControlPanelActivity extends AppCompatActivity {
         }
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView imageView;
         public DownloadImageTask(ImageView imageView) {
             this.imageView = imageView;
@@ -222,9 +220,8 @@ public class ControlPanelActivity extends AppCompatActivity {
             try {
                 InputStream inputStream = new URL(imageUrl).openStream();
                 picture = BitmapFactory.decodeStream(inputStream);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
             return picture;

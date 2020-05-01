@@ -19,6 +19,7 @@
             android:ems="10"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
+            android:autofillHints="email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,6 +34,7 @@
             android:ems="10"
             android:hint="@string/current_password"
             android:inputType="textPassword"
+            android:autofillHints="password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +50,7 @@
             android:ems="10"
             android:hint="@string/new_password"
             android:inputType="textPassword"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email" />
@@ -62,6 +65,7 @@
             android:ems="10"
             android:hint="@string/confirm_new_password"
             android:inputType="textPassword"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/new_password" />
@@ -76,6 +80,7 @@
             android:ems="10"
             android:hint="@string/permalink_prompt"
             android:inputType="textPersonName"
+            android:autofillHints="name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/new_password_confirm" />
@@ -85,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Button"
+            android:text="@string/save_changes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/current_password" />

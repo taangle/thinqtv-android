@@ -6,13 +6,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thinqtv.thinqtv_android.R;
@@ -194,9 +192,8 @@ public class UserRepository {
 
     public void loadSavedUser(StartupLoadingActivity activity) {
         final String loginUrl = "api/v1/users/sign_in.json";
-        Context context = (Context)activity;
 
-        SharedPreferences pref = context.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
+        SharedPreferences pref = activity.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
         String email = pref.getString("email", null);
         String authToken = pref.getString("token", null);
 
@@ -216,7 +213,7 @@ public class UserRepository {
                 DataSource.getServerUrl() + loginUrl, userLogin,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email"), response.getString("id")));
+                        setLoggedInUser(new LoggedInUser(activity, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email"), response.getString("id")));
                         getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
                         getLoggedInUser().updateProfile(response.getString("name"), response.getString("profpic"),
                                 response.getString("about"), response.getString("genre1"), response.getString("genre2"),
@@ -225,11 +222,9 @@ public class UserRepository {
                         e.printStackTrace();
                     }
                     activity.finish();
-                }, error -> {
-            activity.finish();
-        });
+                }, error -> activity.finish());
 
-        DataSource.getInstance().addToRequestQueue(request, context);
+        DataSource.getInstance().addToRequestQueue(request, activity);
     }
 
     public void updateAccount(Context context, String email, String currentPassword, String newPassword,
@@ -263,31 +258,27 @@ public class UserRepository {
                        String topic2, String topic3, ImageView bannerPic) {
         String url = DataSource.getServerUrl() + "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName();
         VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, url,
-                new Response.Listener<NetworkResponse>() {
-            public void onResponse(NetworkResponse response) {
-                String responseString = new String(response.data);
-                try {
-                    JSONObject result = new JSONObject(responseString);
-                    getLoggedInUser().updateToken(result.getString("token"));
-                    getLoggedInUser().updateProfile(result.getString("name"), result.getString("profpic"),
-                            result.getString("about"), result.getString("genre1"), result.getString("genre2"),
-                            result.getString("genre3"), result.getString("bannerpic"));
-                    if (result.has("name")) {
-                        getLoggedInUser().setName(result.getString("name"));
+                response -> {
+                    String responseString = new String(response.data);
+                    try {
+                        JSONObject result = new JSONObject(responseString);
+                        getLoggedInUser().updateToken(result.getString("token"));
+                        getLoggedInUser().updateProfile(result.getString("name"), result.getString("profpic"),
+                                result.getString("about"), result.getString("genre1"), result.getString("genre2"),
+                                result.getString("genre3"), result.getString("bannerpic"));
+                        if (result.has("name")) {
+                            getLoggedInUser().setName(result.getString("name"));
+                        }
+                        if (result.has("pic")) {
+                        }
+                        ((Activity)context).finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    if (result.has("pic")) {
-                    }
-                    ((Activity)context).finish();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-                }, new Response.ErrorListener() {
-            public void onErrorResponse(VolleyError error) {
-                NetworkResponse response = error.networkResponse;
-                String errorMessage = "Unknown error";
-            }
-        }) {
+                }, error -> {
+                    NetworkResponse response = error.networkResponse;
+                    String errorMessage = "Unknown error";
+                }) {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("user_email", UserRepository.getInstance().getLoggedInUser().getEmail());

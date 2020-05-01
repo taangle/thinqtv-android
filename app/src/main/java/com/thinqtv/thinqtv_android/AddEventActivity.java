@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,15 +23,14 @@ import com.thinqtv.thinqtv_android.data.UserRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.threeten.bp.DateTimeUtils;
-import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -46,25 +44,20 @@ public class AddEventActivity extends AppCompatActivity{
         setContentView(R.layout.activity_add_event);
         Button setTimeButton = findViewById(R.id.time);
         setTimeButton.setOnClickListener(view -> {
-            DialogFragment newFragment = new TimePickerFragment(new TimePickerDialog.OnTimeSetListener() {
-                public void onTimeSet(TimePicker view, int hour, int minute) {
-                    calendar.set(Calendar.HOUR_OF_DAY, hour);
-                    calendar.set(Calendar.MINUTE, minute);
-                    setTimeButton.setText(calendar.getTime().toString().substring(11, 16));
-                }
+            DialogFragment newFragment = new TimePickerFragment((view1, hour, minute) -> {
+                calendar.set(Calendar.HOUR_OF_DAY, hour);
+                calendar.set(Calendar.MINUTE, minute);
+                setTimeButton.setText(calendar.getTime().toString().substring(11, 16));
             });
             newFragment.show(getSupportFragmentManager(), "timePicker");
         });
         Button setDateButton = findViewById(R.id.date);
         setDateButton.setOnClickListener(view -> {
-            DialogFragment newFragment = new DatePickerFragment(new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                    calendar.set(Calendar.MONTH, month);
-                    calendar.set(Calendar.DATE, day);
-                    calendar.set(Calendar.YEAR, year);
-                    setDateButton.setText(calendar.getTime().toString().substring(0, 10));
-                }
+            DialogFragment newFragment = new DatePickerFragment((datePicker, year, month, day) -> {
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DATE, day);
+                calendar.set(Calendar.YEAR, year);
+                setDateButton.setText(calendar.getTime().toString().substring(0, 10));
             });
             newFragment.show(getSupportFragmentManager(), "datePicker");
         });
@@ -116,6 +109,7 @@ public class AddEventActivity extends AppCompatActivity{
             this.listener = listener;
         }
         @Override
+        @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // default values are the current time
             final Calendar c = Calendar.getInstance();
@@ -132,6 +126,7 @@ public class AddEventActivity extends AppCompatActivity{
             this.listener = listener;
         }
         @Override
+        @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // default values are the current date
             final Calendar c = Calendar.getInstance();
@@ -168,10 +163,7 @@ public class AddEventActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
         }, error -> {
-            if (error.networkResponse != null) {
-            }
-            else {
-            }
+            Log.e("create event", "server error");
         });
         DataSource.getInstance().addToRequestQueue(request, context);
     }

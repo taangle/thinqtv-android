@@ -1,6 +1,5 @@
 package com.thinqtv.thinqtv_android;
 
-import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +21,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -48,7 +46,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.ResourceBundle;
 
 public class MainActivity extends AppCompatActivity {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
