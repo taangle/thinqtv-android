@@ -3,6 +3,9 @@ package com.thinqtv.thinqtv_android.data.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoggedInUser {
@@ -41,22 +44,39 @@ public class LoggedInUser {
     public String getAuthToken() {
         return authToken;
     }
+    public String getPermalink() { return permalink; }
+    public String getAbout() { return about; }
+    public String getGenre1() { return genre1; }
+    public String getGenre2() { return genre2; }
+    public String getGenre3() { return genre3; }
+    public String getProfilePic() { return profilePic; }
+    public String getBannerPic() { return bannerPic; }
 
     public void updateToken(String authToken) {
         this.authToken = authToken;
         pref.edit().putString("token", authToken).apply();
     }
+
+    public void updateEmail(String email) {
+        this.email = email;
+        pref.edit().putString("email", email).apply();
+    }
     public void updateProfile(String name, String profilePic, String about, String genre1, String genre2, String genre3, String bannerPic) {
-        this.name = name;
-        this.profilePic = profilePic;
+        try {
+            JSONObject profilePicJson = new JSONObject(profilePic);
+            this.profilePic = profilePicJson.getString("url");
+            JSONObject bannerPicJson = new JSONObject(bannerPic);
+            this.bannerPic = bannerPicJson.getString("url");
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
         this.about = about;
         this.genre1 = genre1;
         this.genre2 = genre2;
         this.genre3 = genre3;
-        this.bannerPic = bannerPic;
     }
     public void updateAccount(String email, String permalink) {
-        this.email = email;
+        updateEmail(email);
         this.permalink = permalink;
     }
     public void logout() {

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -20,34 +21,41 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.thinqtv.thinqtv_android.data.UserRepository;
+import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class ControlPanelActivity extends AppCompatActivity {
 
     private final int PERMISSIONS_READ_FILES = 1;
     private final int PERMISSIONS_CAMERA = 2;
     private ImageView imageView;
-    private String profilePicName;
-    private String bannerPicName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_panel);
 
+        LoggedInUser user = UserRepository.getInstance().getLoggedInUser();
         EditText name = findViewById(R.id.name);
+        name.setText(user.getName());
         EditText about = findViewById(R.id.about_you);
+        about.setText(user.getAbout());
         EditText topic1 = findViewById(R.id.topic_1);
+        topic1.setText(user.getGenre1());
         EditText topic2 = findViewById(R.id.topic_2);
+        topic2.setText(user.getGenre2());
         EditText topic3 = findViewById(R.id.topic_3);
-        String profilePicName;
-        String bannerPicName;
+        topic3.setText(user.getGenre3());
+
+        new DownloadImageTask(findViewById(R.id.profile_image_view)).execute(user.getProfilePic());
+        new DownloadImageTask(findViewById(R.id.banner_image_view)).execute(user.getBannerPic());
+
         imageView = null;
-
-
         Button profileImageButton = findViewById(R.id.choose_image_button);
         Context context = this;
         profileImageButton.setOnClickListener(view -> {
@@ -198,6 +206,33 @@ public class ControlPanelActivity extends AppCompatActivity {
                     getPictureFromStorage();
                 }
                 break;
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView imageView;
+        public DownloadImageTask(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String...urls) {
+            String imageUrl = urls[0];
+            Bitmap picture = null;
+            try {
+                InputStream inputStream = new URL(imageUrl).openStream();
+                picture = BitmapFactory.decodeStream(inputStream);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return picture;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            imageView.setImageBitmap(result);
         }
     }
 }

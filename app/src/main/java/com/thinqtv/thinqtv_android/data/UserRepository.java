@@ -246,7 +246,7 @@ public class UserRepository {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
+        String url = DataSource.getServerUrl() + "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, params, response -> {
             try {
                 getLoggedInUser().updateToken(response.getString("token"));
@@ -261,8 +261,8 @@ public class UserRepository {
     }
     public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
                        String topic2, String topic3, ImageView bannerPic) {
-        String url = "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, DataSource.getServerUrl() + url,
+        String url = DataSource.getServerUrl() + "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName();
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, url,
                 new Response.Listener<NetworkResponse>() {
             public void onResponse(NetworkResponse response) {
                 String responseString = new String(response.data);
@@ -313,10 +313,10 @@ public class UserRepository {
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 Random rand = new Random();
-                if (profilePic.getDrawable() != null) {
+                if (profilePic.getDrawable() != null && ((BitmapDrawable)profilePic.getDrawable()).getBitmap() != null) {
                     params.put("profilepic", new DataPart("profile_pic" + rand.nextInt(10000) + ".jpeg", getFileDataFromDrawable(context, profilePic.getDrawable()), "image/jpeg"));
                 }
-                if (bannerPic.getDrawable() != null) {
+                if (bannerPic.getDrawable() != null && ((BitmapDrawable)bannerPic.getDrawable()).getBitmap() != null) {
                     params.put("bannerpic", new DataPart("banner_pic" + rand.nextInt(10000) + ".jpeg", getFileDataFromDrawable(context, bannerPic.getDrawable()), "image/jpeg"));
                 }
                 return params;

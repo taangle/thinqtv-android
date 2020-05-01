@@ -1,5 +1,6 @@
 package com.thinqtv.thinqtv_android;
 
+import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -543,7 +544,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(i);
                 }
                 else if (choice.equals(getResources().getString(R.string.sidebar_account))) {
-                    Intent i = new Intent(MainActivity.this, ControlPanelActivity.class);
+                    Intent i = new Intent(MainActivity.this, AccountSettingsActivity.class);
                     startActivity(i);
                 }
                 else if (choice.equals(getResources().getString(R.string.sidebar_logout))) {
@@ -551,6 +552,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if (choice.equals(getResources().getString(R.string.sidebar_add_event))) {
                     Intent i = new Intent(MainActivity.this, AddEventActivity.class);
+                    startActivity(i);
+                }
+                else if (choice.equals(UserRepository.getInstance().getLoggedInUser().getName())) {
+                    Intent i = new Intent(MainActivity.this, ControlPanelActivity.class);
                     startActivity(i);
                 }
             }
