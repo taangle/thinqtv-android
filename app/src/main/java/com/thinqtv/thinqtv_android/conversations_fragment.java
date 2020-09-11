@@ -201,27 +201,7 @@ public class conversations_fragment extends Fragment {
         startActivity(intent);
         getActivity().finish();
     }
-/*
-    // go to get involved page
-    public void goGetInvolved(View V){
-        Intent i = new Intent(this, GetInvolved.class);
-        startActivity(i);
-    }
 
-    // Go to login page.
-    public void goToLogin(View v) {
-        Intent i = new Intent(this, LoginActivity.class);
-        startActivity(i);
-    }
-
-    public void logout(View v) {
-        UserRepository.getInstance().logout();
-
-        finish();
-        overridePendingTransition(R.anim.catalyst_fade_in, R.anim.catalyst_fade_out);
-        startActivity(getIntent());
-    }
-*/
     // listener for when a user clicks an event to go to its page
     private class goToWebview_ClickListener implements View.OnClickListener{
         private Context mContext;

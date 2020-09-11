@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.thinqtv.thinqtv_android.ui.auth.*;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,5 +62,11 @@ public class profile_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.profile_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated (View view, Bundle savedInstanceState)
+    {
+        LoginActivity userLogin = new LoginActivity();
     }
 }
