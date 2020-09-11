@@ -49,7 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String THINQTV_ROOM_NAME = "ThinqTV";
+    private static final String THINQTV_ROOM_NAME = "DropIn";
     private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
     private static String lastScreenNameStr = "";
 
