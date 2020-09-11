@@ -18,27 +18,27 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(conversations_fragment.newInstance("", ""));
     }
+
+
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
-    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_dropin:
-                            openFragment(dropin_fragment.newInstance("", ""));
-                            return true;
-                        case R.id.action_conversations:
-                            openFragment(conversations_fragment.newInstance("", ""));
-                            return true;
-                        case R.id.action_profile:
-                            openFragment(profile_fragment.newInstance("", ""));
-                            return true;
-                    }
-                    return false;
-                }
-            };
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = item ->
+    {
+        switch (item.getItemId()) {
+            case R.id.action_dropin:
+                openFragment(dropin_fragment.newInstance("", ""));
+                return true;
+            case R.id.action_conversations:
+                openFragment(conversations_fragment.newInstance("", ""));
+                return true;
+            case R.id.action_profile:
+                openFragment(profile_fragment.newInstance("", ""));
+                return true;
+        }
+        return false;
+    };
 }
