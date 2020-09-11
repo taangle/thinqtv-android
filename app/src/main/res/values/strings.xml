@@ -67,4 +67,7 @@
     <string name="email_taken">Email has already been taken.</string>
     <string name="permalink_taken">Permalink has already been taken.</string>
     <string name="generic_input_error">There is a problem with your input</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -34,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thinqtv.thinqtv_android.data.DataSource;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 import com.thinqtv.thinqtv_android.ui.auth.LoginActivity;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initializeEvents();
         generateSidebar();
-        setDrawerToggle();
+        instantiateBottomNAV();
 
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        generateSidebar();
+        instantiateBottomNAV();
 
         // restore text inside screen name field if the user hasn't typed anything to override it
         EditText screenName = findViewById(R.id.screenName);
@@ -125,6 +126,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Activate the navigation drawer toggle
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
@@ -581,12 +598,6 @@ public class MainActivity extends AppCompatActivity {
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
-    }
-
-    private void setDrawerToggle()
-    {
-        DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
@@ -594,19 +605,31 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
+    private void instantiateBottomNAV()
+    {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavBar);
+        bottomNavigationView.setSelectedItemId(R.id.action_conversations);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_dropin:
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Activate the navigation drawer toggle
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+                        break;
+                    case R.id.action_conversations:
+
+                        break;
+                    case R.id.action_profile:
+                        if (UserRepository.getInstance().isLoggedIn())
+                        {
+                            Toast.makeText(getApplicationContext(),"Coming soon: View your Profile!",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            goToLogin(getWindow().getDecorView().getRootView());
+                        break;
+                }
+                return true;
+            }
+        });
     }
 }
