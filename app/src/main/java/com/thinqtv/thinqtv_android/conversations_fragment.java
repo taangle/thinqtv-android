@@ -43,6 +43,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import android.widget.LinearLayout.LayoutParams;
 
@@ -248,13 +249,15 @@ public class conversations_fragment extends Fragment {
                 if (json.getJSONObject(i).getString("username").length() > 18)
                     newEvent_host.setText(newEvent_host.getText() + "...");
 
-                // gets the date of event
+                // gets the date of event and convert to local time
                 TextView newEvent_time = new TextView(getContext());
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("MST"));
                 Date date = new Date();
                 try {
                     date = dateFormat.parse(json.getJSONObject(i).getString("start_at"));
                 } catch (ParseException e) { e.printStackTrace(); }
+                dateFormat.setTimeZone(TimeZone.getDefault());
 
                 // formats the date from above into viewable format
                 SimpleDateFormat displayFormat = new SimpleDateFormat("EEE, MMM dd");
@@ -266,7 +269,7 @@ public class conversations_fragment extends Fragment {
                 // formats the date from above into viewable format (BUT NOW ITS START TIME)
                 displayFormat = new SimpleDateFormat("h:mm aa");
                 TextView newEvent_starttime = new TextView(getContext());
-                newEvent_starttime.setText(displayFormat.format(date) + " PDT");
+                newEvent_starttime.setText(displayFormat.format(date) + " " + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT));
                 newEvent_starttime.setTextSize(15);
                 newEvent_starttime.setPadding(720, 110, 0, 0);
                 newEvent_starttime.setTextColor(Color.GRAY);
