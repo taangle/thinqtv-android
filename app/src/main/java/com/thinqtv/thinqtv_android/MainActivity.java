@@ -533,21 +533,21 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                     {
                         Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/getinvolved"); //Optional parameters
+                        i.putExtra("webviewLink", "https://www.thinq.tv/jointheteam"); //Optional parameters
                         startActivity(i);
                         break;
                     }
                     case 2:
                     {
                         Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/drschaeferspeaking"); //Optional parameters
+                        i.putExtra("webviewLink", "https://www.thinq.tv/drschaeferspeaking"); //Optional parameters
                         startActivity(i);
                         break;
                     }
                     case 3:
                     {
                         Intent i = new Intent(MainActivity.this, AnyWebview.class);
-                        i.putExtra("webviewLink", "http://www.thinq.tv/aboutus"); //Optional parameters
+                        i.putExtra("webviewLink", "https://www.thinq.tv/getinvolved"); //Optional parameters
                         startActivity(i);
                         break;
                     }
