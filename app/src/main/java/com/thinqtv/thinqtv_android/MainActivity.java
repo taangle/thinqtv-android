@@ -32,8 +32,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.thinqtv.thinqtv_android.data.DataSource;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 import com.thinqtv.thinqtv_android.ui.auth.LoginActivity;
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
     boolean eventsExpanded = false; //used to expand and collapse the Events ScrollView, changes with each click
+    private GoogleSignInClient mGoogleSignInClient;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -66,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
         generateSidebar();
         setDrawerToggle();
 
+        // TODO: silently sign in with Google?
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
@@ -169,6 +180,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void logout(View v) {
         UserRepository.getInstance().logout();
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
+                    }
+                });
 
         finish();
         overridePendingTransition(R.anim.catalyst_fade_in, R.anim.catalyst_fade_out);
