@@ -112,7 +112,6 @@ public class conversations_fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initializeEvents();
-        connectButtons();
 
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn()) {
@@ -136,19 +135,13 @@ public class conversations_fragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        // restore text inside screen name field if the user hasn't typed anything to override it
-        EditText screenName = getView().findViewById(R.id.screenName);
         // Check if a user has logged in, and if so, set the screen name.
         if (UserRepository.getInstance().isLoggedIn()) {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
-            screenName.setText(lastScreenNameStr);
         }
         // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
         else {
-            String screenNameStr = screenName.getText().toString();
-            if (screenNameStr.length() == 0) {
-                screenName.setText(lastScreenNameStr);
-            }
+            //TODO: SHOULD ANYTHING HAPPEN IF THE APP IS OPENED AND THE USER IS NOT LOGGED IN?
         }
     }
 
@@ -176,10 +169,6 @@ public class conversations_fragment extends Fragment {
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
     public void onJoinClick(View v) {
-        // extract screen name and conference name from EditText fields
-        EditText screenName = getView().findViewById(R.id.screenName);
-        lastScreenNameStr = screenName.getText().toString();
-
         JitsiMeetConferenceOptions.Builder optionsBuilder
                 = new JitsiMeetConferenceOptions.Builder()
                 .setRoom(THINQTV_ROOM_NAME);
@@ -271,7 +260,7 @@ public class conversations_fragment extends Fragment {
                 SimpleDateFormat displayFormat = new SimpleDateFormat("EEE, MMM dd");
                 newEvent_time.setText(displayFormat.format(date));
                 newEvent_time.setTextSize(20);
-                newEvent_time.setPadding(750, 45, 0, 0);
+                newEvent_time.setPadding(720, 45, 0, 0);
                 newEvent_time.setTextColor(getResources().getColor(R.color.colorPrimary));
 
                 // formats the date from above into viewable format (BUT NOW ITS START TIME)
@@ -279,7 +268,7 @@ public class conversations_fragment extends Fragment {
                 TextView newEvent_starttime = new TextView(getContext());
                 newEvent_starttime.setText(displayFormat.format(date) + " PDT");
                 newEvent_starttime.setTextSize(15);
-                newEvent_starttime.setPadding(750, 110, 0, 0);
+                newEvent_starttime.setPadding(720, 110, 0, 0);
                 newEvent_starttime.setTextColor(Color.GRAY);
 
                 // Now you have all your TextViews, create a ConstraintLayout for each one
@@ -428,7 +417,7 @@ public class conversations_fragment extends Fragment {
     public void getEventsJSONfile()
     {
         // where you get the JSON file
-        final String url = "https://thinqtv.herokuapp.com/events.json";
+        final String url = "https://thinq.tv/api/v1/events";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -463,6 +452,8 @@ public class conversations_fragment extends Fragment {
         // add listener for whenever a user changes filter
         eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ((TextView) adapterView.getChildAt(0)).setTextSize(20);
+                ((TextView) adapterView.getChildAt(0)).setTextColor(getResources().getColor(R.color.colorAccent));
                 getEventsJSONfile();
             }
 
@@ -470,80 +461,5 @@ public class conversations_fragment extends Fragment {
                 // this doesn't ever happen but i need to override the virtual class
             }
         });
-    }
-
-    public void connectButtons()
-    {
-        Button button = (Button) getView().findViewById(R.id.defaultJoinButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onJoinClick(v);
-
-            }
-        });
-
-        TextView button2 = (TextView) getView().findViewById(R.id.expandButton);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                expandEventsClick(v);
-
-            }
-        });
-        button2 = (TextView) getView().findViewById(R.id.upcoming_events_header);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                expandEventsClick(v);
-
-            }
-        });
-    }
-
-    public void expandEventsClick(View v)
-    {
-        // Link the header TextView
-        TextView header = (TextView) getView().findViewById(R.id.upcoming_events_header);
-        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) header.getLayoutParams();
-
-        // Link any buttons
-        TextView carrot = (TextView) getView().findViewById(R.id.expandButton);
-        Button joinButton = getView().findViewById(R.id.defaultJoinButton);
-
-        // if the Upcoming Events are expanded, minimize
-        if (eventsExpanded)
-        {
-            params.verticalBias = 0.5f;
-
-            // the buttons are always visible under the ScrollView for some reason
-            // because of this, they must be set to invisible when you expand the Events
-            joinButton.setVisibility(View.VISIBLE);
-
-            // make it twist
-            carrot.setRotation(0);
-            ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
-            lparams.verticalBias = 0.33f;
-            carrot.setLayoutParams(lparams);
-
-            // for when it gets clicked again
-            eventsExpanded = false;
-        }
-        // when the Upcoming Events are expanded already, this code collapses it
-        // it's just the opposite of the above code essentially
-        else
-        {
-            params.verticalBias = 0.25f;
-
-            joinButton.setVisibility(View.INVISIBLE);
-
-            carrot.setRotation(180);
-            ConstraintLayout.LayoutParams lparams = (ConstraintLayout.LayoutParams) carrot.getLayoutParams();
-            lparams.verticalBias = 0.48f;
-            carrot.setLayoutParams(lparams);
-
-            eventsExpanded = true;
-        }
-
-        // move header based on the values set in the if-else statement
-        // other items are linked to the header so they will move as well
-        header.setLayoutParams(params);
     }
 }
