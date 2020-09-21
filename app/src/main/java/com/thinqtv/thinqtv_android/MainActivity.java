@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_profile:
                 openFragment(profile_fragment.newInstance("", ""));
                 return true;
+            case R.id.action_aboutus:
+                openFragment(aboutus_fragment.newInstance("",""));
+                return true;
         }
         return false;
     };
