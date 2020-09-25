@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,58 +48,25 @@ import java.util.TimeZone;
 
 import android.widget.LinearLayout.LayoutParams;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link conversations_fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class conversations_fragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
     private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
     private static String lastScreenNameStr = "";
 
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
-    boolean eventsExpanded = false; //used to expand and collapse the Events ScrollView, changes with each click
 
     public conversations_fragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment conversations_fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static conversations_fragment newInstance(String param1, String param2) {
+    public static conversations_fragment newInstance() {
         conversations_fragment fragment = new conversations_fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -332,8 +300,11 @@ public class conversations_fragment extends Fragment {
                             constraintLayout.addView(happening_now);
                         }
 
-                        linearLayout.addView(constraintLayout);
-                        linearLayout.addView(viewDivider);
+                        if (newEvent_name.getText() != "DropIn")
+                        {
+                            linearLayout.addView(constraintLayout);
+                            linearLayout.addView(viewDivider);
+                        }
                         break;
                     }
                     case ("This Week") :
@@ -377,8 +348,11 @@ public class conversations_fragment extends Fragment {
 
                         if (date.before(filterDate))
                         {
-                            linearLayout.addView(constraintLayout);
-                            linearLayout.addView(viewDivider);
+                            if (newEvent_name.getText() != "DropIn")
+                            {
+                                linearLayout.addView(constraintLayout);
+                                linearLayout.addView(viewDivider);
+                            }
                         }
                         break;
                     }
@@ -394,8 +368,11 @@ public class conversations_fragment extends Fragment {
 
                             if (date.before(filterDate))
                             {
-                                linearLayout.addView(constraintLayout);
-                                linearLayout.addView(viewDivider);
+                                if (newEvent_name.getText() != "DropIn")
+                                {
+                                    linearLayout.addView(constraintLayout);
+                                    linearLayout.addView(viewDivider);
+                                }
                             }
                         }
                         break;
@@ -407,8 +384,11 @@ public class conversations_fragment extends Fragment {
 
                         if (date.after(filterDate))
                         {
-                            linearLayout.addView(constraintLayout);
-                            linearLayout.addView(viewDivider);
+                            if (newEvent_name.getText() != "DropIn")
+                            {
+                                linearLayout.addView(constraintLayout);
+                                linearLayout.addView(viewDivider);
+                            }
                         }
                         break;
                     }
@@ -455,8 +435,8 @@ public class conversations_fragment extends Fragment {
         // add listener for whenever a user changes filter
         eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ((TextView) adapterView.getChildAt(0)).setTextSize(20);
-                ((TextView) adapterView.getChildAt(0)).setTextColor(getResources().getColor(R.color.colorAccent));
+                ((TextView) adapterView.getChildAt(0)).setTextSize(18);
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 getEventsJSONfile();
             }
 

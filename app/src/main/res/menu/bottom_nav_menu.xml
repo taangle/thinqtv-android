@@ -12,12 +12,12 @@
         android:enabled="true"
         android:checked="true"
         android:icon="@drawable/schedule_bottombar"
-        android:title="Conversations"
+        android:title="Mentor Hours"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_aboutus"
         android:enabled="true"
-        android:icon="@drawable/aboutus_bottombar"
+        android:icon="@drawable/schedule_bottombar"
         android:title="About Us"
         app:showAsAction="ifRoom" />
     <item

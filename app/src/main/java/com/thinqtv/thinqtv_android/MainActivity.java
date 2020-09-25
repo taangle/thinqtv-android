@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setSelectedItemId(R.id.action_conversations);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        openFragment(conversations_fragment.newInstance("", ""));
+        openFragment(conversations_fragment.newInstance());
     }
 
 
@@ -30,16 +30,16 @@ public class MainActivity extends AppCompatActivity {
     {
         switch (item.getItemId()) {
             case R.id.action_dropin:
-                openFragment(dropin_fragment.newInstance("", ""));
+                openFragment(dropin_fragment.newInstance());
                 return true;
             case R.id.action_conversations:
-                openFragment(conversations_fragment.newInstance("", ""));
+                openFragment(conversations_fragment.newInstance());
                 return true;
             case R.id.action_profile:
                 openFragment(profile_fragment.newInstance("", ""));
                 return true;
             case R.id.action_aboutus:
-                openFragment(aboutus_fragment.newInstance("",""));
+                openFragment(profile_fragment.newInstance("",""));
                 return true;
         }
         return false;
