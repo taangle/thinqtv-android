@@ -166,6 +166,7 @@ public class LoginActivity extends AppCompatActivity {
             // TODO what if it _is_ null?
             if (account != null) {
                 String idToken = account.getIdToken();
+                Log.d(getString(R.string.google_sign_in_tag), "ID token: " + idToken);
 
                 if (validateTokenWithServer(idToken)) {
                     // TODO: updateUI(account);
@@ -174,7 +175,8 @@ public class LoginActivity extends AppCompatActivity {
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(getString(R.string.google_sign_in_tag), "signInResult:failed code=" + e.getStatusCode());
+            Log.w(getString(R.string.google_sign_in_tag), "signInResult:failed code=" + e.getStatusCode()
+                + ", message=" + e.getMessage());
             // TODO: updateUI(null);
         }
     }
