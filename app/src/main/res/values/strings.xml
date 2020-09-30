@@ -71,4 +71,5 @@
     <string name="facebook_app_id">367815227733797</string>
     <string name="fb_login_protocol_scheme">fb367815227733797</string>
     <string name="fb_sign_in_tag">FB_SIGN_IN</string>
+    <string name="server_url_fb_sign_in">https://thinq.tv/api/v1/oauth/facebook</string>
 </resources>

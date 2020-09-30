@@ -24,13 +24,25 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.thinqtv.thinqtv_android.R;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private CallbackManager callbackManager;
+    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,7 +132,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
-                Log.i(getString(R.string.fb_sign_in_tag), "Successfully logged in with FB. Access token: " + loginResult.getAccessToken());
+                Log.i(getString(R.string.fb_sign_in_tag), "Successfully logged in with FB. Access token: " + loginResult.getAccessToken().getToken());
+                validateAccessTokenWithServer(loginResult.getAccessToken().getToken());
             }
 
             @Override
@@ -133,6 +146,34 @@ public class LoginActivity extends AppCompatActivity {
             public void onError(FacebookException exception) {
                 // App code
                 Log.w(getString(R.string.fb_sign_in_tag), "Sign in with FB threw error", exception);
+            }
+        });
+    }
+
+    private void validateAccessTokenWithServer(String accessToken) {
+        String json = String.format("{\"access_token\": \"%s\"}", accessToken);
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(getString(R.string.server_url_fb_sign_in))
+                .post(body)
+                .build();
+
+        Log.i(getString(R.string.fb_sign_in_tag), "Sending access token to backend");
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(getString(R.string.fb_sign_in_tag), "Error sending access token to backend", e);
+                // TODO updateUI(null);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Log.i(getString(R.string.fb_sign_in_tag), "Signed in with FB: " + response.body().string());
+                    // TODO updateUI();
+                }
+                // TODO updateUI(null);
             }
         });
     }
