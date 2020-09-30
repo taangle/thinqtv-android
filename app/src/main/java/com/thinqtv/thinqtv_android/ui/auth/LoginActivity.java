@@ -1,30 +1,36 @@
 package com.thinqtv.thinqtv_android.ui.auth;
 
 import android.app.Activity;
-
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.thinqtv.thinqtv_android.R;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    private CallbackManager callbackManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final Button registerButton = findViewById(R.id.sign_up);
         final TextView errorTextView = findViewById(R.id.error);
+        final LoginButton fbLoginButton = findViewById(R.id.fb_login_button);
 
         // Can't submit the initial empty form.
         loginButton.setEnabled(false);
@@ -105,6 +112,35 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         registerButton.setOnClickListener(view -> goToRegister());
+
+        // TODO check if user is already logged in with FB
+        callbackManager = CallbackManager.Factory.create();
+        fbLoginButton.setReadPermissions(Arrays.asList("email"));
+        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+                Log.i(getString(R.string.fb_sign_in_tag), "Successfully logged in with FB. Access token: " + loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+                Log.i(getString(R.string.fb_sign_in_tag), "Sign in with FB cancelled");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+                Log.w(getString(R.string.fb_sign_in_tag), "Sign in with FB threw error", exception);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // Display error at the top of the login screen.
