@@ -1,5 +1,6 @@
 package com.thinqtv.thinqtv_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
@@ -7,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.thinqtv.thinqtv_android.ui.auth.LoginActivity;
+import com.thinqtv.thinqtv_android.ui.auth.RegisterActivity;
+
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
     @Override
@@ -14,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.setSelectedItemId(R.id.action_conversations);
+        bottomNavigation.setSelectedItemId(R.id.action_profile);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        openFragment(conversations_fragment.newInstance());
+        openFragment(profile_fragment.newInstance());
     }
 
 
@@ -35,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_conversations:
                 openFragment(conversations_fragment.newInstance());
                 return true;
-            case R.id.action_profile:
-                openFragment(profile_fragment.newInstance("", ""));
-                return true;
             case R.id.action_aboutus:
-                openFragment(profile_fragment.newInstance("",""));
+                openFragment(profile_fragment.newInstance());
+                return true;
+            case R.id.action_profile:
+                openFragment(profile_fragment.newInstance());
                 return true;
         }
         return false;

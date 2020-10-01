@@ -3,7 +3,8 @@
     <string name="conference_name_hint">Enter Room Name</string>
     <string name="join_button_hint">Join</string>
     <string name="screen_name_hint">Enter Your Name</string>
-    <string name="homescreenHeader">Conversations that make you ThinQ!</string>
+    <string name="welcomeMSG">A video chat community with powerful women
+        role models in STEM, here to help you navigate your career!</string>
     <string name="defaultTryConversation">Join the conversation!</string>
     <string name="getInvolved">Get involved</string>
     <string name="mentor_hours">- Mentor Hours -</string>
