@@ -170,10 +170,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    Log.i(getString(R.string.fb_sign_in_tag), "Signed in with FB: " + response.body().string());
+                    Log.i(getString(R.string.fb_sign_in_tag), "Signed in with FB");
                     // TODO updateUI();
                 }
-                // TODO updateUI(null);
+                else {
+                    Log.w(getString(R.string.fb_sign_in_tag), "Failed to sign in with FB, response code: " + response.code());
+                    // TODO updateUI(null);
+                }
             }
         });
     }
