@@ -24,9 +24,14 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.thinqtv.thinqtv_android.R;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.List;
 
 import co.apptailor.googlesignin.RNGoogleSigninModule;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -48,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null)
             Log.i(getString(R.string.google_sign_in_tag), "Already logged in with Google: " + account.getEmail());
-//        updateUI(account);
+//        TODO updateUI(account);
     }
 
     @Override
@@ -165,23 +170,22 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // TODO what if it _is_ null?
             if (account != null) {
+                Log.i(getString(R.string.google_sign_in_tag), "Successfully got GoogleSignInAccount");
                 String idToken = account.getIdToken();
                 Log.d(getString(R.string.google_sign_in_tag), "ID token: " + idToken);
 
-                if (validateTokenWithServer(idToken)) {
-                    // TODO: updateUI(account);
-                }
+                validateTokenWithServer(idToken, account);
             }
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(getString(R.string.google_sign_in_tag), "signInResult:failed code=" + e.getStatusCode()
-                + ", message=" + e.getMessage());
+                + ", message=" + e.getMessage(), e);
             // TODO: updateUI(null);
         }
     }
 
-    private boolean validateTokenWithServer(String idToken) {
+    private void validateTokenWithServer(String idToken, GoogleSignInAccount account) {
         String json = String.format("{\"idToken\": \"%s\"}", idToken);
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON, json);
@@ -190,18 +194,23 @@ public class LoginActivity extends AppCompatActivity {
                 .post(body)
                 .build();
 
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.isSuccessful()) {
-                Log.i(getString(R.string.google_sign_in_tag), "Signed in as: " + response.body().string());
-                return true;
+        Log.i(getString(R.string.google_sign_in_tag), "Sending ID token to backend");
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(getString(R.string.google_sign_in_tag), "Error sending ID token to backend.", e);
+                // TODO updateUI(null);
             }
-            return false;
-        }
-        catch (Exception e) {
-            Log.e(getString(R.string.google_sign_in_tag), "Error sending ID token to backend.", e);
-            return false;
-        }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Log.i(getString(R.string.google_sign_in_tag), "Signed in as: " + response.body().string());
+                    // TODO updateUI(account);
+                }
+                // TODO updateUI(null);
+            }
+        });
     }
 
     // Display error at the top of the login screen.
