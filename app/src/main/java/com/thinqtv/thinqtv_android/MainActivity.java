@@ -34,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.facebook.login.LoginManager;
 import com.thinqtv.thinqtv_android.data.DataSource;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 import com.thinqtv.thinqtv_android.ui.auth.LoginActivity;
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void logout(View v) {
         UserRepository.getInstance().logout();
+        LoginManager.getInstance().logOut();
 
         finish();
         overridePendingTransition(R.anim.catalyst_fade_in, R.anim.catalyst_fade_out);

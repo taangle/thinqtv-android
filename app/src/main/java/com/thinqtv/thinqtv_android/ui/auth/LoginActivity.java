@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.thinqtv.thinqtv_android.R;
@@ -164,18 +165,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Log.e(getString(R.string.fb_sign_in_tag), "Error sending access token to backend", e);
-                // TODO updateUI(null);
+                LoginManager.getInstance().logOut();
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     Log.i(getString(R.string.fb_sign_in_tag), "Signed in with FB");
-                    // TODO updateUI();
+                    // TODO actually log in to user repository
                 }
                 else {
                     Log.w(getString(R.string.fb_sign_in_tag), "Failed to sign in with FB, response code: " + response.code());
-                    // TODO updateUI(null);
+                    LoginManager.getInstance().logOut();
                 }
             }
         });
