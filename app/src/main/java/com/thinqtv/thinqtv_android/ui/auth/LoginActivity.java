@@ -210,6 +210,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Log.e(getString(R.string.google_sign_in_tag), "Error sending ID token to backend.", e);
+                mGoogleSignInClient.signOut()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
+                            }
+                        });
             }
 
             @Override
@@ -220,6 +227,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     Log.w(getString(R.string.google_sign_in_tag), "Failed to sign in with Google, response code: "  + response.code());
+                    mGoogleSignInClient.signOut()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
+                                }
+                            });
                 }
             }
         });
