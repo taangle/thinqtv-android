@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.facebook.react:react-native-linear-gradient:2.5.6-jitsi-5385907@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9d9ea6ec77597d814c83329fe5a8b811/jetified-react-native-linear-gradient-2.5.6-jitsi-5385907/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9d9ea6ec77597d814c83329fe5a8b811/jetified-react-native-linear-gradient-2.5.6-jitsi-5385907/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.react/react-native-linear-gradient/2.5.6-jitsi-5385907/128a0111f8d23d93a06c4bca9f0d85f944363ce7/react-native-linear-gradient-2.5.6-jitsi-5385907-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
