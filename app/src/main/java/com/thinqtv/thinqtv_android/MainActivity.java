@@ -34,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         generateSidebar();
         setDrawerToggle();
 
-        // TODO: silently sign in with Google?
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
@@ -82,6 +82,17 @@ public class MainActivity extends AppCompatActivity {
             lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
         }
         else {
+            // if Google is signed in but user is not, just sign out of Google
+            GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+            if (googleSignInAccount != null)
+                mGoogleSignInClient.signOut()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
+                            }
+                        });
+
             // restore screen name using lastInstanceState if possible
             if (savedInstanceState != null) {
                 lastScreenNameStr = savedInstanceState.getString(screenNameKey);

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -21,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.thinqtv.thinqtv_android.R;
 
@@ -50,10 +52,18 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null)
-            Log.i(getString(R.string.google_sign_in_tag), "Already logged in with Google: " + account.getEmail());
-//        TODO updateUI(account);
+        GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (googleSignInAccount != null) {
+            // this really should never happen, but if it does just sign out
+            Log.i(getString(R.string.google_sign_in_tag), "Already logged in with Google: " + googleSignInAccount.getEmail());
+            mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
+                        }
+                    });
+        }
     }
 
     @Override
@@ -168,7 +178,6 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            // TODO what if it _is_ null?
             if (account != null) {
                 Log.i(getString(R.string.google_sign_in_tag), "Successfully got GoogleSignInAccount");
                 String idToken = account.getIdToken();
@@ -176,12 +185,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 validateTokenWithServer(idToken, account);
             }
+            else {
+                Log.i(getString(R.string.google_sign_in_tag), "GoogleSignInAccount was null");
+            }
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(getString(R.string.google_sign_in_tag), "signInResult:failed code=" + e.getStatusCode()
                 + ", message=" + e.getMessage(), e);
-            // TODO: updateUI(null);
         }
     }
 
@@ -199,17 +210,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Log.e(getString(R.string.google_sign_in_tag), "Error sending ID token to backend.", e);
-                // TODO updateUI(null);
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     Log.i(getString(R.string.google_sign_in_tag), "Signed in as: " + response.body().string());
-                    // TODO updateUI(account);
+                    // TODO actually log in to the user repository
                 }
                 else {
-                    // TODO updateUI(null)
                     Log.w(getString(R.string.google_sign_in_tag), "Failed to sign in with Google, response code: "  + response.code());
                 }
             }
