@@ -208,7 +208,10 @@ public class LoginActivity extends AppCompatActivity {
                     Log.i(getString(R.string.google_sign_in_tag), "Signed in as: " + response.body().string());
                     // TODO updateUI(account);
                 }
-                // TODO updateUI(null);
+                else {
+                    // TODO updateUI(null)
+                    Log.w(getString(R.string.google_sign_in_tag), "Failed to sign in with Google, response code: "  + response.code());
+                }
             }
         });
     }
