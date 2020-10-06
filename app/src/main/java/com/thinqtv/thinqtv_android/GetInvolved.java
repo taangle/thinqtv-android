@@ -108,6 +108,11 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
         System.out.println(" ''" + v + " ''");
     }
 
+    public void goToProfile(View view) {
+        Intent i = new Intent(this, Profile.class);
+        startActivity(i);
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch(position){

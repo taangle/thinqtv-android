@@ -22,21 +22,26 @@
         <item>About Us</item>
     </string-array>
 
+    <string-array name="ProfileSpinner">
+        <item>Profile</item>
+        <item>Home</item>
+        <item>Control Panel</item>
+        <item>Sign Out</item>
+    </string-array>
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string-array name="sidebar_menu">
         <item>Register/Login</item>
-        <item>Get Involved</item>
+        <item>Join the Team</item>
         <item>Have us on your Podcast</item>
         <item>About ThinQ</item>
-        <item>Join the Team</item>
     </string-array>
     <string-array name="sidebar_menu_loggedIn">
         <item>View Profile</item>
-        <item>Get Involved</item>
+        <item>Join the Team</item>
         <item>Have us on your Podcast</item>
         <item>About ThinQ</item>
-        <item>Join the Team</item>
         <item>Logout</item>
     </string-array>
 
@@ -67,4 +72,6 @@
     <string name="email_taken">Email has already been taken.</string>
     <string name="permalink_taken">Permalink has already been taken.</string>
     <string name="generic_input_error">There is a problem with your input</string>
+
+
 </resources>

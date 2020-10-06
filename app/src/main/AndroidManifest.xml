@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thinqtv.thinqtv_android">
-
-    <!--This permission is required in order to get JSON files using Hudson's API-->
-    <!--Without it, the app cannot access the internet and get outside data-->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- This permission is required in order to get JSON files using Hudson's API -->
+    <!-- Without it, the app cannot access the internet and get outside data -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Profile" />
         <activity
             android:name=".ui.auth.LoginActivity"
             android:label="@string/title_activity_login"
@@ -25,19 +25,18 @@
         <activity
             android:name=".ui.auth.RegisterActivity"
             android:label="@string/title_activity_register" />
-        <activity android:name=".ConferenceActivity"
-            android:supportsPictureInPicture="true"
-            android:configChanges=
-                "screenSize|smallestScreenSize|screenLayout|orientation"
-            ></activity>
-        <activity android:name=".GetInvolved" />
         <activity
-            android:name=".AnyWebview">
+            android:name=".ConferenceActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:supportsPictureInPicture="true" />
+        <activity android:name=".GetInvolved" />
+        <activity android:name=".AnyWebview">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.thinqtv.thinqtv_android.MainActivity"/>
+                android:value="com.thinqtv.thinqtv_android.MainActivity" />
         </activity>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

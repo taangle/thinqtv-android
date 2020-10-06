@@ -61,10 +61,10 @@
             android:layout_width="250dp"
             android:layout_height="45dp"
             android:background="@drawable/rounded_button"
+            android:textColor="@android:color/white"
             android:onClick="onJoinClick"
             android:text="@string/defaultTryConversation"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
             android:textSize="16sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,7 +72,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias=".4" />
-
         <!--  HEADER FOR UPCOMING EVENTS, ITS JUST TEXT  -->
         <TextView
             android:id="@+id/upcoming_events_header"
@@ -163,6 +162,22 @@
                     android:visibility="invisible" />
             </LinearLayout>
         </ScrollView>
+
+        <Button
+            android:id="@+id/profileB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.532"
+            app:layout_constraintStart_toEndOf="@+id/screenName"
+            app:layout_constraintTop_toBottomOf="@+id/desc_header"
+            android:onClick="profileClick"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:visibility="visible"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView

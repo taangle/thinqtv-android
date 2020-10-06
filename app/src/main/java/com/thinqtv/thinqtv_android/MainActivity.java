@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
             }
         }
+
     }
 
     @Override
@@ -125,6 +126,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         super.onSaveInstanceState(outState);
+    }
+
+
+    //Temporaly just for testing purpose
+    public void profileClick(View v)
+    {
+        goToProfile(v);
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
@@ -532,9 +540,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case 1:
                     {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                       Intent i = new Intent(MainActivity.this, AnyWebview.class);
                         i.putExtra("webviewLink", "https://www.thinq.tv/jointheteam"); //Optional parameters
                         startActivity(i);
+                      // goToProfile(view);
+
                         break;
                     }
                     case 2:
@@ -553,9 +563,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case 4:
                     {
-                        Intent i = new Intent(MainActivity.this, AnyWebview.class);
+                       Intent i = new Intent(MainActivity.this, AnyWebview.class);
                         i.putExtra("webviewLink", "http://www.thinq.tv/jointheteam"); //Optional parameters
                         startActivity(i);
+
                         break;
                     }
                     case 5:
@@ -581,6 +592,11 @@ public class MainActivity extends AppCompatActivity {
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+    }
+
+    public void goToProfile(View view) {
+        Intent i = new Intent(this, Profile.class);
+        startActivity(i);
     }
 
     private void setDrawerToggle()
