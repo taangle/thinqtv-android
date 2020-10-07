@@ -34,12 +34,9 @@
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.865"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.04" />
+            app:layout_constraintEnd_toEndOf="@id/eventsSpinner"
+            app:layout_constraintStart_toStartOf="@id/eventsSpinner"
+            app:layout_constraintBottom_toTopOf="@id/eventsSpinner"/>
 
         <Spinner
             android:id="@+id/eventsSpinner"
@@ -48,9 +45,12 @@
             android:background="@null"
             android:entries="@array/eventFilters"
             android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@+id/upcoming_events_header"
-            app:layout_constraintEnd_toEndOf="@+id/upcoming_events_header"
-            app:layout_constraintStart_toStartOf="@+id/upcoming_events_header"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.891"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.073" />
 
         <View
             android:id="@+id/divider"
