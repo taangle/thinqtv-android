@@ -54,11 +54,11 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
           - line 50 sets the layout of the adapter, which we connect to  'spinner' in line 51
           - Finally, setOnItemSelectedListener allows the app to react to clicks on 'spinner'
          */
-            Spinner spinner = findViewById(R.id.spinner1);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Pages, android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-            spinner.setOnItemSelectedListener(this);
+//            Spinner spinner = findViewById(R.id.spinner1);
+//            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Pages, android.R.layout.simple_spinner_item);
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            spinner.setAdapter(adapter);
+//            spinner.setOnItemSelectedListener(this);
     }
 
     //Identical to load, except can be called when user selects something on spinner.
