@@ -10,7 +10,12 @@ import androidx.fragment.app.Fragment;
 
 import com.thinqtv.thinqtv_android.data.model.AboutUsModel;
 
-import org.w3c.dom.Text;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 
 
 /**
@@ -79,7 +84,17 @@ public class aboutus_fragment extends Fragment {
 
     private void setAboutUsModel(){
         // TODO: Look into using jsoup: Java HTML Parser to get about us page data.
-        aboutUsModel.Title = "About Us";
+
+        aboutUsModel = new AboutUsModel();
+        /*try{
+            Document doc = Jsoup.connect("https://en.wikipedia.org/").get();
+            Elements newsHeadlines = doc.select("#mp-itn b a");
+            for (Element headline : newsHeadlines) {
+                System.out.println(headline.attr("title"));
+            }
+        } catch (IOException e) {
+            aboutUsModel.Title = "TRY FAILED";
+        }*/
 
         aboutUsModel.DetailsSection1Title = "Our Mission";
         aboutUsModel.DetailsSection1Content = "Blah blah blah blah blah";
