@@ -1,5 +1,6 @@
 package com.thinqtv.thinqtv_android;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
+import java.net.URL;
 
 
 /**
@@ -29,6 +30,8 @@ public class aboutus_fragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    final String strMessage = "https://en.wikipedia.org/";
+
 
     // TODO: Rename and change types of parameters
     private AboutUsModel aboutUsModel;
@@ -79,27 +82,40 @@ public class aboutus_fragment extends Fragment {
         section2Title.setText(aboutUsModel.DetailsSection2Content);
         section2Content.setText(aboutUsModel.DetailsSection2Title);
 
+        new WebElementsTask().execute();
         return view;
     }
 
     private void setAboutUsModel(){
-        // TODO: Look into using jsoup: Java HTML Parser to get about us page data.
-
         aboutUsModel = new AboutUsModel();
-        /*try{
-            Document doc = Jsoup.connect("https://en.wikipedia.org/").get();
-            Elements newsHeadlines = doc.select("#mp-itn b a");
-            for (Element headline : newsHeadlines) {
-                System.out.println(headline.attr("title"));
-            }
-        } catch (IOException e) {
-            aboutUsModel.Title = "TRY FAILED";
-        }*/
 
+        aboutUsModel.Title = "Blah";
         aboutUsModel.DetailsSection1Title = "Our Mission";
         aboutUsModel.DetailsSection1Content = "Blah blah blah blah blah";
 
         aboutUsModel.DetailsSection2Title = "Get Involved";
         aboutUsModel.DetailsSection2Content = "Blah blah blah blah blah";
+    }
+
+    private class WebElementsTask extends AsyncTask<Void, Void, Void> {
+        String result;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url;
+            try{
+                Document doc = Jsoup.connect("https://en.wikipedia.org/").get();
+                Elements newsHeadlines = doc.select("#mp-itn b a");
+                for (Element headline : newsHeadlines) {
+                    System.out.println(headline.attr("title"));
+                }
+            } catch (Exception e) {
+                aboutUsModel.Title = "TRY FAILED";
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            aboutUsModel.Title = "COMPLETE";
+        }
     }
 }
