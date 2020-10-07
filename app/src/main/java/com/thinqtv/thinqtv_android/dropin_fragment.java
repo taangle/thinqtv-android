@@ -35,10 +35,14 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -173,8 +177,25 @@ public class dropin_fragment extends Fragment {
     }
 
     // Use EventsJSON file to fill in ScrollView
-    public void setUpcomingEvents(JSONArray json)
+    public void setUpcomingEvents(ArrayList<JSONObject> json)
     {
+        Collections.sort(json, new Comparator<JSONObject>() {
+
+            @Override
+            public int compare(JSONObject lhs, JSONObject rhs) {
+                // TODO Auto-generated method stub
+
+                try {
+                    return (lhs.getString("start_at").toLowerCase().compareTo(rhs.getString("start_at").toLowerCase()));
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
+
+
         try {
             //link layout and JSON file
             LinearLayout linearLayout = getView().findViewById(R.id.upcoming_events_linearView);
@@ -184,7 +205,7 @@ public class dropin_fragment extends Fragment {
             String eventFilter_selection = eventFilter_spinner.getSelectedItem().toString();
 
             //For each event in the database, create a new item for it in ScrollView
-            for(int i=0; i < json.length(); i++)
+            for(int i=0; i < json.size(); i++)
             {
                 // gets the date of event and convert to local time, setting the time in variable "eventTimeString"
                 TextView newEvent_time = new TextView(getContext());
@@ -192,14 +213,14 @@ public class dropin_fragment extends Fragment {
                 dateFormat.setTimeZone(TimeZone.getTimeZone("MST"));
                 Date date = new Date();
                 try {
-                    date = dateFormat.parse(json.getJSONObject(i).getString("start_at"));
+                    date = dateFormat.parse(json.get(i).getString("start_at"));
                 } catch (ParseException e) { e.printStackTrace(); }
                 dateFormat.setTimeZone(TimeZone.getDefault());
                 SimpleDateFormat displayFormat = new SimpleDateFormat("EEE, MMM dd - h:mm aa");
                 String eventTimeString = displayFormat.format(date);
 
                 // get the title of the event
-                String eventTitleString = json.getJSONObject(i).getString("name");
+                String eventTitleString = json.get(i).getString("name");
 
                 // gets the name and sets its values
                 TextView newEvent_textView = new TextView(getContext());
@@ -250,7 +271,7 @@ public class dropin_fragment extends Fragment {
                     {
                         Date end_time = new Date();
                         try {
-                            end_time = dateFormat.parse(json.getJSONObject(i).getString("end_at"));
+                            end_time = dateFormat.parse(json.get(i).getString("end_at"));
                         } catch (ParseException e) { e.printStackTrace(); }
 
                         Date current_time = mCalendar.getTime();
@@ -293,7 +314,7 @@ public class dropin_fragment extends Fragment {
                     {
                         Date end_time = new Date();
                         try {
-                            end_time = dateFormat.parse(json.getJSONObject(i).getString("end_at"));
+                            end_time = dateFormat.parse(json.get(i).getString("end_at"));
                         } catch (ParseException e) { e.printStackTrace(); }
 
                         Date current_time = mCalendar.getTime();
@@ -393,7 +414,16 @@ public class dropin_fragment extends Fragment {
                 layout.removeAllViews();
 
                 //fill it back in with the response data
-                setUpcomingEvents(response);
+                ArrayList<JSONObject> array = new ArrayList<JSONObject>();
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        array.add(response.getJSONObject(i));
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                setUpcomingEvents(array);
             }
         }, new Response.ErrorListener() {
             @Override
