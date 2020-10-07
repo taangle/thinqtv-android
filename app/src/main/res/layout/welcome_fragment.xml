@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ic_launcher_background"
-    tools:context=".profile_fragment">
+    tools:context=".welcome_fragment">
 
     <View
         android:id="@+id/red_background"
@@ -21,11 +21,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="35dp"
         android:text="Welcome to"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:textSize="55sp"
+        android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,9 +34,9 @@
         android:id="@+id/thinqtv_image"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="40dp"
         android:paddingTop="20dp"
-        android:paddingRight="20dp"
+        android:paddingRight="40dp"
         android:src="@drawable/thinq_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintTop_toBottomOf="@id/red_background"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

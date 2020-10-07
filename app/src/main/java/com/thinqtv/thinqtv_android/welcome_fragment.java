@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import com.thinqtv.thinqtv_android.ui.auth.LoginActivity;
 
-public class profile_fragment extends Fragment {
+public class welcome_fragment extends Fragment {
 
 
-    public profile_fragment() {
+    public welcome_fragment() {
         // Required empty public constructor
     }
 
-    public static profile_fragment newInstance() {
-        profile_fragment fragment = new profile_fragment();
+    public static welcome_fragment newInstance() {
+        welcome_fragment fragment = new welcome_fragment();
         return fragment;
     }
 
@@ -31,7 +31,7 @@ public class profile_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.profile_fragment, container, false);
+        return inflater.inflate(R.layout.welcome_fragment, container, false);
     }
 
     @Override

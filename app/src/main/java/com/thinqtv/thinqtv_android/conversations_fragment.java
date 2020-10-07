@@ -203,19 +203,19 @@ public class conversations_fragment extends Fragment {
                     newEvent_name.setText(newEvent_name.getText() + "...");
 
                 // add listener to the name, so when the user clicks an event it will bring them to the event page
-                newEvent_name.setOnClickListener(new goToWebview_ClickListener(getContext(),
-                        "http://www.thinq.tv/" + json.getJSONObject(i).getString("permalink")));
+                //newEvent_name.setOnClickListener(new goToWebview_ClickListener(getContext(),
+                        //"http://www.thinq.tv/" + json.getJSONObject(i).getString("permalink")));
 
                 // gets the host id and sets its values
-                TextView newEvent_host = new TextView(getContext());
-                newEvent_host.setTextSize(15);
-                newEvent_host.setWidth(600);
-                newEvent_host.setPadding(20, 110, 0, 0);
-                newEvent_host.setTextColor(Color.GRAY);
-                newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("username")
-                        .substring(0, Math.min(json.getJSONObject(i).getString("username").length(), 18)));
-                if (json.getJSONObject(i).getString("username").length() > 18)
-                    newEvent_host.setText(newEvent_host.getText() + "...");
+//                TextView newEvent_host = new TextView(getContext());
+//                newEvent_host.setTextSize(15);
+//                newEvent_host.setWidth(600);
+//                newEvent_host.setPadding(20, 110, 0, 0);
+//                newEvent_host.setTextColor(Color.GRAY);
+//                newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("username")
+//                        .substring(0, Math.min(json.getJSONObject(i).getString("username").length(), 18)));
+//                if (json.getJSONObject(i).getString("username").length() > 18)
+//                    newEvent_host.setText(newEvent_host.getText() + "...");
 
                 // gets the date of event and convert to local time
                 TextView newEvent_time = new TextView(getContext());
@@ -250,9 +250,12 @@ public class conversations_fragment extends Fragment {
 
                 // Add your TextViews to the ConstraintLayout
                 constraintLayout.addView(newEvent_name);
-                constraintLayout.addView(newEvent_host);
+                //constraintLayout.addView(newEvent_host);
                 constraintLayout.addView(newEvent_time);
                 constraintLayout.addView(newEvent_starttime);
+                Log.d("event", json.getJSONObject(i).getString("name"));
+                //Log.d("event", "host" + newEvent_host.toString());
+                Log.d("event", json.getJSONObject(i).getString("start_at"));
 
                 // Add simple divider to put in between ConstraintLayouts (ie events)
                 View viewDivider = new View(getContext());
@@ -264,7 +267,7 @@ public class conversations_fragment extends Fragment {
 
                 switch(eventFilter_selection)
                 {
-                    case ("All Events") :
+                    case ("All Events \u25bc") :
                     {
                         Date end_time = new Date();
                         try {
@@ -300,14 +303,14 @@ public class conversations_fragment extends Fragment {
                             constraintLayout.addView(happening_now);
                         }
 
-                        if (newEvent_name.getText() != "DropIn")
+                        if (!newEvent_name.getText().toString().contains("Drop"))
                         {
                             linearLayout.addView(constraintLayout);
                             linearLayout.addView(viewDivider);
                         }
                         break;
                     }
-                    case ("This Week") :
+                    case ("This Week \u25bc") :
                     {
                         Date end_time = new Date();
                         try {
@@ -348,7 +351,7 @@ public class conversations_fragment extends Fragment {
 
                         if (date.before(filterDate))
                         {
-                            if (newEvent_name.getText() != "DropIn")
+                            if (!newEvent_name.getText().toString().contains("Drop"))
                             {
                                 linearLayout.addView(constraintLayout);
                                 linearLayout.addView(viewDivider);
@@ -356,7 +359,7 @@ public class conversations_fragment extends Fragment {
                         }
                         break;
                     }
-                    case ("Next Week") :
+                    case ("Next Week \u25bc") :
                     {
                         mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
                         Date filterDate = mCalendar.getTime();
@@ -368,7 +371,7 @@ public class conversations_fragment extends Fragment {
 
                             if (date.before(filterDate))
                             {
-                                if (newEvent_name.getText() != "DropIn")
+                                if (!newEvent_name.getText().toString().contains("Drop"))
                                 {
                                     linearLayout.addView(constraintLayout);
                                     linearLayout.addView(viewDivider);
@@ -377,14 +380,14 @@ public class conversations_fragment extends Fragment {
                         }
                         break;
                     }
-                    case ("Future") :
+                    case ("Future \u25bc") :
                     {
                         mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 2));
                         Date filterDate = mCalendar.getTime();
 
                         if (date.after(filterDate))
                         {
-                            if (newEvent_name.getText() != "DropIn")
+                            if (!newEvent_name.getText().toString().contains("Drop"))
                             {
                                 linearLayout.addView(constraintLayout);
                                 linearLayout.addView(viewDivider);
