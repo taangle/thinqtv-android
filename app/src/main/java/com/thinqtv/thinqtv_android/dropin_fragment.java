@@ -11,6 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -185,19 +186,33 @@ public class dropin_fragment extends Fragment {
             //For each event in the database, create a new item for it in ScrollView
             for(int i=0; i < json.length(); i++)
             {
+                // gets the date of event and convert to local time, setting the time in variable "eventTimeString"
+                TextView newEvent_time = new TextView(getContext());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("MST"));
+                Date date = new Date();
+                try {
+                    date = dateFormat.parse(json.getJSONObject(i).getString("start_at"));
+                } catch (ParseException e) { e.printStackTrace(); }
+                dateFormat.setTimeZone(TimeZone.getDefault());
+                SimpleDateFormat displayFormat = new SimpleDateFormat("EEE, MMM dd - h:mm aa");
+                String eventTimeString = displayFormat.format(date);
+
+                // get the title of the event
+                String eventTitleString = json.getJSONObject(i).getString("name");
+
                 // gets the name and sets its values
-                TextView newEvent_name = new TextView(getContext());
-                newEvent_name.setTextSize(22);
-                newEvent_name.setPadding(20, 40, 0, 0);
-                newEvent_name.setTextColor(getResources().getColor(R.color.colorPrimary));
-                newEvent_name.setText(json.getJSONObject(i).getString("name")
-                        .substring(0, Math.min(json.getJSONObject(i).getString("name").length(), 18)));
-                if (json.getJSONObject(i).getString("name").length() > 18)
-                    newEvent_name.setText(newEvent_name.getText() + "...");
+                TextView newEvent_textView = new TextView(getContext());
+                newEvent_textView.setTextSize(22);
+                newEvent_textView.setPadding(100, 40, 100, 40);
+                newEvent_textView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                newEvent_textView.setLayoutParams(new LinearLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
+                newEvent_textView.setGravity(Gravity.CENTER_HORIZONTAL);
+                newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b> <br> <br>" + eventTimeString));
 
                 // add listener to the name, so when the user clicks an event it will bring them to the event page
-//                newEvent_name.setOnClickListener(new dropin_fragment.goToWebview_ClickListener(getContext(),
-//                        "http://www.thinq.tv/" + json.getJSONObject(i).getString("permalink")));
+                //newEvent_textView.setOnClickListener(new goToWebview_ClickListener(getContext(),
+                //"http://www.thinq.tv/" + json.getJSONObject(i).getString("permalink")));
 
                 // gets the host id and sets its values
 //                TextView newEvent_host = new TextView(getContext());
@@ -210,45 +225,16 @@ public class dropin_fragment extends Fragment {
 //                if (json.getJSONObject(i).getString("username").length() > 18)
 //                    newEvent_host.setText(newEvent_host.getText() + "...");
 
-                // gets the date of event and convert to local time
-                TextView newEvent_time = new TextView(getContext());
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("MST"));
-                Date date = new Date();
-                try {
-                    date = dateFormat.parse(json.getJSONObject(i).getString("start_at"));
-                } catch (ParseException e) { e.printStackTrace(); }
-                dateFormat.setTimeZone(TimeZone.getDefault());
-
-                // formats the date from above into viewable format
-                SimpleDateFormat displayFormat = new SimpleDateFormat("EEE, MMM dd");
-                newEvent_time.setText(displayFormat.format(date));
-                newEvent_time.setTextSize(20);
-                newEvent_time.setPadding(720, 45, 0, 0);
-                newEvent_time.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-                // formats the date from above into viewable format (BUT NOW ITS START TIME)
-                displayFormat = new SimpleDateFormat("h:mm aa");
-                TextView newEvent_starttime = new TextView(getContext());
-                newEvent_starttime.setText(displayFormat.format(date) + " " + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT));
-                newEvent_starttime.setTextSize(15);
-                newEvent_starttime.setPadding(720, 110, 0, 0);
-                newEvent_starttime.setTextColor(Color.GRAY);
-
                 // Now you have all your TextViews, create a ConstraintLayout for each one
                 ConstraintLayout constraintLayout = new ConstraintLayout(getContext());
                 constraintLayout.setLayoutParams(new LinearLayout.LayoutParams
                         (ConstraintLayout.LayoutParams.MATCH_PARENT,
-                                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75f, getResources().getDisplayMetrics())));
+                                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ConstraintLayout.LayoutParams.WRAP_CONTENT, getResources().getDisplayMetrics())));
 
                 // Add your TextViews to the ConstraintLayout
-                constraintLayout.addView(newEvent_name);
+                constraintLayout.addView(newEvent_textView);
                 //constraintLayout.addView(newEvent_host);
                 constraintLayout.addView(newEvent_time);
-                constraintLayout.addView(newEvent_starttime);
-                Log.d("event", json.getJSONObject(i).getString("name"));
-                //Log.d("event", "host" + newEvent_host.toString());
-                Log.d("event", json.getJSONObject(i).getString("start_at"));
 
                 // Add simple divider to put in between ConstraintLayouts (ie events)
                 View viewDivider = new View(getContext());
@@ -296,7 +282,7 @@ public class dropin_fragment extends Fragment {
                             constraintLayout.addView(happening_now);
                         }
 
-                        if (newEvent_name.getText().toString().contains("Drop"))
+                        if (newEvent_textView.getText().toString().contains("Drop"))
                         {
                             linearLayout.addView(constraintLayout);
                             linearLayout.addView(viewDivider);
@@ -344,7 +330,7 @@ public class dropin_fragment extends Fragment {
 
                         if (date.before(filterDate))
                         {
-                            if (newEvent_name.getText().toString().contains("Drop"))
+                            if (newEvent_textView.getText().toString().contains("Drop"))
                             {
                                 linearLayout.addView(constraintLayout);
                                 linearLayout.addView(viewDivider);
@@ -364,7 +350,7 @@ public class dropin_fragment extends Fragment {
 
                             if (date.before(filterDate))
                             {
-                                if (newEvent_name.getText().toString().contains("Drop"))
+                                if (newEvent_textView.getText().toString().contains("Drop"))
                                 {
                                     linearLayout.addView(constraintLayout);
                                     linearLayout.addView(viewDivider);
@@ -380,7 +366,7 @@ public class dropin_fragment extends Fragment {
 
                         if (date.after(filterDate))
                         {
-                            if (newEvent_name.getText().toString().contains("Drop"))
+                            if (newEvent_textView.getText().toString().contains("Drop"))
                             {
                                 linearLayout.addView(constraintLayout);
                                 linearLayout.addView(viewDivider);
