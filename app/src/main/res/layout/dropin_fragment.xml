@@ -66,14 +66,11 @@
             android:id="@+id/upcoming_events_scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="2dp"
             android:background="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintTop_toBottomOf="@+id/divider">
 
             <!--  THIS IS THE LINEAR LAYOUT THAT GETS PROPAGATED WITH THE UPCOMING EVENTS TEXTVIEWS  -->
             <LinearLayout

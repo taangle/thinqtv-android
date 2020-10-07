@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -207,8 +208,7 @@ public class dropin_fragment extends Fragment {
             //For each event in the database, create a new item for it in ScrollView
             for(int i=0; i < json.size(); i++)
             {
-                // gets the date of event and convert to local time, setting the time in variable "eventTimeString"
-                TextView newEvent_time = new TextView(getContext());
+                // get the time of the event in local time
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("MST"));
                 Date date = new Date();
@@ -224,8 +224,8 @@ public class dropin_fragment extends Fragment {
 
                 // gets the name and sets its values
                 TextView newEvent_textView = new TextView(getContext());
+                newEvent_textView.setId(View.generateViewId());
                 newEvent_textView.setTextSize(22);
-                newEvent_textView.setPadding(100, 40, 100, 40);
                 newEvent_textView.setTextColor(getResources().getColor(R.color.colorPrimary));
                 newEvent_textView.setLayoutParams(new LinearLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
                 newEvent_textView.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -235,27 +235,9 @@ public class dropin_fragment extends Fragment {
                 //newEvent_textView.setOnClickListener(new goToWebview_ClickListener(getContext(),
                 //"http://www.thinq.tv/" + json.getJSONObject(i).getString("permalink")));
 
-                // gets the host id and sets its values
-//                TextView newEvent_host = new TextView(getContext());
-//                newEvent_host.setTextSize(15);
-//                newEvent_host.setWidth(600);
-//                newEvent_host.setPadding(20, 110, 0, 0);
-//                newEvent_host.setTextColor(Color.GRAY);
-//                newEvent_host.setText("Hosted by " + json.getJSONObject(i).getString("username")
-//                        .substring(0, Math.min(json.getJSONObject(i).getString("username").length(), 18)));
-//                if (json.getJSONObject(i).getString("username").length() > 18)
-//                    newEvent_host.setText(newEvent_host.getText() + "...");
-
-                // Now you have all your TextViews, create a ConstraintLayout for each one
+                // Now that you have your textview, create a container for it and add it
                 ConstraintLayout constraintLayout = new ConstraintLayout(getContext());
-                constraintLayout.setLayoutParams(new LinearLayout.LayoutParams
-                        (ConstraintLayout.LayoutParams.MATCH_PARENT,
-                                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ConstraintLayout.LayoutParams.WRAP_CONTENT, getResources().getDisplayMetrics())));
-
-                // Add your TextViews to the ConstraintLayout
                 constraintLayout.addView(newEvent_textView);
-                //constraintLayout.addView(newEvent_host);
-                constraintLayout.addView(newEvent_time);
 
                 // Add simple divider to put in between ConstraintLayouts (ie events)
                 View viewDivider = new View(getContext());
@@ -278,21 +260,13 @@ public class dropin_fragment extends Fragment {
 
                         if (date.before(current_time) && end_time.after(current_time))
                         {
-                            constraintLayout.setLayoutParams(new LinearLayout.LayoutParams
-                                    (ConstraintLayout.LayoutParams.MATCH_PARENT,
-                                            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 125f, getResources().getDisplayMetrics())));
-
                             Button happening_now = new Button(getContext());
+                            happening_now.setId(View.generateViewId());
                             happening_now.setBackground(getActivity().getDrawable(R.drawable.rounded_button));
                             happening_now.setTextSize(15);
                             happening_now.setTextColor(Color.WHITE);
                             happening_now.setText(R.string.happening_now);
-                            happening_now.setTransformationMethod(null);
-                            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(800, 120);
-                            happening_now.setLayoutParams(params);
-                            happening_now.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-                            happening_now.setY((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70f, getResources().getDisplayMetrics()));
-                            happening_now.setX((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50f, getResources().getDisplayMetrics()));
+                            happening_now.setLayoutParams(new LinearLayout.LayoutParams(950, 120));
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
@@ -300,7 +274,17 @@ public class dropin_fragment extends Fragment {
                                 }
                             });
 
+                            // Remove the event time from the textView and add the Happening Now Button
+                            newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b> <br>"));
                             constraintLayout.addView(happening_now);
+
+                            // Center the Happening Now button under the textView
+                            ConstraintSet constraintSet = new ConstraintSet();
+                            constraintSet.clone(constraintLayout);
+                            constraintSet.connect(happening_now.getId(),ConstraintSet.TOP,newEvent_textView.getId(),ConstraintSet.BOTTOM,0);
+                            constraintSet.connect(happening_now.getId(),ConstraintSet.START,newEvent_textView.getId(),ConstraintSet.START,0);
+                            constraintSet.connect(happening_now.getId(),ConstraintSet.END,newEvent_textView.getId(),ConstraintSet.END,0);
+                            constraintSet.applyTo(constraintLayout);
                         }
 
                         if (newEvent_textView.getText().toString().contains("Drop"))
@@ -321,21 +305,13 @@ public class dropin_fragment extends Fragment {
 
                         if (date.before(current_time) && end_time.after(current_time))
                         {
-                            constraintLayout.setLayoutParams(new LinearLayout.LayoutParams
-                                    (ConstraintLayout.LayoutParams.MATCH_PARENT,
-                                            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 125f, getResources().getDisplayMetrics())));
-
                             Button happening_now = new Button(getContext());
+                            happening_now.setId(View.generateViewId());
                             happening_now.setBackground(getActivity().getDrawable(R.drawable.rounded_button));
                             happening_now.setTextSize(15);
                             happening_now.setTextColor(Color.WHITE);
                             happening_now.setText(R.string.happening_now);
-                            happening_now.setTransformationMethod(null);
-                            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(800, 120);
-                            happening_now.setLayoutParams(params);
-                            happening_now.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-                            happening_now.setY((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70f, getResources().getDisplayMetrics()));
-                            happening_now.setX((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50f, getResources().getDisplayMetrics()));
+                            happening_now.setLayoutParams(new LinearLayout.LayoutParams(950, 120));
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
@@ -343,7 +319,17 @@ public class dropin_fragment extends Fragment {
                                 }
                             });
 
+                            // Remove the event time from the textView and add the Happening Now Button
+                            newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b> <br>"));
                             constraintLayout.addView(happening_now);
+
+                            // Center the Happening Now button under the textView
+                            ConstraintSet constraintSet = new ConstraintSet();
+                            constraintSet.clone(constraintLayout);
+                            constraintSet.connect(happening_now.getId(),ConstraintSet.TOP,newEvent_textView.getId(),ConstraintSet.BOTTOM,0);
+                            constraintSet.connect(happening_now.getId(),ConstraintSet.START,newEvent_textView.getId(),ConstraintSet.START,0);
+                            constraintSet.connect(happening_now.getId(),ConstraintSet.END,newEvent_textView.getId(),ConstraintSet.END,0);
+                            constraintSet.applyTo(constraintLayout);
                         }
 
                         mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
@@ -396,6 +382,9 @@ public class dropin_fragment extends Fragment {
                         break;
                     }
                 }
+
+                constraintLayout.setPadding(50,50,50,50);
+                constraintLayout.setLayoutParams(new LinearLayout.LayoutParams (ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
             }
         } catch (JSONException e) { e.printStackTrace(); }
     }
