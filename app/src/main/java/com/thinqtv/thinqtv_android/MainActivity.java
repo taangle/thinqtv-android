@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(conversations_fragment.newInstance());
                 return true;
             case R.id.action_aboutus:
-                openFragment(welcome_fragment.newInstance());
+                openFragment(aboutus_fragment.newInstance("",""));
                 return true;
             case R.id.action_profile:
                 openFragment(welcome_fragment.newInstance());
