@@ -130,10 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Temporaly just for testing purpose
-    public void profileClick(View v)
+  /*  public void profileClick(View v)
     {
         goToProfile(v);
-    }
+    } */
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
     public void onJoinClick(View v) {

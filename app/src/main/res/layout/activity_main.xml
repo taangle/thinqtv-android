@@ -163,21 +163,6 @@
             </LinearLayout>
         </ScrollView>
 
-        <Button
-            android:id="@+id/profileB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="profile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.532"
-            app:layout_constraintStart_toEndOf="@+id/screenName"
-            app:layout_constraintTop_toBottomOf="@+id/desc_header"
-            android:onClick="profileClick"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:visibility="visible"
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
