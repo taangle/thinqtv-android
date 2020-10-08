@@ -18,6 +18,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 
 /**
@@ -102,15 +103,19 @@ public class aboutus_fragment extends Fragment {
 
     private class WebElementsTask extends AsyncTask<Void, Void, Void> {
         String result;
+        ArrayList<Element> elements = new ArrayList<>();
         @Override
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://en.wikipedia.org/").get();
-                Elements newsHeadlines = doc.select("#mp-itn b a");
-                for (Element headline : newsHeadlines) {
-                    System.out.println(headline.attr("title") + " SUCKS MY DICK");
+                Document doc = Jsoup.connect("https://www.thinq.tv/").get();
+                Elements bigTextElements = doc.getElementsByClass("text-center maroon mt-5 pl-2 pt-5");
+                for (Element element: bigTextElements) {
+                    String s = element.child(0).toString();
+                    System.out.println(s);
+                    // TODO: Remove the tags and use resulting string for the AboutUs Model
                 }
+                System.out.println("elements.size() = " + elements.size());
             } catch (Exception e) {
                 System.out.println("FAILED");
             }
