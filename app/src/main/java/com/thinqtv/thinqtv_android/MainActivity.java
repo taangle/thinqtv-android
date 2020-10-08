@@ -15,11 +15,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.setSelectedItemId(R.id.action_profile);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        openFragment(welcome_fragment.newInstance());
-    }
 
+        if (UserRepository.getInstance().isLoggedIn())
+        {
+            openFragment(conversations_fragment.newInstance());
+            bottomNavigation.setSelectedItemId(R.id.action_conversations);
+        }
+        else
+        {
+            openFragment(welcome_fragment.newInstance());
+            bottomNavigation.setSelectedItemId(R.id.action_profile);
+        }
+    }
 
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -27,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = item ->
     {
         switch (item.getItemId()) {
@@ -41,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_profile:
                 if (UserRepository.getInstance().isLoggedIn())
-                    openFragment(welcome_fragment.newInstance());
+                    openFragment(profile_fragment.newInstance());
                 else
+                    openFragment(welcome_fragment.newInstance());
 
                 return true;
         }

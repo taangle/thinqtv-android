@@ -19,6 +19,11 @@
         <item>Future \u25bc</item>
     </string-array>
 
+    <string-array name="ProfileSpinner">
+        <item>Control Panel</item>
+        <item>Sign Out</item>
+    </string-array>
+
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Sign up</string>
     <string name="prompt_email">Email</string>
