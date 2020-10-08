@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,7 @@ public class aboutus_fragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private View view;
     final String strMessage = "https://en.wikipedia.org/";
 
 
@@ -66,9 +68,23 @@ public class aboutus_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setAboutUsModel();
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.aboutus_fragment, container, false);
+        view =  inflater.inflate(R.layout.aboutus_fragment, container, false);
+        ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
+
+        new WebElementsTask().execute();
+        return view;
+    }
+
+    private void setAboutUsModel(){
+        aboutUsModel = new AboutUsModel();
+
+        aboutUsModel.Title = "ABOUT US";
+        aboutUsModel.DetailsSection1Title = "Our Mission";
+        aboutUsModel.DetailsSection1Content = "Blah blah blah blah blah";
+
+        aboutUsModel.DetailsSection2Title = "Get Involved";
+        aboutUsModel.DetailsSection2Content = "Blah blah blah blah blah";
 
         TextView title = view.findViewById(R.id.about_us_title);
         TextView section1Title = view.findViewById(R.id.text_view_details1_title);
@@ -81,20 +97,7 @@ public class aboutus_fragment extends Fragment {
         section1Content.setText(aboutUsModel.DetailsSection1Content);
         section2Title.setText(aboutUsModel.DetailsSection2Content);
         section2Content.setText(aboutUsModel.DetailsSection2Title);
-
-        new WebElementsTask().execute();
-        return view;
-    }
-
-    private void setAboutUsModel(){
-        aboutUsModel = new AboutUsModel();
-
-        aboutUsModel.Title = "Blah";
-        aboutUsModel.DetailsSection1Title = "Our Mission";
-        aboutUsModel.DetailsSection1Content = "Blah blah blah blah blah";
-
-        aboutUsModel.DetailsSection2Title = "Get Involved";
-        aboutUsModel.DetailsSection2Content = "Blah blah blah blah blah";
+        ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
     }
 
     private class WebElementsTask extends AsyncTask<Void, Void, Void> {
@@ -106,16 +109,16 @@ public class aboutus_fragment extends Fragment {
                 Document doc = Jsoup.connect("https://en.wikipedia.org/").get();
                 Elements newsHeadlines = doc.select("#mp-itn b a");
                 for (Element headline : newsHeadlines) {
-                    System.out.println(headline.attr("title"));
+                    System.out.println(headline.attr("title") + " SUCKS MY DICK");
                 }
             } catch (Exception e) {
-                aboutUsModel.Title = "TRY FAILED";
+                System.out.println("FAILED");
             }
             return null;
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            aboutUsModel.Title = "COMPLETE";
+            setAboutUsModel();
         }
     }
 }
