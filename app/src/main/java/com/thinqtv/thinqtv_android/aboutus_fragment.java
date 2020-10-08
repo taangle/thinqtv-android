@@ -1,9 +1,11 @@
 package com.thinqtv.thinqtv_android;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -15,7 +17,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 
 
 /**
@@ -29,6 +32,9 @@ public class aboutus_fragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private View view;
+    final String strMessage = "https://en.wikipedia.org/";
+
 
     // TODO: Rename and change types of parameters
     private AboutUsModel aboutUsModel;
@@ -63,9 +69,23 @@ public class aboutus_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setAboutUsModel();
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.aboutus_fragment, container, false);
+        view =  inflater.inflate(R.layout.aboutus_fragment, container, false);
+        ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
+
+        new WebElementsTask().execute();
+        return view;
+    }
+
+    private void setAboutUsModel(){
+        aboutUsModel = new AboutUsModel();
+
+        aboutUsModel.Title = "ABOUT US";
+        aboutUsModel.DetailsSection1Title = "Our Mission";
+        aboutUsModel.DetailsSection1Content = "Blah blah blah blah blah";
+
+        aboutUsModel.DetailsSection2Title = "Get Involved";
+        aboutUsModel.DetailsSection2Content = "Blah blah blah blah blah";
 
         TextView title = view.findViewById(R.id.about_us_title);
         TextView section1Title = view.findViewById(R.id.text_view_details1_title);
@@ -78,28 +98,32 @@ public class aboutus_fragment extends Fragment {
         section1Content.setText(aboutUsModel.DetailsSection1Content);
         section2Title.setText(aboutUsModel.DetailsSection2Content);
         section2Content.setText(aboutUsModel.DetailsSection2Title);
-
-        return view;
+        ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
     }
 
-    private void setAboutUsModel(){
-        // TODO: Look into using jsoup: Java HTML Parser to get about us page data.
-
-        aboutUsModel = new AboutUsModel();
-        /*try{
-            Document doc = Jsoup.connect("https://en.wikipedia.org/").get();
-            Elements newsHeadlines = doc.select("#mp-itn b a");
-            for (Element headline : newsHeadlines) {
-                System.out.println(headline.attr("title"));
+    private class WebElementsTask extends AsyncTask<Void, Void, Void> {
+        String result;
+        ArrayList<Element> elements = new ArrayList<>();
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url;
+            try{
+                Document doc = Jsoup.connect("https://www.thinq.tv/").get();
+                Elements bigTextElements = doc.getElementsByClass("text-center maroon mt-5 pl-2 pt-5");
+                for (Element element: bigTextElements) {
+                    String s = element.child(0).toString();
+                    System.out.println(s);
+                    // TODO: Remove the tags and use resulting string for the AboutUs Model
+                }
+                System.out.println("elements.size() = " + elements.size());
+            } catch (Exception e) {
+                System.out.println("FAILED");
             }
-        } catch (IOException e) {
-            aboutUsModel.Title = "TRY FAILED";
-        }*/
-
-        aboutUsModel.DetailsSection1Title = "Our Mission";
-        aboutUsModel.DetailsSection1Content = "Blah blah blah blah blah";
-
-        aboutUsModel.DetailsSection2Title = "Get Involved";
-        aboutUsModel.DetailsSection2Content = "Blah blah blah blah blah";
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            setAboutUsModel();
+        }
     }
 }
