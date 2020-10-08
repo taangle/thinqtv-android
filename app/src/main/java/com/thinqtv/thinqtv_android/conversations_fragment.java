@@ -408,9 +408,8 @@ public class conversations_fragment extends Fragment {
             public void onResponse(JSONArray response) {
                 // If you receive a response, the JSON data is saved in response
                 // Clear the linearLayout
-                if (getView() != null) {
-                    LinearLayout layout = (LinearLayout) getView().findViewById(R.id.upcoming_events_linearView);
-                    layout.removeAllViews();
+                LinearLayout layout = (LinearLayout) getView().findViewById(R.id.upcoming_events_linearView);
+                layout.removeAllViews();
 
                 //fill it back in with the response data
                 ArrayList<JSONObject> array = new ArrayList<JSONObject>();

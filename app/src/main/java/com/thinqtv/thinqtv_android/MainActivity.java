@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.thinqtv.thinqtv_android.data.UserRepository;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
@@ -39,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(aboutus_fragment.newInstance("",""));
                 return true;
             case R.id.action_profile:
-                openFragment(welcome_fragment.newInstance());
+                if (UserRepository.getInstance().isLoggedIn())
+                    openFragment(welcome_fragment.newInstance());
+                else
+
                 return true;
         }
         return false;

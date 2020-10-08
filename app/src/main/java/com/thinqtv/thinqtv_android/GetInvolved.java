@@ -109,8 +109,8 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
     }
 
     public void goToProfile(View view) {
-        Intent i = new Intent(this, Profile.class);
-        startActivity(i);
+        //Intent i = new Intent(this, Profile.class);
+        //startActivity(i);
     }
 
     @Override
