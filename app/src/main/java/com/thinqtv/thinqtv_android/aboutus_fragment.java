@@ -103,13 +103,13 @@ public class aboutus_fragment extends Fragment {
         if (sTitle1.length() == 0 || sContent1.length() == 0 || sTitle2.length() == 0 || sContent2.length() == 0 || sContent3.length() == 0 || sTitle3.length() == 0){
             ((RelativeLayout)view.findViewById(R.id.rl_Error)).setVisibility(View.VISIBLE);
         } else {
-            title.setText(aboutUsModel.Title);
+            title.setText("- " + aboutUsModel.Title + " -");
             section1Title.setText(aboutUsModel.DetailsSection1Title);
-            section1Content.setText(aboutUsModel.DetailsSection1Content);
+            section1Content.setText("\t" + aboutUsModel.DetailsSection1Content);
             section2Title.setText(aboutUsModel.DetailsSection2Title);
-            section2Content.setText(aboutUsModel.DetailsSection2Content);
+            section2Content.setText("\t" + aboutUsModel.DetailsSection2Content);
             section3Title.setText(aboutUsModel.DetailsSection3Title);
-            section3Content.setText(aboutUsModel.DetailsSection3Content);
+            section3Content.setText("\t" + aboutUsModel.DetailsSection3Content);
             ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
         }
     }
