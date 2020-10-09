@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -23,6 +23,13 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.thinqtv.thinqtv_android.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +38,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import co.apptailor.googlesignin.RNGoogleSigninModule;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -43,7 +51,28 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private CallbackManager callbackManager;
+    private GoogleSignInClient mGoogleSignInClient;
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (googleSignInAccount != null) {
+            // this really should never happen, but if it does just sign out
+            Log.i(getString(R.string.google_sign_in_tag), "Already logged in with Google: " + googleSignInAccount.getEmail());
+            mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
+                        }
+                    });
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -149,6 +178,100 @@ public class LoginActivity extends AppCompatActivity {
                 Log.w(getString(R.string.fb_sign_in_tag), "Sign in with FB threw error", exception);
             }
         });
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        findViewById(R.id.google_sign_in_button).setOnClickListener(view -> {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RNGoogleSigninModule.RC_SIGN_IN);
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RNGoogleSigninModule.RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            if (account != null) {
+                Log.i(getString(R.string.google_sign_in_tag), "Successfully got GoogleSignInAccount");
+                String idToken = account.getIdToken();
+                Log.d(getString(R.string.google_sign_in_tag), "ID token: " + idToken);
+
+                validateTokenWithServer(idToken, account);
+            }
+            else {
+                Log.i(getString(R.string.google_sign_in_tag), "GoogleSignInAccount was null");
+            }
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(getString(R.string.google_sign_in_tag), "signInResult:failed code=" + e.getStatusCode()
+                + ", message=" + e.getMessage(), e);
+        }
+    }
+
+    private void validateTokenWithServer(String idToken, GoogleSignInAccount account) {
+        String json = String.format("{\"idToken\": \"%s\"}", idToken);
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(getString(R.string.server_url_google_sign_in))
+                .post(body)
+                .build();
+
+        Log.i(getString(R.string.google_sign_in_tag), "Sending ID token to backend");
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(getString(R.string.google_sign_in_tag), "Error sending ID token to backend.", e);
+                mGoogleSignInClient.signOut()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
+                            }
+                        });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Log.i(getString(R.string.google_sign_in_tag), "Signed in as: " + response.body().string());
+                    // TODO actually log in to the user repository
+                }
+                else {
+                    Log.w(getString(R.string.google_sign_in_tag), "Failed to sign in with Google, response code: "  + response.code());
+                    mGoogleSignInClient.signOut()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
+                                }
+                            });
+                }
+            }
+        });
     }
 
     private void validateAccessTokenWithServer(String accessToken) {
@@ -180,12 +303,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        callbackManager.onActivityResult(requestCode,resultCode,data);
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // Display error at the top of the login screen.

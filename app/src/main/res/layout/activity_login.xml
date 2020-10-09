@@ -129,9 +129,10 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in" />
+            app:layout_constraintTop_toBottomOf="@+id/sign_in"
+            app:layout_constraintVertical_bias="0.218" />
 
         <ProgressBar
             android:id="@+id/loading"
@@ -156,6 +157,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
+        <!--  GOLD BRAIN ICON NEAR HOME SCREEN TITLE  -->
+
         <com.facebook.login.widget.LoginButton
             android:id="@+id/fb_login_button"
             android:layout_width="wrap_content"
@@ -165,12 +168,20 @@
             android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_up"/>
+            app:layout_constraintTop_toBottomOf="@+id/sign_up"
+            app:layout_constraintVertical_bias="0.0" />
 
-
-        <!--  GOLD BRAIN ICON NEAR HOME SCREEN TITLE  -->
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fb_login_button"
+            app:layout_constraintVertical_bias="0.924" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

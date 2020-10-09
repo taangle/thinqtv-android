@@ -72,4 +72,8 @@
     <string name="fb_login_protocol_scheme">fb367815227733797</string>
     <string name="fb_sign_in_tag">FB_SIGN_IN</string>
     <string name="server_url_fb_sign_in">https://thinq.tv/api/v1/oauth/facebook</string>
+
+    <string name="server_client_id">923521097239</string>
+    <string name="server_url_google_sign_in">https://thinq.tv/api/v1/oauth/google</string>
+    <string name="google_sign_in_tag">GOOGLE_SIGN_IN</string>
 </resources>
