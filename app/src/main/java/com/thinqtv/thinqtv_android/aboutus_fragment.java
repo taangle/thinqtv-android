@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -71,50 +73,89 @@ public class aboutus_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.aboutus_fragment, container, false);
-        ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
+        ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
 
         new WebElementsTask().execute();
         return view;
     }
 
-    private void setAboutUsModel(){
+    private void setAboutUsModel(String sTitle1, String sContent1, String sTitle2, String sContent2, String sTitle3, String sContent3){
         aboutUsModel = new AboutUsModel();
 
-        aboutUsModel.Title = "ABOUT US";
-        aboutUsModel.DetailsSection1Title = "Our Mission";
-        aboutUsModel.DetailsSection1Content = "Blah blah blah blah blah";
+        aboutUsModel.Title = "About Us";
+        aboutUsModel.DetailsSection1Title = sTitle1;
+        aboutUsModel.DetailsSection1Content = sContent1;
 
-        aboutUsModel.DetailsSection2Title = "Get Involved";
-        aboutUsModel.DetailsSection2Content = "Blah blah blah blah blah";
+        aboutUsModel.DetailsSection2Title = sTitle2;
+        aboutUsModel.DetailsSection2Content = sContent2;
+
+        aboutUsModel.DetailsSection3Title = sTitle3;
+        aboutUsModel.DetailsSection3Content = sContent3;
 
         TextView title = view.findViewById(R.id.about_us_title);
         TextView section1Title = view.findViewById(R.id.text_view_details1_title);
         TextView section1Content = view.findViewById(R.id.text_view_details1_content);
         TextView section2Title = view.findViewById(R.id.text_view_details2_title);
         TextView section2Content = view.findViewById(R.id.text_view_details2_content);
+        TextView section3Title = view.findViewById(R.id.text_view_details3_title);
+        TextView section3Content = view.findViewById(R.id.text_view_details3_content);
 
-        title.setText(aboutUsModel.Title);
-        section1Title.setText(aboutUsModel.DetailsSection1Title);
-        section1Content.setText(aboutUsModel.DetailsSection1Content);
-        section2Title.setText(aboutUsModel.DetailsSection2Content);
-        section2Content.setText(aboutUsModel.DetailsSection2Title);
-        ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
+        if (sTitle1.length() == 0 || sContent1.length() == 0 || sTitle2.length() == 0 || sContent2.length() == 0 || sContent3.length() == 0 || sTitle3.length() == 0){
+            ((RelativeLayout)view.findViewById(R.id.rl_Error)).setVisibility(View.VISIBLE);
+        } else {
+            title.setText(aboutUsModel.Title);
+            section1Title.setText(aboutUsModel.DetailsSection1Title);
+            section1Content.setText(aboutUsModel.DetailsSection1Content);
+            section2Title.setText(aboutUsModel.DetailsSection2Title);
+            section2Content.setText(aboutUsModel.DetailsSection2Content);
+            section3Title.setText(aboutUsModel.DetailsSection3Title);
+            section3Content.setText(aboutUsModel.DetailsSection3Content);
+            ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
+        }
     }
 
     private class WebElementsTask extends AsyncTask<Void, Void, Void> {
-        String result;
+        String sectionTitle1;
+        String sectionContent1;
+
+        String sectionTitle2;
+        String sectionContent2;
+
+        String sectionTitle3;
+        String sectionContent3;
+
         ArrayList<Element> elements = new ArrayList<>();
         @Override
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://www.thinq.tv/").get();
-                Elements bigTextElements = doc.getElementsByClass("text-center maroon mt-5 pl-2 pt-5");
-                for (Element element: bigTextElements) {
-                    String s = element.child(0).toString();
-                    System.out.println(s);
-                    // TODO: Remove the tags and use resulting string for the AboutUs Model
+                Document doc = Jsoup.connect("https://www.thinq.tv/getinvolved").get();
+
+                //Get Title value
+                Elements bigTextElements = doc.getElementsByClass("maroon");
+                for (int i = 0; i < bigTextElements.size(); i++) {
+                    String s = bigTextElements.get(i).toString();
+                    if (i == 0){
+                        sectionTitle1 = parseTag(s);
+                    } else if (i == 1) {
+                        sectionTitle2 = parseTag(s);
+                    }else {
+                        sectionTitle3 = parseTag(s);
+                        break;
+                    }
                 }
+
+                //Get DetailsSection 1
+                Elements subTitleElements = doc.getElementsByClass("lead pr-2 mr-1");
+                for (Element element: subTitleElements) {
+                    String s = element.toString();
+                    sectionContent1 = parseTag(s);
+                }
+
+                Elements elementContent2 = doc.getElementsByClass("black");
+                sectionContent2 = parseTag(elementContent2.get(0).toString());
+                sectionContent3 = parseTag(elementContent2.get(1).toString());
+
                 System.out.println("elements.size() = " + elements.size());
             } catch (Exception e) {
                 System.out.println("FAILED");
@@ -123,7 +164,13 @@ public class aboutus_fragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            setAboutUsModel();
+            setAboutUsModel(sectionTitle1, sectionContent1, sectionTitle2, sectionContent2, sectionTitle3, sectionContent3);
+        }
+
+        private String parseTag(String tag) {
+            String[] arrOfStr = tag.split(">",2);
+            String[] arrResult = arrOfStr[1].split("<",2);
+            return arrResult[0];
         }
     }
 }
