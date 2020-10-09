@@ -9,5 +9,8 @@ public class AboutUsModel {
     public String DetailsSection2Title = "";
     public String DetailsSection2Content = "";
 
+    public String DetailsSection3Title = "";
+    public String DetailsSection3Content = "";
+
     public String[] ImageURLs = {""};
 }

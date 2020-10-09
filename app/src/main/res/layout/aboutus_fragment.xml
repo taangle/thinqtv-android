@@ -1,81 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rlAboutUs"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".aboutus_fragment">
-    <TextView
-        android:id="@+id/about_us_title"
-        android:layout_width="wrap_content"
+
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="ABOUT US TITLE HOLDER"
-        android:textStyle="bold"
-        android:textSize="32sp"
-        android:textColor="@color/colorPrimary"/>
-    <RelativeLayout
-        android:id="@+id/layout_about_us_section1"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/about_us_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <!--Temporary Image. Get Image using jsoup-->
-        <ImageView
-            android:id="@+id/image_view_logo"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:src="@drawable/ic_launcher_foreground_gold"/>
+        android:layout_marginBottom="60dp">
         <RelativeLayout
-            android:id="@+id/layout_details1"
-            android:layout_toEndOf="@+id/image_view_logo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <!-- Change visibility of this layout to VISIBLE when working on changes -->
+            <RelativeLayout
+                android:id="@+id/rl_Error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/img_logo"
+                    android:layout_centerInParent="true"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:src="@drawable/ic_launcher_foreground_gold"/>
+                <TextView
+                    android:layout_below="@+id/img_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Temporary holder while undergoing maintenance."
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="32dp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="THIS WILL BE THE PAGE WE DISPLAY WHEN WORKING ON CHANGING THE ABOUT US MODEL"/>
+            </RelativeLayout>
             <TextView
-                android:id="@+id/text_view_details1_title"
+                android:id="@+id/about_us_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ABOUT US DETAILS TITLE"
+                android:layout_below="@+id/rl_Error"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:text="ABOUT US TITLE HOLDER"
                 android:textStyle="bold"
-                android:textSize="24sp"
-                android:textColor="@color/colorAccent"/>
-            <TextView
-                android:id="@+id/text_view_details1_content"
+                android:textSize="32sp"
+                android:textColor="@color/colorPrimary"/>
+            <RelativeLayout
+                android:id="@+id/layout_about_us_section1"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/about_us_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_view_details1_title"
-                android:text="random text hbhbhbhbhbhbhbhbbbhbbhbhbhbhbhbhbhbhbhbh"
-                android:textSize="18sp"/>
-        </RelativeLayout>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/layout_about_us_section2"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/layout_about_us_section1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_centerHorizontal="true"
-            android:id="@+id/text_view_details2_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ABOUT US DETAILS TITLE"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:textColor="@color/colorPrimaryDark"/>
-        <TextView
-            android:layout_centerHorizontal="true"
-            android:id="@+id/text_view_details2_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_view_details2_title"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="random text hbhbhbhbhbhbhbhbbbhbbhbhbhbhbhbhbhbhbhbh"
-            android:textSize="18sp"/>
-    </RelativeLayout>
+                android:layout_height="wrap_content">
 
-    <!--TODO: Add more sections as needed-->
-</RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/layout_details1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/text_view_details1_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="ABOUT US DETAILS TITLE"
+                        android:textStyle="bold"
+                        android:textSize="24sp"
+                        android:textColor="@color/colorPrimaryDark"/>
+
+                    <TextView
+                        android:id="@+id/text_view_details1_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:layout_below="@id/text_view_details1_title"
+                        android:text="random text hbhbhbhbhbhb hbhbbbhbbhbhbh bhbhbhb hbhbhbh"
+                        android:textAlignment="textStart"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_about_us_section2"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/layout_about_us_section1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/text_view_details2_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="5dp"
+                    android:text="ABOUT US DETAILS TITLE"
+                    android:textStyle="bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:id="@+id/text_view_details2_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_view_details2_title"
+                    android:layout_centerInParent="true"
+                    android:paddingHorizontal="5dp"
+                    android:gravity="center"
+                    android:text="random text hbhbhbhbhbhbhbhbbbhbbhbhbhbhbhbhbhbhbhbh"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp"
+                    tools:ignore="RtlCompat" />
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/layout_about_us_section2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="5dp"
+                android:orientation="vertical"
+                android:background="@color/colorPrimary">
+                <TextView
+                    android:id="@+id/text_view_details3_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Section Holder"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold"
+                    android:textSize="32dp"/>
+
+                <TextView
+                    android:id="@+id/text_view_details3_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Section Holder"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"/>
+            </LinearLayout>
+
+            <!--TODO: Add more sections as needed-->
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>
