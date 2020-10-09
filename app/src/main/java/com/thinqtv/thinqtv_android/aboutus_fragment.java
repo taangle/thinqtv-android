@@ -105,11 +105,11 @@ public class aboutus_fragment extends Fragment {
         } else {
             title.setText("- " + aboutUsModel.Title + " -");
             section1Title.setText(aboutUsModel.DetailsSection1Title);
-            section1Content.setText("\t" + aboutUsModel.DetailsSection1Content);
+            section1Content.setText("\t" + aboutUsModel.DetailsSection1Content.replace("amp;", ""));
             section2Title.setText(aboutUsModel.DetailsSection2Title);
-            section2Content.setText("\t" + aboutUsModel.DetailsSection2Content);
+            section2Content.setText("\t" + aboutUsModel.DetailsSection2Content.replace("amp;", ""));
             section3Title.setText(aboutUsModel.DetailsSection3Title);
-            section3Content.setText("\t" + aboutUsModel.DetailsSection3Content);
+            section3Content.setText("\t" + aboutUsModel.DetailsSection3Content.replace("amp;", ""));
             ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
         }
     }
