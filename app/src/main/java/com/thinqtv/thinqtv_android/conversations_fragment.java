@@ -299,8 +299,10 @@ public class conversations_fragment extends Fragment {
 
                         if (!json.get(i).getString("topic").equals("DropIn"))
                         {
-                            linearLayout.addView(constraintLayout);
-                            linearLayout.addView(viewDivider);
+                            try {
+                                linearLayout.addView(constraintLayout);
+                                linearLayout.addView(viewDivider);
+                            } catch (NullPointerException e) {}
                         }
                         break;
                     }
@@ -350,8 +352,10 @@ public class conversations_fragment extends Fragment {
                         {
                             if (!json.get(i).getString("topic").equals("DropIn"))
                             {
-                                linearLayout.addView(constraintLayout);
-                                linearLayout.addView(viewDivider);
+                                try {
+                                    linearLayout.addView(constraintLayout);
+                                    linearLayout.addView(viewDivider);
+                                } catch (NullPointerException e) {}
                             }
                         }
                         break;
@@ -370,8 +374,10 @@ public class conversations_fragment extends Fragment {
                             {
                                 if (!json.get(i).getString("topic").equals("DropIn"))
                                 {
-                                    linearLayout.addView(constraintLayout);
-                                    linearLayout.addView(viewDivider);
+                                    try {
+                                        linearLayout.addView(constraintLayout);
+                                        linearLayout.addView(viewDivider);
+                                    } catch (NullPointerException e) {}
                                 }
                             }
                         }
@@ -386,8 +392,10 @@ public class conversations_fragment extends Fragment {
                         {
                             if (!json.get(i).getString("topic").equals("DropIn"))
                             {
-                                linearLayout.addView(constraintLayout);
-                                linearLayout.addView(viewDivider);
+                                try {
+                                    linearLayout.addView(constraintLayout);
+                                    linearLayout.addView(viewDivider);
+                                } catch (NullPointerException e) {}
                             }
                         }
                         break;
@@ -410,8 +418,10 @@ public class conversations_fragment extends Fragment {
             public void onResponse(JSONArray response) {
                 // If you receive a response, the JSON data is saved in response
                 // Clear the linearLayout
-                LinearLayout layout = (LinearLayout) getView().findViewById(R.id.upcoming_events_linearView);
-                layout.removeAllViews();
+                try {
+                    LinearLayout layout = (LinearLayout) getView().findViewById(R.id.upcoming_events_linearView);
+                    layout.removeAllViews();
+                } catch (NullPointerException e) { return; }
 
                 //fill it back in with the response data
                 ArrayList<JSONObject> array = new ArrayList<JSONObject>();
