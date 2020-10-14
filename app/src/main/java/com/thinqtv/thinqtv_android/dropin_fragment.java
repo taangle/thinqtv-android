@@ -287,7 +287,7 @@ public class dropin_fragment extends Fragment {
                             constraintSet.applyTo(constraintLayout);
                         }
 
-                        if (newEvent_textView.getText().toString().contains("Drop"))
+                        if (json.get(i).getString("topic").equals("DropIn"))
                         {
                             linearLayout.addView(constraintLayout);
                             linearLayout.addView(viewDivider);
@@ -337,7 +337,7 @@ public class dropin_fragment extends Fragment {
 
                         if (date.before(filterDate))
                         {
-                            if (newEvent_textView.getText().toString().contains("Drop"))
+                            if (json.get(i).getString("topic").equals("DropIn"))
                             {
                                 linearLayout.addView(constraintLayout);
                                 linearLayout.addView(viewDivider);
@@ -357,7 +357,7 @@ public class dropin_fragment extends Fragment {
 
                             if (date.before(filterDate))
                             {
-                                if (newEvent_textView.getText().toString().contains("Drop"))
+                                if (json.get(i).getString("topic").equals("DropIn"))
                                 {
                                     linearLayout.addView(constraintLayout);
                                     linearLayout.addView(viewDivider);
@@ -373,7 +373,7 @@ public class dropin_fragment extends Fragment {
 
                         if (date.after(filterDate))
                         {
-                            if (newEvent_textView.getText().toString().contains("Drop"))
+                            if (json.get(i).getString("topic").equals("DropIn"))
                             {
                                 linearLayout.addView(constraintLayout);
                                 linearLayout.addView(viewDivider);
