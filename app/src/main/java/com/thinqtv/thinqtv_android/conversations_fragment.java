@@ -275,7 +275,8 @@ public class conversations_fragment extends Fragment {
                             happening_now.setTextSize(15);
                             happening_now.setTextColor(Color.WHITE);
                             happening_now.setText(R.string.happening_now);
-                            happening_now.setLayoutParams(new LinearLayout.LayoutParams(950, 120));
+                            happening_now.setPadding(100,0,100,0);
+                            happening_now.setAllCaps(false);
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
@@ -320,7 +321,8 @@ public class conversations_fragment extends Fragment {
                             happening_now.setTextSize(15);
                             happening_now.setTextColor(Color.WHITE);
                             happening_now.setText(R.string.happening_now);
-                            happening_now.setLayoutParams(new LinearLayout.LayoutParams(950, 120));
+                            happening_now.setPadding(100,0,100,0);
+                            happening_now.setAllCaps(false);
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
