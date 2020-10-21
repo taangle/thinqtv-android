@@ -68,12 +68,15 @@
     <string name="permalink_taken">Permalink has already been taken.</string>
     <string name="generic_input_error">There is a problem with your input</string>
 
-    <string name="facebook_app_id">367815227733797</string>
-    <string name="fb_login_protocol_scheme">fb367815227733797</string>
+    <string name="facebook_app_id">243146653591136</string>
+    <string name="fb_login_protocol_scheme">fb243146653591136</string>
     <string name="fb_sign_in_tag">FB_SIGN_IN</string>
     <string name="server_url_fb_sign_in">https://thinq.tv/api/v1/oauth/facebook</string>
 
-    <string name="server_client_id">923521097239</string>
+    <string name="server_client_id">923521097239-jo03cpden95g1lojtmupibjf9t0930e0.apps.googleusercontent.com</string>
     <string name="server_url_google_sign_in">https://thinq.tv/api/v1/oauth/google</string>
     <string name="google_sign_in_tag">GOOGLE_SIGN_IN</string>
+
+    <string name="login_url">https://thinq.tv/api/v1/login</string>
+    <string name="register_url">https://thinq.tv/api/v1/register</string>
 </resources>
