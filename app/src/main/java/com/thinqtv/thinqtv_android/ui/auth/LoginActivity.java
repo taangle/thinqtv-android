@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -31,8 +32,13 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.thinqtv.thinqtv_android.R;
+import com.thinqtv.thinqtv_android.data.DataSource;
+import com.thinqtv.thinqtv_android.data.UserRepository;
+import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -163,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 Log.i(getString(R.string.fb_sign_in_tag), "Successfully logged in with FB. Access token: " + loginResult.getAccessToken().getToken());
-                validateAccessTokenWithServer(loginResult.getAccessToken().getToken());
+                validateAccessTokenWithServer(loginResult.getAccessToken().getToken(), loginResult.getAccessToken().getUserId(), context);
             }
 
             @Override
@@ -190,6 +196,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         findViewById(R.id.google_sign_in_button).setOnClickListener(view -> {
+            Log.i(getString(R.string.google_sign_in_tag), "google button clicked.");
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RNGoogleSigninModule.RC_SIGN_IN);
         });
@@ -218,7 +225,7 @@ public class LoginActivity extends AppCompatActivity {
                 String idToken = account.getIdToken();
                 Log.d(getString(R.string.google_sign_in_tag), "ID token: " + idToken);
 
-                validateTokenWithServer(idToken, account);
+                validateTokenWithServer(idToken, account, this);
             }
             else {
                 Log.i(getString(R.string.google_sign_in_tag), "GoogleSignInAccount was null");
@@ -231,78 +238,92 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void validateTokenWithServer(String idToken, GoogleSignInAccount account) {
-        String json = String.format("{\"idToken\": \"%s\"}", idToken);
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = RequestBody.create(JSON, json);
-        Request request = new Request.Builder()
-                .url(getString(R.string.server_url_google_sign_in))
-                .post(body)
-                .build();
+    private void validateTokenWithServer(String idToken, GoogleSignInAccount account, Context context) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("id_token", idToken);
+        } catch(JSONException e) { // Couldn't form JSON object for request.
+            e.printStackTrace();
+            Log.e(getString(R.string.google_sign_in_tag), "Error forming request");
+            return;
+        }
 
-        Log.i(getString(R.string.google_sign_in_tag), "Sending ID token to backend");
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e(getString(R.string.google_sign_in_tag), "Error sending ID token to backend.", e);
-                mGoogleSignInClient.signOut()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
-                            }
-                        });
-            }
+        Log.i(getString(R.string.google_sign_in_tag), "Sending access token to backend");
+        JsonObjectRequest request = new JsonObjectRequest(com.android.volley.Request.Method.POST,
+                getString(R.string.server_url_google_sign_in), params,
+                response -> {
+                    try {
+                        Log.i(getString(R.string.google_sign_in_tag), "Signed in with Google.");
+                        JSONObject user = new JSONObject(response.getString("user"));
+                        UserRepository.getInstance().setLoggedInUser(new LoggedInUser(response.getString("token"), user.getString("name"), user.getString("permalink")));
+                        setResult(Activity.RESULT_OK);
 
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Log.i(getString(R.string.google_sign_in_tag), "Signed in as: " + response.body().string());
-                    // TODO actually log in to the user repository
-                }
-                else {
-                    Log.w(getString(R.string.google_sign_in_tag), "Failed to sign in with Google, response code: "  + response.code());
-                    mGoogleSignInClient.signOut()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
-                                }
-                            });
-                }
-            }
+                        // Complete and destroy login activity only on a successful login.
+                        finish();
+                    } catch(JSONException e) {
+                        Log.w(getString(R.string.google_sign_in_tag), "Error sending token to backend.");
+                        e.printStackTrace();
+                        LoginManager.getInstance().logOut();
+                    }
+                }, error -> {
+                    Log.w(getString(R.string.google_sign_in_tag), "whate");
+                    if (error.networkResponse != null && error.networkResponse.statusCode == 400 && error.networkResponse.data != null) {
+                        try {
+                            JSONObject errorJson = new JSONObject(new String(error.networkResponse.data));
+                            Log.i(getString(R.string.google_sign_in_tag), errorJson.getString("errors"));
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    LoginManager.getInstance().logOut();
         });
+
+        DataSource.getInstance().addToRequestQueue(request, context);
+
     }
 
-    private void validateAccessTokenWithServer(String accessToken) {
-        String json = String.format("{\"access_token\": \"%s\"}", accessToken);
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = RequestBody.create(JSON, json);
-        Request request = new Request.Builder()
-                .url(getString(R.string.server_url_fb_sign_in))
-                .post(body)
-                .build();
+    private void validateAccessTokenWithServer(String accessToken, String userId, Context context) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("access_token", accessToken);
+            params.put("user_id", userId);
+        } catch(JSONException e) { // Couldn't form JSON object for request.
+            e.printStackTrace();
+            Log.e(getString(R.string.fb_sign_in_tag), "Error forming request");
+            return;
+        }
 
         Log.i(getString(R.string.fb_sign_in_tag), "Sending access token to backend");
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e(getString(R.string.fb_sign_in_tag), "Error sending access token to backend", e);
-                LoginManager.getInstance().logOut();
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.isSuccessful()) {
+        JsonObjectRequest request = new JsonObjectRequest(com.android.volley.Request.Method.POST,
+            getString(R.string.server_url_fb_sign_in), params,
+            response -> {
+                try {
                     Log.i(getString(R.string.fb_sign_in_tag), "Signed in with FB");
-                    // TODO actually log in to user repository
-                }
-                else {
-                    Log.w(getString(R.string.fb_sign_in_tag), "Failed to sign in with FB, response code: " + response.code());
+                    JSONObject user = new JSONObject(response.getString("user"));
+                    UserRepository.getInstance().setLoggedInUser(new LoggedInUser(response.getString("token"), user.getString("name"), user.getString("permalink")));
+                    setResult(Activity.RESULT_OK);
+
+                    // Complete and destroy login activity only on a successful login.
+                    finish();
+                } catch(JSONException e) {
+                    Log.w(getString(R.string.fb_sign_in_tag), "Error sending access token to backend.");
+                    e.printStackTrace();
                     LoginManager.getInstance().logOut();
                 }
-            }
-        });
+            }, error -> {
+                Log.w(getString(R.string.fb_sign_in_tag), "Failed to sign in with FB, response code: " + error.networkResponse.statusCode);
+                if (error.networkResponse != null && error.networkResponse.statusCode == 400 && error.networkResponse.data != null) {
+                    try {
+                        JSONObject errorJson = new JSONObject(new String(error.networkResponse.data));
+                        Log.i(getString(R.string.fb_sign_in_tag), errorJson.getString("errors"));
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LoginManager.getInstance().logOut();
+            });
+
+        DataSource.getInstance().addToRequestQueue(request, context);
     }
 
     // Display error at the top of the login screen.
