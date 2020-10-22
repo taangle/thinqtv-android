@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +17,23 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.thinqtv.thinqtv_android.data.UserRepository;
 import com.thinqtv.thinqtv_android.ui.auth.LoginActivity;
 
 public class profile_fragment extends Fragment {
 
-
-    public profile_fragment() {
-        // Required empty public constructor
+    private GoogleSignInClient googleSignInClient;
+    public profile_fragment(GoogleSignInClient googleSignInClient) {
+        this.googleSignInClient = googleSignInClient;
     }
 
-    public static profile_fragment newInstance() {
-        profile_fragment fragment = new profile_fragment();
+    public static profile_fragment newInstance(GoogleSignInClient googleSignInClient) {
+        profile_fragment fragment = new profile_fragment(googleSignInClient);
         return fragment;
     }
 
@@ -62,13 +71,7 @@ public class profile_fragment extends Fragment {
                         //goHome(view); //HOME WHILE SIGN IN
                         break;
                     case 1:
-                        //goHome(view); //HOME WHILE SIGN IN
-                        break;
-                    case 2:
-                        //  goHome(view); //CONTROL PANEL
-                        break;
-                    case 3:
-                        //goHome(view);  //SIGN OUT
+                        logout();
                         break;
                 }
             }
@@ -83,5 +86,18 @@ public class profile_fragment extends Fragment {
         Intent i = new Intent(getContext(), MainActivity.class);
         startActivity(i);
         System.out.println(" ''" + v + " ''");
+    }
+
+    public void logout() {
+        UserRepository.getInstance().logout();
+        LoginManager.getInstance().logOut();
+        googleSignInClient.signOut()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google accountl");
+                    }
+                });
+        ((MainActivity)getActivity()).openFragment(welcome_fragment.newInstance());
     }
 }

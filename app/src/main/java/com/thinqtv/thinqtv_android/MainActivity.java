@@ -63,6 +63,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // When resuming from profile/login page, check if user is logged in and choose fragment accordingly.
+        if (bottomNavigation.getSelectedItemId() == R.id.action_profile)
+            if (UserRepository.getInstance().getLoggedInUser() == null) {
+                openFragment(welcome_fragment.newInstance());
+            } else {
+                openFragment(profile_fragment.newInstance(mGoogleSignInClient));
+            }
+    }
+
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
@@ -84,10 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_profile:
                 if (UserRepository.getInstance().isLoggedIn())
-                    openFragment(profile_fragment.newInstance());
+                    openFragment(profile_fragment.newInstance(mGoogleSignInClient));
                 else
                     openFragment(welcome_fragment.newInstance());
-
                 return true;
         }
         return false;
