@@ -58,7 +58,7 @@ public class UserRepository {
         return user != null;
     }
 
-    private void setLoggedInUser(LoggedInUser user) {
+    public void setLoggedInUser(LoggedInUser user) {
         this.user = user;
     }
 
@@ -72,13 +72,11 @@ public class UserRepository {
      * logged-in user is updated.
      */
     public void login(String email, String password, Context context, LoginViewModel loginViewModel) {
-        final String loginUrl = "api/v1/users/sign_in.json";
-        JSONObject userLogin = new JSONObject();
+        final String loginUrl = "api/v1/users/login";
         JSONObject loginParams = new JSONObject();
         try {
             loginParams.put("email", email);
             loginParams.put("password", password);
-            userLogin.put("user", loginParams);
         } catch(JSONException e) { // Couldn't form JSON object for request.
             e.printStackTrace();
             loginViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
@@ -86,14 +84,11 @@ public class UserRepository {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                DataSource.getServerUrl() + loginUrl, userLogin,
+                context.getResources().getString(R.string.login_url), loginParams,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email"), response.getString("id")));
-                        getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
-                        getLoggedInUser().updateProfile(response.getString("name"), response.getString("profpic"),
-                                response.getString("about"), response.getString("genre1"), response.getString("genre2"),
-                                response.getString("genre3"), response.getString("bannerpic"));
+                        JSONObject user = new JSONObject(response.getString("user"));
+                        setLoggedInUser(new LoggedInUser(response.getString("token"), user.getString("name"), user.getString("permalink")));
                         loginViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -122,7 +117,6 @@ public class UserRepository {
      */
     public void register(String email, String name, String permalink, String password,
                          Context context, RegisterViewModel registerViewModel) {
-        final String registerUrl = "api/v1/users";
         JSONObject userRegister = new JSONObject();
         JSONObject registerParams = new JSONObject();
         try {
@@ -138,10 +132,11 @@ public class UserRepository {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                DataSource.getServerUrl() + registerUrl, userRegister,
+                context.getResources().getString(R.string.register_url), userRegister,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(context, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email"), response.getString("id")));
+                        JSONObject user = new JSONObject(response.getString("user"));
+                        setLoggedInUser(new LoggedInUser(response.getString("token"), user.getString("name"), user.getString("permalink")));
                         registerViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();

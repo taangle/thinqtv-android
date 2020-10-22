@@ -22,8 +22,7 @@ public class LoggedInUser {
     private String genre3;
     private String bannerPic;
 
-    public LoggedInUser(Context context, String name, String authToken, String permalink, String email, String id) {
-        this.name = name;
+    public LoggedInUser(Context context, String authToken, String name, String permalink) {
         this.authToken = authToken;
         this.permalink = permalink;
         this.email = email;

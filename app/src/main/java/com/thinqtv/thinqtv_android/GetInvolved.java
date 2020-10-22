@@ -40,25 +40,28 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
                 //the following disable any links on the web page.
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    if (url.equals("https://thinqtv.herokuapp.com/parents")) {
+                   // if (url.equals("https://thinqtv.herokuapp.com/parents")) {
+                    if (url.equals("https://www.thinq.tv/jointheteam")) {
                         view.loadUrl(url);
                     }
                     return true;
                 }
             }
             );
-            webpageViewer.loadUrl("https://thinqtv.herokuapp.com/parents");
+           // webpageViewer.loadUrl("https://thinqtv.herokuapp.com/parents");
+        webpageViewer.loadUrl("https://www.thinq.tv/jointheteam");
+
         /*
           - 'spinner' is the actual Spinner object which is our drop down menu
           - 'adapter' fills 'spinner' with the strings in the string array pages under res/values/strings.xml
           - line 50 sets the layout of the adapter, which we connect to  'spinner' in line 51
           - Finally, setOnItemSelectedListener allows the app to react to clicks on 'spinner'
          */
-            Spinner spinner = findViewById(R.id.spinner1);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Pages, android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-            spinner.setOnItemSelectedListener(this);
+//            Spinner spinner = findViewById(R.id.spinner1);
+//            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Pages, android.R.layout.simple_spinner_item);
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            spinner.setAdapter(adapter);
+//            spinner.setOnItemSelectedListener(this);
     }
 
     //Identical to load, except can be called when user selects something on spinner.
@@ -87,8 +90,8 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.equals(site) || url.equals(("https://thinqtv.herokuapp.com/boardofdirectors")) ||
-                url.equals("https://thinqtv.herokuapp.com/parents") || url.equals("https://thinqtv.herokuapp.com/drschaeferspeaking")
-                || url.equals("https://thinqtv.herokuapp.com/aboutus")) {
+                url.equals("https://www.thinq.tv/jointheteam") || url.equals("https://www.thinq.tv/drschaeferspeaking")
+                || url.equals("https://www.thinq.tv/getinvolved")) {
                     view.loadUrl(url);
                 }
                 return true;
@@ -105,17 +108,24 @@ public class GetInvolved extends AppCompatActivity implements AdapterView.OnItem
         System.out.println(" ''" + v + " ''");
     }
 
+    public void goToProfile(View view) {
+        //Intent i = new Intent(this, Profile.class);
+        //startActivity(i);
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch(position){
             case 0:
-                changeSite("https://thinqtv.herokuapp.com/parents");
+                changeSite("https://www.thinq.tv/jointheteam");
+                //goHome(view);
                 break;
             case 1:
-                changeSite("https://thinqtv.herokuapp.com/drschaeferspeaking");
+               // changeSite("https://thinqtv.herokuapp.com/drschaeferspeaking");
+                changeSite("https://www.thinq.tv/drschaeferspeaking");
                 break;
             case 2:
-                changeSite("https://thinqtv.herokuapp.com/aboutus");
+                changeSite("https://www.thinq.tv/getinvolved");
                 break;
         }
     }
