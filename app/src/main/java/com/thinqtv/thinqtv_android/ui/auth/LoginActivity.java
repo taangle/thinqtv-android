@@ -255,7 +255,7 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         Log.i(getString(R.string.google_sign_in_tag), "Signed in with Google.");
                         JSONObject user = new JSONObject(response.getString("user"));
-                        UserRepository.getInstance().setLoggedInUser(new LoggedInUser(response.getString("token"), user.getString("name"), user.getString("permalink")));
+                        UserRepository.getInstance().setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
                         setResult(Activity.RESULT_OK);
 
                         // Complete and destroy login activity only on a successful login.
@@ -300,7 +300,7 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     Log.i(getString(R.string.fb_sign_in_tag), "Signed in with FB");
                     JSONObject user = new JSONObject(response.getString("user"));
-                    UserRepository.getInstance().setLoggedInUser(new LoggedInUser(response.getString("token"), user.getString("name"), user.getString("permalink")));
+                    UserRepository.getInstance().setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
                     setResult(Activity.RESULT_OK);
 
                     // Complete and destroy login activity only on a successful login.

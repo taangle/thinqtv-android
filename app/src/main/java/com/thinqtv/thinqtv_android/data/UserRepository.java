@@ -88,7 +88,7 @@ public class UserRepository {
                 response -> {
                     try {
                         JSONObject user = new JSONObject(response.getString("user"));
-                        setLoggedInUser(new LoggedInUser(response.getString("token"), user.getString("name"), user.getString("permalink")));
+                        setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
                         loginViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -136,7 +136,7 @@ public class UserRepository {
                 response -> {
                     try {
                         JSONObject user = new JSONObject(response.getString("user"));
-                        setLoggedInUser(new LoggedInUser(response.getString("token"), user.getString("name"), user.getString("permalink")));
+                        setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
                         registerViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -186,7 +186,6 @@ public class UserRepository {
     }
 
     public void loadSavedUser(StartupLoadingActivity activity) {
-        final String loginUrl = "api/v1/users/sign_in.json";
 
         SharedPreferences pref = activity.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
         String email = pref.getString("email", null);
@@ -205,10 +204,10 @@ public class UserRepository {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                DataSource.getServerUrl() + loginUrl, userLogin,
+                activity.getResources().getString(R.string.login_url), userLogin,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(activity, response.getString("name"), response.getString("token"), response.getString("permalink"), response.getString("email"), response.getString("id")));
+                        setLoggedInUser(new LoggedInUser(activity, response.getString("name"), response.getString("token"), response.getString("permalink")));
                         getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
                         getLoggedInUser().updateProfile(response.getString("name"), response.getString("profpic"),
                                 response.getString("about"), response.getString("genre1"), response.getString("genre2"),
@@ -236,7 +235,7 @@ public class UserRepository {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = DataSource.getServerUrl() + "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName() + ".json";
+        String url = context.getResources().getString(R.string.users_url) + "/" + UserRepository.getInstance().getLoggedInUser().getName();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, params, response -> {
             try {
                 getLoggedInUser().updateToken(response.getString("token"));
@@ -251,7 +250,7 @@ public class UserRepository {
     }
     public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
                        String topic2, String topic3, ImageView bannerPic) {
-        String url = DataSource.getServerUrl() + "api/v1/users/" + UserRepository.getInstance().getLoggedInUser().getName();
+        String url = context.getResources().getString(R.string.users_url) + "/" + UserRepository.getInstance().getLoggedInUser().getName();
         VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, url,
                 response -> {
                     String responseString = new String(response.data);
