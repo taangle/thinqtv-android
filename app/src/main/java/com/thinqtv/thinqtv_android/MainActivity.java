@@ -1,5 +1,6 @@
 package com.thinqtv.thinqtv_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;

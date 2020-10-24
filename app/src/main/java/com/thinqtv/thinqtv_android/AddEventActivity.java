@@ -155,7 +155,7 @@ public class AddEventActivity extends AppCompatActivity{
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                DataSource.getServerUrl() + url, params, response -> {
+                getString(R.string.events_url), params, response -> {
             try {
                 UserRepository.getInstance().getLoggedInUser().updateToken(response.getString("token"));
                 ((Activity)context).finish();

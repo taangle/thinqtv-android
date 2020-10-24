@@ -67,10 +67,11 @@ public class profile_fragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch(i){
-                    case 0:
-                        //goHome(view); //HOME WHILE SIGN IN
-                        break;
                     case 1:
+                        Intent intent = new Intent((MainActivity)getActivity(), ControlPanelActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
                         logout();
                         break;
                 }

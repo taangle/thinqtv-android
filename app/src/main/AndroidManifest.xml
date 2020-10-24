@@ -17,9 +17,14 @@
         android:usesCleartextTraffic="true"
         android:name=".App">
         <activity android:name=".ControlPanelActivity" />
+        <activity android:name=".AccountSettingsActivity"
+            android:parentActivityName=".ControlPanelActivity" />
+        <activity android:name=".ProfileSettingsActivity"
+            android:parentActivityName=".ControlPanelActivity" />
+        <activity android:name=".EditConversationsActivity"
+            android:parentActivityName=".ControlPanelActivity" />
         <activity android:name=".AddEventActivity" />
         <activity android:name=".StartupLoadingActivity" />
-        <activity android:name=".AccountSettingsActivity" />
         <activity
             android:name=".ui.auth.LoginActivity"
             android:label="@string/title_activity_login"
