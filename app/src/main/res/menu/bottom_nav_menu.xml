@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_dropin"
-        android:enabled="true"
-        android:icon="@drawable/dropin_bottombar"
-        android:title="Drop In"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_conversations"
+        android:id="@+id/action_conversation"
         android:enabled="true"
         android:checked="true"
         android:icon="@drawable/schedule_bottombar"
-        android:title="Mentor Hours"
+        android:title="Conversations"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_inviteus"
+        android:enabled="true"
+        android:icon="@drawable/inviteus_bottombar"
+        android:title="Invite Us"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_aboutus"

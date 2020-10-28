@@ -4,27 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,7 +28,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.thinqtv.thinqtv_android.data.DataSource;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 
@@ -43,7 +37,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Console;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,23 +45,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.UUID;
 
-import android.widget.LinearLayout.LayoutParams;
-
-public class conversations_fragment extends Fragment {
+public class conversation_fragment extends Fragment {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
     private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
     private static String lastScreenNameStr = "";
 
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
 
-    public conversations_fragment() {
+    public conversation_fragment() {
         // Required empty public constructor
     }
 
-    public static conversations_fragment newInstance() {
-        conversations_fragment fragment = new conversations_fragment();
+    public static conversation_fragment newInstance() {
+        conversation_fragment fragment = new conversation_fragment();
         return fragment;
     }
 
@@ -81,7 +71,7 @@ public class conversations_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.conversations_fragment, container, false);
+        return inflater.inflate(R.layout.conversation_fragment, container, false);
     }
 
     @Override
@@ -297,7 +287,7 @@ public class conversations_fragment extends Fragment {
                             constraintSet.applyTo(constraintLayout);
                         }
 
-                        if (!json.get(i).getString("topic").equals("DropIn"))
+//                        if (json.get(i).getString("topic").equals("DropIn"))
                         {
                             try {
                                 linearLayout.addView(constraintLayout);
@@ -350,7 +340,7 @@ public class conversations_fragment extends Fragment {
 
                         if (date.before(filterDate))
                         {
-                            if (!json.get(i).getString("topic").equals("DropIn"))
+//                            if (json.get(i).getString("topic").equals("DropIn"))
                             {
                                 try {
                                     linearLayout.addView(constraintLayout);
@@ -372,7 +362,7 @@ public class conversations_fragment extends Fragment {
 
                             if (date.before(filterDate))
                             {
-                                if (!json.get(i).getString("topic").equals("DropIn"))
+//                                if (json.get(i).getString("topic").equals("DropIn"))
                                 {
                                     try {
                                         linearLayout.addView(constraintLayout);
@@ -390,7 +380,7 @@ public class conversations_fragment extends Fragment {
 
                         if (date.after(filterDate))
                         {
-                            if (!json.get(i).getString("topic").equals("DropIn"))
+//                            if (json.get(i).getString("topic").equals("DropIn"))
                             {
                                 try {
                                     linearLayout.addView(constraintLayout);

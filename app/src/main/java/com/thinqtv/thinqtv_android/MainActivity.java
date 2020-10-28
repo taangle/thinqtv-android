@@ -3,32 +3,13 @@ package com.thinqtv.thinqtv_android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -36,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.thinqtv.thinqtv_android.data.DataSource;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
         if (UserRepository.getInstance().isLoggedIn())
         {
-            openFragment(conversations_fragment.newInstance());
-            bottomNavigation.setSelectedItemId(R.id.action_conversations);
+            openFragment(inviteus_fragment.newInstance());
+            bottomNavigation.setSelectedItemId(R.id.action_conversation);
         }
         else
         {
@@ -103,11 +83,11 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = item ->
     {
         switch (item.getItemId()) {
-            case R.id.action_dropin:
-                openFragment(dropin_fragment.newInstance());
+            case R.id.action_conversation:
+                openFragment(conversation_fragment.newInstance());
                 return true;
-            case R.id.action_conversations:
-                openFragment(conversations_fragment.newInstance());
+            case R.id.action_inviteus:
+                openFragment(inviteus_fragment.newInstance());
                 return true;
             case R.id.action_aboutus:
                 openFragment(aboutus_fragment.newInstance("",""));
