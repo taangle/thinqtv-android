@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -270,7 +271,13 @@ public class conversation_fragment extends Fragment {
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
-                                    onJoinClick(v);
+                                    if (UserRepository.getInstance().isLoggedIn()) {
+                                        onJoinClick(v);
+                                    }
+                                    else {
+                                        Toast.makeText(getContext().getApplicationContext(),
+                                                "Please login to join a conversation", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             });
 
@@ -318,7 +325,13 @@ public class conversation_fragment extends Fragment {
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
-                                    onJoinClick(v);
+                                    if (UserRepository.getInstance().isLoggedIn()) {
+                                        onJoinClick(v);
+                                    }
+                                    else {
+                                        Toast.makeText(getContext().getApplicationContext(),
+                                                "Please login to join a conversation", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             });
 
