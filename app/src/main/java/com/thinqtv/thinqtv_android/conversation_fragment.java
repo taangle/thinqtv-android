@@ -238,6 +238,15 @@ public class conversation_fragment extends Fragment {
                 // Now that you have your textview, create a container for it and add it
                 ConstraintLayout constraintLayout = new ConstraintLayout(getContext());
                 constraintLayout.addView(newEvent_textView);
+                constraintLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent i = new Intent(getContext().getApplicationContext(), AnyWebview.class);
+                        i.putExtra("webviewLink", "https://thinq.tv/ryankittle98");
+                        startActivity(i);
+                    }
+                });
 
                 // Add simple divider to put in between ConstraintLayouts (ie events)
                 View viewDivider = new View(getContext());
