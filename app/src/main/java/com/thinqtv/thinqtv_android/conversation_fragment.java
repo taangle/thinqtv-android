@@ -97,7 +97,6 @@ public class conversation_fragment extends Fragment {
         intent.setAction("org.jitsi.meet.CONFERENCE");
         intent.putExtra("JitsiMeetConferenceOptions", options);
         startActivity(intent);
-        getActivity().finish();
     }
 
     // listener for when a user clicks an event to go to its page

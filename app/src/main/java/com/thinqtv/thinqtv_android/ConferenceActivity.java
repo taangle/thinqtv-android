@@ -32,12 +32,4 @@ public class ConferenceActivity extends JitsiMeetActivity {
 
         super.initialize();
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        // return to the main activity
-        startActivity(new Intent(this, MainActivity.class));
-    }
 }
