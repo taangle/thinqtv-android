@@ -19,8 +19,7 @@ public class LoggedInUser {
     public LoggedInUser(Context context, HashMap<String, String> userInfo) {
         this.userInfo = userInfo;
         pref = context.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
-        pref.edit().putString("email", email).apply();
-        updateToken(authToken);
+        pref.edit().putString("token", userInfo.get("token")).apply();
     }
 
     public HashMap<String, String> getUserInfo() { return userInfo; }

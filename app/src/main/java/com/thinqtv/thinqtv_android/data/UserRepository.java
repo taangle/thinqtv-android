@@ -196,14 +196,7 @@ public class UserRepository {
         SharedPreferences pref = activity.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
         String authToken = pref.getString("token", null);
 
-        JSONObject userLogin = new JSONObject();
-        JSONObject loginParams = new JSONObject();
-        try {
-            loginParams.put("email", email);
-            loginParams.put("token", authToken);
-            userLogin.put("user", loginParams);
-        } catch(JSONException e) { // Couldn't form JSON object for request.
-            e.printStackTrace();
+        if (authToken == null) {
             activity.finish();
             return;
         }
@@ -288,6 +281,12 @@ public class UserRepository {
                     params.put("genre3", topic3);
                 }
                 return params;
+            }
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = super.getHeaders();
+                headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + getLoggedInUser().getUserInfo().get("token"));
+                return headers;
             }
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
