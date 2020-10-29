@@ -14,11 +14,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.gson.JsonObject;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -41,20 +46,24 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        LoggedInUser user = UserRepository.getInstance().getLoggedInUser();
+        HashMap<String, String> userInfo = UserRepository.getInstance().getLoggedInUser().getUserInfo();
         EditText name = findViewById(R.id.name);
-        name.setText(user.getName());
+        name.setText(userInfo.get("name"));
         EditText about = findViewById(R.id.about_you);
-        about.setText(user.getAbout());
+        about.setText(userInfo.get("about"));
         EditText topic1 = findViewById(R.id.topic_1);
-        topic1.setText(user.getGenre1());
+        topic1.setText(userInfo.get("genre1"));
         EditText topic2 = findViewById(R.id.topic_2);
-        topic2.setText(user.getGenre2());
+        topic2.setText(userInfo.get("genre2"));
         EditText topic3 = findViewById(R.id.topic_3);
-        topic3.setText(user.getGenre3());
+        topic3.setText(userInfo.get("genre3"));
 
-        new DownloadImageTask(findViewById(R.id.profile_image_view)).execute(user.getProfilePic());
-        new DownloadImageTask(findViewById(R.id.banner_image_view)).execute(user.getBannerPic());
+        if (userInfo.get("profilepic") != null) {
+            new DownloadImageTask(findViewById(R.id.profile_image_view)).execute(userInfo.get("profilepic"));
+        }
+        if (userInfo.get("bannerpic") != null) {
+            new DownloadImageTask(findViewById(R.id.banner_image_view)).execute(userInfo.get("bannerpic"));
+        }
 
         imageView = null;
         Button profileImageButton = findViewById(R.id.choose_image_button);
