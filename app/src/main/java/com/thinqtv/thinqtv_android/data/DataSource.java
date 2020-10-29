@@ -12,7 +12,6 @@ import com.android.volley.toolbox.Volley;
 public class DataSource {
     private static DataSource instance;
     private RequestQueue requestQueue;
-    private static final String url = "https://thinqtv.herokuapp.com/";
 
     private DataSource() {
     }
@@ -29,10 +28,6 @@ public class DataSource {
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
         }
         return requestQueue;
-    }
-
-    static String getServerUrl() {
-        return url;
     }
 
     public <T> void addToRequestQueue(Request<T> request, Context context) {

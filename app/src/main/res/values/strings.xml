@@ -3,42 +3,36 @@
     <string name="conference_name_hint">Enter Room Name</string>
     <string name="join_button_hint">Join</string>
     <string name="screen_name_hint">Enter Your Name</string>
-    <string name="homescreenHeader">Conversations that make you ThinQ!</string>
+    <string name="welcomeMSG">A video chat community with powerful women
+        role models in STEM, here to help you navigate your career!</string>
     <string name="defaultTryConversation">Join the conversation!</string>
     <string name="getInvolved">Get involved</string>
-    <string name="upcoming_events">Conversations</string>
+    <string name="mentor_hours">Mentor Hours</string>
+    <string name="conversation">Conversations</string>
     <string name="expand">Expand</string>
     <string name="hosted_by">Hosted by</string>
     <string name="happening_now">Happening now - Join the Conversation!</string>
     <string-array name="eventFilters">
-        <item>All Events</item>
-        <item>This Week</item>
-        <item>Next Week</item>
-        <item>Future</item>
-    </string-array>
-    <string-array name="Pages">
-        <item>Get Involved</item>
-        <item>Invite Us To Speak</item>
-        <item>About Us</item>
+        <item>All Events \u25bc</item>
+        <item>This Week \u25bc</item>
+        <item>Next Week \u25bc</item>
+        <item>Future \u25bc</item>
     </string-array>
 
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-    <string-array name="sidebar_menu">
-        <item>Register/Login</item>
-        <item>Get Involved</item>
-        <item>Have us on your Podcast</item>
-        <item>About ThinQ</item>
-        <item>Join the Team</item>
-    </string-array>
-    <string-array name="sidebar_menu_loggedIn">
+    <string-array name="ProfileSpinner">
         <item>View Profile</item>
-        <item>Get Involved</item>
-        <item>Have us on your Podcast</item>
-        <item>About ThinQ</item>
-        <item>Join the Team</item>
-        <item>Logout</item>
+        <item>Control Panel</item>
+        <item>Sign Out</item>
     </string-array>
+    <string name="sidebar_register_login">Register/Login</string>
+    <string name="sidebar_get_involved">Get Involved</string>
+    <string name="sidebar_podcast">Have us on your Podcast</string>
+    <string name="sidebar_about">About ThinQ</string>
+    <string name="sidebar_join_the_team">Join the Team</string>
+    <string name="sidebar_profile">View Profile</string>
+    <string name="sidebar_account">Account</string>
+    <string name="sidebar_logout">Logout</string>
+    <string name="sidebar_add_event">Add Event</string>
 
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Sign up</string>
@@ -67,4 +61,43 @@
     <string name="email_taken">Email has already been taken.</string>
     <string name="permalink_taken">Permalink has already been taken.</string>
     <string name="generic_input_error">There is a problem with your input</string>
+    <string name="profile_image_label">Profile Image (150px x 150px is best)</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="about_you">About You</string>
+    <string name="fellowship_topics">Fellowship Topics</string>
+    <string name="topic_1">Topic 1</string>
+    <string name="topic_2">Topic 2</string>
+    <string name="topic_3">Topic 3</string>
+    <string name="banner_image_label">Banner Image (1500px x 300px is best)</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="add_event_title">Post a time to host live video Fellowship Hours</string>
+    <string name="event_title_prompt">Conversation Title</string>
+    <string name="date_prompt">Date</string>
+    <string name="time_prompt">Time</string>
+    <string name="click_to_set">Click To Set</string>
+    <string name="length_label">Length</string>
+    <string name="initial_length">1:00</string>
+    <string name="current_password">Current Password (Required)</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="profile_picture_description">profile picture</string>
+    <string name="banner_picture_description">banner picture</string>
+    <string name="description_prompt">description</string>
+
+    <string name="facebook_app_id">319470872689094</string>
+    <string name="fb_login_protocol_scheme">fb319470872689094</string>
+    <string name="fb_sign_in_tag">FB_SIGN_IN</string>
+    <string name="server_url_fb_sign_in">https://fast-mountain-02267.herokuapp.com/api/v1/oauth/facebook</string>
+
+    <string name="server_client_id">451817250739-61eieaginbmp9mnsvrasl4pdogj2d10k.apps.googleusercontent.com</string>
+    <string name="server_url_google_sign_in">https://fast-mountain-02267.herokuapp.com/api/v1/oauth/google</string>
+    <string name="google_sign_in_tag">GOOGLE_SIGN_IN</string>
+
+    <string name="login_url">https://fast-mountain-02267.herokuapp.com/api/v1/login</string>
+    <string name="register_url">https://fast-mountain-02267.herokuapp.com/api/v1/register</string>
+    <string name="events_url">https://fast-mountain-02267.herokuapp.com/api/v1/events</string>
+    <string name="users_url">https://fast-mountain-02267.herokuapp.com/api/v1/users</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

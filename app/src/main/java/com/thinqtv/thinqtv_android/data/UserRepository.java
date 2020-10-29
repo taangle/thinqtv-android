@@ -1,10 +1,20 @@
 package com.thinqtv.thinqtv_android.data;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thinqtv.thinqtv_android.R;
+import com.thinqtv.thinqtv_android.StartupLoadingActivity;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 import com.thinqtv.thinqtv_android.ui.auth.LoginViewModel;
 import com.thinqtv.thinqtv_android.ui.auth.RegisterViewModel;
@@ -13,8 +23,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import androidx.core.content.ContextCompat;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -40,7 +58,7 @@ public class UserRepository {
         return user != null;
     }
 
-    private void setLoggedInUser(LoggedInUser user) {
+    public void setLoggedInUser(LoggedInUser user) {
         this.user = user;
     }
 
@@ -54,13 +72,11 @@ public class UserRepository {
      * logged-in user is updated.
      */
     public void login(String email, String password, Context context, LoginViewModel loginViewModel) {
-        final String loginUrl = "api/v1/users/sign_in.json";
-        JSONObject userLogin = new JSONObject();
+        final String loginUrl = "api/v1/users/login";
         JSONObject loginParams = new JSONObject();
         try {
             loginParams.put("email", email);
             loginParams.put("password", password);
-            userLogin.put("user", loginParams);
         } catch(JSONException e) { // Couldn't form JSON object for request.
             e.printStackTrace();
             loginViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
@@ -68,10 +84,11 @@ public class UserRepository {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                DataSource.getServerUrl() + loginUrl, userLogin,
+                context.getResources().getString(R.string.login_url), loginParams,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink")));
+                        JSONObject user = new JSONObject(response.getString("user"));
+                        setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
                         loginViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -89,6 +106,7 @@ public class UserRepository {
     }
 
     public void logout() {
+        getLoggedInUser().logout();
         setLoggedInUser(null);
     }
 
@@ -99,7 +117,6 @@ public class UserRepository {
      */
     public void register(String email, String name, String permalink, String password,
                          Context context, RegisterViewModel registerViewModel) {
-        final String registerUrl = "api/v1/users";
         JSONObject userRegister = new JSONObject();
         JSONObject registerParams = new JSONObject();
         try {
@@ -115,10 +132,11 @@ public class UserRepository {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                DataSource.getServerUrl() + registerUrl, userRegister,
+                context.getResources().getString(R.string.register_url), userRegister,
                 response -> {
                     try {
-                        setLoggedInUser(new LoggedInUser(response.getString("name"), response.getString("token"), response.getString("permalink")));
+                        JSONObject user = new JSONObject(response.getString("user"));
+                        setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
                         registerViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -165,5 +183,144 @@ public class UserRepository {
                     }
                 });
         DataSource.getInstance().addToRequestQueue(request, context);
+    }
+
+    public void loadSavedUser(StartupLoadingActivity activity) {
+
+        SharedPreferences pref = activity.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
+        String email = pref.getString("email", null);
+        String authToken = pref.getString("token", null);
+
+        JSONObject userLogin = new JSONObject();
+        JSONObject loginParams = new JSONObject();
+        try {
+            loginParams.put("email", email);
+            loginParams.put("token", authToken);
+            userLogin.put("user", loginParams);
+        } catch(JSONException e) { // Couldn't form JSON object for request.
+            e.printStackTrace();
+            activity.finish();
+            return;
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                activity.getResources().getString(R.string.login_url), userLogin,
+                response -> {
+                    try {
+                        setLoggedInUser(new LoggedInUser(activity, response.getString("name"), response.getString("token"), response.getString("permalink")));
+                        getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
+                        getLoggedInUser().updateProfile(response.getString("name"), response.getString("profpic"),
+                                response.getString("about"), response.getString("genre1"), response.getString("genre2"),
+                                response.getString("genre3"), response.getString("bannerpic"));
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
+                    activity.finish();
+                }, error -> activity.finish());
+
+        DataSource.getInstance().addToRequestQueue(request, activity);
+    }
+
+    public void updateAccount(Context context, String email, String currentPassword, String newPassword,
+                       String newPasswordConfirm, String permalink) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("user_email", getLoggedInUser().getEmail());
+            params.put("user_token", getLoggedInUser().getAuthToken());
+            params.put("email", email);
+            params.put("current_password", currentPassword);
+            params.put("password", newPassword);
+            params.put("password_confirmation", newPasswordConfirm);
+            params.put("permalink", permalink);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = context.getResources().getString(R.string.users_url) + "/" + UserRepository.getInstance().getLoggedInUser().getName();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, params, response -> {
+            try {
+                getLoggedInUser().updateToken(response.getString("token"));
+                getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
+                ((Activity)context).finish();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            }, error -> {
+        });
+        DataSource.getInstance().addToRequestQueue(request, context);
+    }
+    public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
+                       String topic2, String topic3, ImageView bannerPic) {
+        String url = context.getResources().getString(R.string.users_url) + "/" + UserRepository.getInstance().getLoggedInUser().getName();
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, url,
+                response -> {
+                    String responseString = new String(response.data);
+                    try {
+                        JSONObject result = new JSONObject(responseString);
+                        getLoggedInUser().updateToken(result.getString("token"));
+                        getLoggedInUser().updateProfile(result.getString("name"), result.getString("profpic"),
+                                result.getString("about"), result.getString("genre1"), result.getString("genre2"),
+                                result.getString("genre3"), result.getString("bannerpic"));
+                        if (result.has("name")) {
+                            getLoggedInUser().setName(result.getString("name"));
+                        }
+                        if (result.has("pic")) {
+                        }
+                        ((Activity)context).finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> {
+                    NetworkResponse response = error.networkResponse;
+                    String errorMessage = "Unknown error";
+                }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("user_email", UserRepository.getInstance().getLoggedInUser().getEmail());
+                params.put("user_token", UserRepository.getInstance().getLoggedInUser().getAuthToken());
+
+                if (!name.equals("")) {
+                    params.put("name", name);
+                }
+                if (!about.equals("")) {
+                    params.put("about", about);
+                }
+                if (!topic1.equals("")) {
+                    params.put("genre1", topic1);
+                }
+                if (!topic2.equals("")) {
+                    params.put("genre2", topic2);
+                }
+                if (!topic3.equals("")) {
+                    params.put("genre3", topic3);
+                }
+                return params;
+            }
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Random rand = new Random();
+                if (profilePic.getDrawable() != null && ((BitmapDrawable)profilePic.getDrawable()).getBitmap() != null) {
+                    params.put("profilepic", new DataPart("profile_pic" + rand.nextInt(10000) + ".jpeg", getFileDataFromDrawable(context, profilePic.getDrawable()), "image/jpeg"));
+                }
+                if (bannerPic.getDrawable() != null && ((BitmapDrawable)bannerPic.getDrawable()).getBitmap() != null) {
+                    params.put("bannerpic", new DataPart("banner_pic" + rand.nextInt(10000) + ".jpeg", getFileDataFromDrawable(context, bannerPic.getDrawable()), "image/jpeg"));
+                }
+                return params;
+            }
+        };
+        DataSource.getInstance().addToRequestQueue(request, context);
+    }
+
+    public static byte[] getFileDataFromDrawable(Context context, int id) {
+        Drawable drawable = ContextCompat.getDrawable(context, id);
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+    public static byte[] getFileDataFromDrawable(Context context, Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }

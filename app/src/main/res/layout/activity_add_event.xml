@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddEventActivity">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/add_event_title"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/colorAccent"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/event_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/event_title_prompt"
+        android:inputType="textPersonName"
+        android:importantForAutofill="no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="@string/description_prompt"
+        android:inputType="textMultiLine"
+        android:importantForAutofill="no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/length_slider" />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/save_changes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
+
+    <Button
+        android:id="@+id/time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:drawable/btn_default"
+        android:text="@string/click_to_set"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/time_label"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
+
+    <TextView
+        android:id="@+id/date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/date_prompt"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/date"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:drawable/btn_default"
+        android:text="@string/click_to_set"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/date_label"
+        app:layout_constraintTop_toBottomOf="@+id/event_title" />
+
+    <TextView
+        android:id="@+id/time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/time_prompt"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/time"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <SeekBar
+        android:id="@+id/length_slider"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:max="15"
+        android:progress="3"
+        app:layout_constraintStart_toEndOf="@+id/length_label"
+        app:layout_constraintTop_toBottomOf="@+id/time" />
+
+    <TextView
+        android:id="@+id/length_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/length_label"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time" />
+
+    <TextView
+        android:id="@+id/length_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/initial_length"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/length_slider"
+        app:layout_constraintTop_toBottomOf="@+id/time" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
