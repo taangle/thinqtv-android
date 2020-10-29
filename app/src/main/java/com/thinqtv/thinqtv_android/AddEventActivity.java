@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.thinqtv.thinqtv_android.data.DataSource;
@@ -29,9 +31,13 @@ import org.threeten.bp.ZonedDateTime;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 public class AddEventActivity extends AppCompatActivity{
@@ -42,6 +48,10 @@ public class AddEventActivity extends AppCompatActivity{
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.SECOND, 0);
         setContentView(R.layout.activity_add_event);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         Button setTimeButton = findViewById(R.id.time);
         setTimeButton.setOnClickListener(view -> {
             DialogFragment newFragment = new TimePickerFragment((view1, hour, minute) -> {
@@ -92,12 +102,15 @@ public class AddEventActivity extends AppCompatActivity{
             String desc = ((EditText) findViewById(R.id.description)).getText().toString();
             Date date = calendar.getTime();
             LocalDateTime start = DateTimeUtils.toInstant(date).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            start = start.minusMinutes(start.getMinute());
+            start = start.minusSeconds(start.getSecond());
+            start = start.minusNanos(start.getNano());
             int length = (lengthSlider.getProgress() + 1) * 15;
             ZonedDateTime zoned_start = start.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("America/Phoenix"));
             ZonedDateTime zoned_end = zoned_start.plusMinutes(length);
 
             String start_string = zoned_start.toLocalDateTime().toString();
-            String end_string = zoned_start.plusMinutes(length).toLocalDateTime().toString();
+            String end_string = zoned_end.toLocalDateTime().toString();
             makeRequest(context, name, start_string, end_string, desc);
         });
     }
@@ -138,17 +151,11 @@ public class AddEventActivity extends AppCompatActivity{
     }
 
     public void makeRequest(Context context, String name, String start, String end, String desc) {
-        final String url = "api/v1/events";
-        JSONObject event = new JSONObject();
         JSONObject params = new JSONObject();
         try {
-            event.put("name", name);
-            event.put("start_at", start);
-            event.put("end_at", end);
-            event.put("desc", desc);
-            params.put("event", event);
-            params.put("user_email", UserRepository.getInstance().getLoggedInUser().getEmail());
-            params.put("user_token", UserRepository.getInstance().getLoggedInUser().getAuthToken());
+            params.put("name", name);
+            params.put("start_at", start);
+            params.put("desc", desc);
         } catch(JSONException e) {
             e.printStackTrace();
             return;
@@ -156,16 +163,41 @@ public class AddEventActivity extends AppCompatActivity{
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 getString(R.string.events_url), params, response -> {
+            ((Activity)context).finish();
+        }, error -> {
+            Log.e("create event", "server error");
+            Log.e("create event", error.toString());
             try {
-                UserRepository.getInstance().getLoggedInUser().updateToken(response.getString("token"));
-                ((Activity)context).finish();
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    JSONObject errors = new JSONObject(new String(error.networkResponse.data)).getJSONObject("errors");
+                    Log.e("create event", errors.toString());
+                }
             } catch(JSONException e) {
                 e.printStackTrace();
             }
-        }, error -> {
-            Log.e("create event", "server error");
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = super.getHeaders();
+                if (UserRepository.getInstance().getLoggedInUser() != null) {
+                    headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + UserRepository.getInstance().getLoggedInUser().getUserInfo().get("token"));
+                }
+                return headers;
+            }
+        };
         DataSource.getInstance().addToRequestQueue(request, context);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 
