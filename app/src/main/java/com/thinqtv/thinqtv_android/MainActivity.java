@@ -20,7 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 
 public class MainActivity extends AppCompatActivity {
-    BottomNavigationView bottomNavigation;
+    public static BottomNavigationView bottomNavigation;
     private GoogleSignInClient mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
