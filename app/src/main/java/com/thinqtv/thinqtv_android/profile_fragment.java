@@ -14,11 +14,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 
 public class profile_fragment extends Fragment {
@@ -89,9 +91,14 @@ public class profile_fragment extends Fragment {
     }
 
     public void goHome(View v){
-        Intent i = new Intent(getContext(), MainActivity.class);
-        startActivity(i);
-        System.out.println(" ''" + v + " ''");
+        Fragment fragment = conversation_fragment.newInstance();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+        BottomNavigationView bottomNavigation = getView().findViewById(R.id.bottom_navigation);
+        MainActivity.bottomNavigation.setSelectedItemId(R.id.action_conversation);
     }
 
     public void logout() {
