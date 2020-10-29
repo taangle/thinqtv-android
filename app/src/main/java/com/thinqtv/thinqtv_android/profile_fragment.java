@@ -1,12 +1,7 @@
 package com.thinqtv.thinqtv_android;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +12,14 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.thinqtv.thinqtv_android.data.UserRepository;
-import com.thinqtv.thinqtv_android.ui.auth.LoginActivity;
 
 public class profile_fragment extends Fragment {
 
@@ -52,8 +48,8 @@ public class profile_fragment extends Fragment {
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState)
     {
-        final Button button = getView().findViewById(R.id.browse_schedule);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button browseScheduleBtn = getView().findViewById(R.id.browse_schedule);
+        browseScheduleBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 goHome(v);
@@ -87,6 +83,9 @@ public class profile_fragment extends Fragment {
                 // this doesn't ever happen but i need to override the virtual class
             }
         });
+
+        TextView usernameTV = view.findViewById(R.id.username);
+        usernameTV.setText(UserRepository.getInstance().getLoggedInUser().getUserInfo().get("name"));
     }
 
     public void goHome(View v){
