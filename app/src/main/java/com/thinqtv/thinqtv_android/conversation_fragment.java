@@ -49,8 +49,6 @@ import java.util.TimeZone;
 
 public class conversation_fragment extends Fragment {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
-    private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
-    private static String lastScreenNameStr = "";
 
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
 
@@ -80,59 +78,6 @@ public class conversation_fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initializeEvents();
-
-        // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
-        if (UserRepository.getInstance().isLoggedIn()) {
-            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
-        }
-        else {
-            // restore screen name using lastInstanceState if possible
-            if (savedInstanceState != null) {
-                lastScreenNameStr = savedInstanceState.getString(screenNameKey);
-            }
-            // else try to restore it using SharedPreferences
-            else {
-                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                String defaultValue = lastScreenNameStr;
-                lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
-            }
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Check if a user has logged in, and if so, set the screen name.
-        if (UserRepository.getInstance().isLoggedIn()) {
-            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
-        }
-        // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
-        else {
-            //TODO: SHOULD ANYTHING HAPPEN IF THE APP IS OPENED AND THE USER IS NOT LOGGED IN?
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        if (lastScreenNameStr.length() > 0) {
-            SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString(screenNameKey, lastScreenNameStr);
-            editor.commit();
-        }
-
-        super.onDestroy();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        // save lastScreenNameStr to savedInstanceState if it exists
-        if (lastScreenNameStr.length() > 0) {
-            outState.putString(screenNameKey, lastScreenNameStr);
-        }
-
-        super.onSaveInstanceState(outState);
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
@@ -141,13 +86,9 @@ public class conversation_fragment extends Fragment {
                 = new JitsiMeetConferenceOptions.Builder()
                 .setRoom(THINQTV_ROOM_NAME);
 
-        if (lastScreenNameStr.length() > 0) {
-            Log.d("SCREEN_NAME", lastScreenNameStr);
-            Bundle userInfoBundle = new Bundle();
-            // the string "displayName" is required by the API
-            userInfoBundle.putString("displayName", lastScreenNameStr);
-            optionsBuilder.setUserInfo(new JitsiMeetUserInfo(userInfoBundle));
-        }
+        Bundle userInfoBundle = new Bundle();
+        userInfoBundle.putString("displayName", UserRepository.getInstance().getLoggedInUser().getName());
+        optionsBuilder.setUserInfo(new JitsiMeetUserInfo(userInfoBundle));
 
         JitsiMeetConferenceOptions options = optionsBuilder.build();
 
