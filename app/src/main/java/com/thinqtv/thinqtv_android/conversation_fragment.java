@@ -87,7 +87,7 @@ public class conversation_fragment extends Fragment {
                 .setRoom(THINQTV_ROOM_NAME);
 
         Bundle userInfoBundle = new Bundle();
-        userInfoBundle.putString("displayName", UserRepository.getInstance().getLoggedInUser().getName());
+        userInfoBundle.putString("displayName", UserRepository.getInstance().getLoggedInUser().getUserInfo().get("name"));
         optionsBuilder.setUserInfo(new JitsiMeetUserInfo(userInfoBundle));
 
         JitsiMeetConferenceOptions options = optionsBuilder.build();
@@ -354,10 +354,7 @@ public class conversation_fragment extends Fragment {
 
     public void getEventsJSONfile()
     {
-        // where you get the JSON file
-        final String url = "https://thinq.tv/api/v1/events";
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getString(R.string.events_url), null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 // If you receive a response, the JSON data is saved in response
