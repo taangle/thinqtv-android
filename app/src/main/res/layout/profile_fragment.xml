@@ -7,6 +7,22 @@
     tools:context=".profile_fragment">
 
     <Button
+        android:id="@+id/controlPanelBtn"
+        android:layout_width="310dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_button"
+        android:text="Control Panel"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textColorLink="#F8F5F5"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
         android:id="@+id/browse_schedule"
         android:layout_width="310dp"
         android:layout_height="45dp"
@@ -20,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/controlPanelBtn" />
 
     <Button
         android:id="@+id/scheduleConversation"
@@ -37,28 +53,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/browse_schedule" />
 
-    <TextView
-        android:id="@+id/attendLabel"
-        android:layout_width="228dp"
-        android:layout_height="31dp"
+    <Button
+        android:id="@+id/signOutBtn"
+        android:layout_width="310dp"
+        android:layout_height="45dp"
         android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:text="Conversation Attending"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
+        android:background="@drawable/rounded_button"
+        android:text="Sign Out"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scheduleConversation" />
-
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="40dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/usernameP"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -67,11 +75,11 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2"
+        app:layout_constraintTop_toBottomOf="@+id/username"
         app:srcCompat="@drawable/profil" />
 
     <TextView
-        android:id="@+id/usernameP"
+        android:id="@+id/username"
         android:layout_width="107dp"
         android:layout_height="26dp"
         android:layout_marginTop="20dp"

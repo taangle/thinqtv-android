@@ -19,11 +19,6 @@
         <item>Future \u25bc</item>
     </string-array>
 
-    <string-array name="ProfileSpinner">
-        <item>View Profile</item>
-        <item>Control Panel</item>
-        <item>Sign Out</item>
-    </string-array>
     <string name="sidebar_register_login">Register/Login</string>
     <string name="sidebar_get_involved">Get Involved</string>
     <string name="sidebar_podcast">Have us on your Podcast</string>
