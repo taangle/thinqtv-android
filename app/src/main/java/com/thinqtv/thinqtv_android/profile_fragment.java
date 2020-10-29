@@ -60,6 +60,12 @@ public class profile_fragment extends Fragment {
             }
         });
 
+        Button scheduleConversationButton = view.findViewById(R.id.scheduleConversation);
+        scheduleConversationButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AddEventActivity.class);
+            startActivity(intent);
+        });
+
         Spinner spinner = getView().findViewById(R.id.spinner2);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.ProfileSpinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

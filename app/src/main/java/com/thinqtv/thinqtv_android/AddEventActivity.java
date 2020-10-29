@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -34,7 +35,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 public class AddEventActivity extends AppCompatActivity{
@@ -45,6 +48,10 @@ public class AddEventActivity extends AppCompatActivity{
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.SECOND, 0);
         setContentView(R.layout.activity_add_event);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         Button setTimeButton = findViewById(R.id.time);
         setTimeButton.setOnClickListener(view -> {
             DialogFragment newFragment = new TimePickerFragment((view1, hour, minute) -> {
@@ -180,6 +187,17 @@ public class AddEventActivity extends AppCompatActivity{
             }
         };
         DataSource.getInstance().addToRequestQueue(request, context);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 
