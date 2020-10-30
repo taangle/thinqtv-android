@@ -1,6 +1,7 @@
 package com.thinqtv.thinqtv_android;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -10,6 +11,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +27,8 @@ import org.jsoup.select.Elements;
 
 import java.net.URL;
 import java.util.ArrayList;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class inviteus_fragment extends Fragment {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
@@ -46,6 +52,7 @@ public class inviteus_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -104,6 +111,15 @@ public class inviteus_fragment extends Fragment {
             tvMessageTitle1.setText(inviteUsModel.MessageTitle1);
             tvMessage1.setText("\t" + inviteUsModel.Message1.replace("amp;", ""));
             ((LinearLayout) view.findViewById(R.id.pageWrapper)).setVisibility(View.VISIBLE);
+            ((LinearLayout) view.findViewById(R.id.pageWrapper)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (view.getId() != (view.findViewById(R.id.pageWrapper)).getId()) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    }
+                }
+            });
         }
     }
 
