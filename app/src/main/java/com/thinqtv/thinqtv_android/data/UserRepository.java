@@ -239,7 +239,15 @@ public class UserRepository {
             ((Activity)context).finish();
             }, error -> {
             error.printStackTrace();
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = super.getHeaders();
+                headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + getLoggedInUser().getUserInfo().get("token"));
+                return headers;
+            }
+        };
         DataSource.getInstance().addToRequestQueue(request, context);
     }
     public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
