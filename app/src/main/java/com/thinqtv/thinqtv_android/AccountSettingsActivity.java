@@ -27,7 +27,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         HashMap<String, String> userInfo = UserRepository.getInstance().getLoggedInUser().getUserInfo();
         EditText email = findViewById(R.id.email);
         email.setText(userInfo.get("email"));
-        EditText currentPassword = findViewById(R.id.current_password);
         EditText newPassword = findViewById(R.id.new_password);
         EditText newPasswordConfirm = findViewById(R.id.new_password_confirm);
         EditText permalink = findViewById(R.id.permalink);
@@ -35,10 +34,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
         Button sendButton = findViewById(R.id.send);
         Context context = this;
         sendButton.setOnClickListener(view -> {
-            if (!currentPassword.getText().toString().equals("")) {
-                UserRepository.getInstance().updateAccount(context, email.getText().toString(), currentPassword.getText().toString(),
-                        newPassword.getText().toString(), newPasswordConfirm.getText().toString(), permalink.getText().toString());
-            }
+            UserRepository.getInstance().updateAccount(context, email.getText().toString(), newPassword.getText().toString(),
+                newPasswordConfirm.getText().toString(), permalink.getText().toString());
         });
     }
 }
