@@ -221,25 +221,42 @@ public class UserRepository {
         DataSource.getInstance().addToRequestQueue(request, activity);
     }
 
-    public void updateAccount(Context context, String email, String currentPassword, String newPassword,
+    public void updateAccount(Context context, String email, String newPassword,
                        String newPasswordConfirm, String permalink) {
         JSONObject params = new JSONObject();
         try {
-            params.put("email", email);
-            params.put("current_password", currentPassword);
-            params.put("password", newPassword);
-            params.put("password_confirmation", newPasswordConfirm);
-            params.put("permalink", permalink);
+            if (!email.equals("")) {
+                params.put("email", email);
+            }
+            if (!newPassword.equals("") && !newPasswordConfirm.equals("")) {
+                params.put("password", newPassword);
+                params.put("password_confirmation", newPasswordConfirm);
+            }
+            if (!permalink.equals("")) {
+                params.put("permalink", permalink);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String url = context.getResources().getString(R.string.users_url) + "/" + getLoggedInUser().getUserInfo().get("permalink");
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, params, response -> {
-            getLoggedInUser().updateUserInfo(new Gson().fromJson(response.toString(), HashMap.class));
+            HashMap<String, String> updateParams = new Gson().fromJson(response.toString(), HashMap.class);
+            if (!email.equals("")) {
+                updateParams.put("email", email);
+            }
+            getLoggedInUser().updateUserInfo(updateParams);
             ((Activity)context).finish();
             }, error -> {
             error.printStackTrace();
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = super.getHeaders();
+                headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + getLoggedInUser().getUserInfo().get("token"));
+                return headers;
+            }
+        };
         DataSource.getInstance().addToRequestQueue(request, context);
     }
     public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
@@ -247,14 +264,8 @@ public class UserRepository {
         String url = context.getResources().getString(R.string.users_url) + "/" + getLoggedInUser().getUserInfo().get("permalink");
         VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, url,
                 response -> {
-                    String responseString = new String(response.data);
-                    try {
-                        JSONObject result = new JSONObject(responseString);
-                        getLoggedInUser().updateUserInfo(new Gson().fromJson(user.toString(), HashMap.class));
-                        ((Activity)context).finish();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    getLoggedInUser().updateUserInfo(new Gson().fromJson(new String(response.data), HashMap.class));
+                    ((Activity)context).finish();
                 }, error -> {
                     NetworkResponse response = error.networkResponse;
                     String errorMessage = "Unknown error";
