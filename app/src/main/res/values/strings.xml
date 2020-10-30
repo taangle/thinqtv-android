@@ -98,7 +98,7 @@
     <string name="drop_in_room_name">DropIn</string>
     <string name="conversation_room_name">Conversation</string>
     <string name="control_panel">Control Panel</string>
-    <string name="browse_conversation_schedule">Browse Conversation Schedule</string>
+    <string name="browse_conversation_schedule">Browse Conversations</string>
     <string name="schedule_a_conversation">Schedule a Conversation</string>
     <string name="phone_number">6028883089</string>
 </resources>
