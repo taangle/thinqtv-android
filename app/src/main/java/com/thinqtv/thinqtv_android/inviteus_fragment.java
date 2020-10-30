@@ -10,15 +10,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.thinqtv.thinqtv_android.data.model.InviteUsModel;
 
@@ -31,9 +31,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class inviteus_fragment extends Fragment {
-    private static final String THINQTV_ROOM_NAME = "ThinqTV";
-    private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
-    private static String lastScreenNameStr = "";
     private View view;
 
     private InviteUsModel inviteUsModel;
@@ -131,7 +128,7 @@ public class inviteus_fragment extends Fragment {
     }
 
     protected void makePhoneCall() {
-        String number = "6028883089";
+        String number = getString(R.string.phone_number);
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:"+number));
         if (ActivityCompat.checkSelfPermission(getContext(),
