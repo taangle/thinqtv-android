@@ -12,6 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,8 +50,8 @@ public class profile_fragment extends Fragment {
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState)
     {
-        final Button button = getView().findViewById(R.id.browse_schedule);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button browseScheduleBtn = getView().findViewById(R.id.browse_schedule);
+        browseScheduleBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 goHome(v);
@@ -70,6 +74,9 @@ public class profile_fragment extends Fragment {
         signOutBtn.setOnClickListener(v -> {
             logout();
         });
+
+        TextView usernameTV = view.findViewById(R.id.username);
+        usernameTV.setText(UserRepository.getInstance().getLoggedInUser().getUserInfo().get("name"));
     }
 
     public void goHome(View v){
