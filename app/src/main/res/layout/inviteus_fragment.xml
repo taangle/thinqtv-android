@@ -94,140 +94,149 @@
                 android:textColor="#000000"
                 android:textStyle="bold"
                 android:textSize="28dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:text="Full Name"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
-
+            <!-- This will eventually be implemented-->
             <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="18dp"
-                android:background="#777570"
-                android:padding="2dp">
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="Full Name"
+                    android:textColor="#000000"
+                    android:textSize="20dp"/>
 
-                <EditText
-                    android:id="@+id/editTextFullName"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/ic_launcher_background"
-                    android:hint="ex: Jon Doe"
-                    android:paddingHorizontal="8dp"
-                    android:textColor="#000000" />
-            </LinearLayout>
+                    android:layout_marginHorizontal="18dp"
+                    android:background="#777570"
+                    android:padding="2dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:text="Phone Number"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
+                    <EditText
+                        android:id="@+id/editTextFullName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/ic_launcher_background"
+                        android:hint="ex: Jon Doe"
+                        android:paddingHorizontal="8dp"
+                        android:textColor="#000000" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="18dp"
-                android:background="#777570"
-                android:padding="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="Phone Number"
+                    android:textColor="#000000"
+                    android:textSize="20dp"/>
 
-                <EditText
-                    android:id="@+id/editTextPhone"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/ic_launcher_background"
-                    android:hint=""
-                    android:paddingHorizontal="8dp"
-                    android:textColor="#000000" />
-            </LinearLayout>
+                    android:layout_marginHorizontal="18dp"
+                    android:background="#777570"
+                    android:padding="2dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:text="Email Address"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
+                    <EditText
+                        android:id="@+id/editTextPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/ic_launcher_background"
+                        android:hint=""
+                        android:paddingHorizontal="8dp"
+                        android:textColor="#000000" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="18dp"
-                android:background="#777570"
-                android:padding="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="Email Address"
+                    android:textColor="#000000"
+                    android:textSize="20dp"/>
 
-                <EditText
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/ic_launcher_background"
-                    android:hint=""
-                    android:paddingHorizontal="8dp"
-                    android:textColor="#000000" />
-            </LinearLayout>
+                    android:layout_marginHorizontal="18dp"
+                    android:background="#777570"
+                    android:padding="2dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:text="Subject"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/ic_launcher_background"
+                        android:hint=""
+                        android:paddingHorizontal="8dp"
+                        android:textColor="#000000" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="18dp"
-                android:background="#777570"
-                android:padding="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="Subject"
+                    android:textColor="#000000"
+                    android:textSize="20dp"/>
 
-                <EditText
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/ic_launcher_background"
-                    android:hint=""
-                    android:paddingHorizontal="8dp"
-                    android:textColor="#000000" />
-            </LinearLayout>
+                    android:layout_marginHorizontal="18dp"
+                    android:background="#777570"
+                    android:padding="2dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:text="Message"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/ic_launcher_background"
+                        android:hint=""
+                        android:paddingHorizontal="8dp"
+                        android:textColor="#000000" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="18dp"
-                android:background="#777570"
-                android:padding="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="Message"
+                    android:textColor="#000000"
+                    android:textSize="20dp"/>
 
-                <EditText
-                    android:id="@+id/editTextMessage"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/ic_launcher_background"
-                    android:hint=""
-                    android:paddingHorizontal="8dp"
-                    android:textColor="#000000" />
-            </LinearLayout>
+                    android:layout_marginHorizontal="18dp"
+                    android:background="#777570"
+                    android:padding="2dp">
+
+                    <EditText
+                        android:id="@+id/editTextMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/ic_launcher_background"
+                        android:hint=""
+                        android:paddingHorizontal="8dp"
+                        android:textColor="#000000" />
+                </LinearLayout>
+
+        </LinearLayout>
 
             <TextView
-                android:id="@+id/buttonSendMessage"
+                android:id="@+id/sendMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="64dp"
                 android:layout_marginHorizontal="28dp"
+                android:clickable="true"
                 android:paddingVertical="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:gravity="center"
-                android:text="Send Message"
+                android:text="(602) 888-3089"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/ic_launcher_background"/>

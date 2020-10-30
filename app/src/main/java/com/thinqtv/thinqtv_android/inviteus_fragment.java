@@ -1,22 +1,28 @@
 package com.thinqtv.thinqtv_android;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.thinqtv.thinqtv_android.data.model.InviteUsModel;
 
@@ -27,8 +33,6 @@ import org.jsoup.select.Elements;
 
 import java.net.URL;
 import java.util.ArrayList;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 public class inviteus_fragment extends Fragment {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";
@@ -102,6 +106,7 @@ public class inviteus_fragment extends Fragment {
         TextView tvTitle = view.findViewById(R.id.tvPageTitle);
         TextView tvMessageTitle1 = view.findViewById(R.id.tvMessageTitle1);
         TextView tvMessage1 = view.findViewById(R.id.tvMessage1);
+        TextView buttonSendMessage = view.findViewById(R.id.sendMessage);
 
         if (title.length() == 0 || sMessageTitle1.length() == 0 || sMessage1.length() == 0){
             //((RelativeLayout)view.findViewById(R.id.rl_Error)).setVisibility(View.VISIBLE);
@@ -120,7 +125,26 @@ public class inviteus_fragment extends Fragment {
                     }
                 }
             });
+            buttonSendMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makePhoneCall();
+                }
+            });
         }
+    }
+
+    protected void makePhoneCall() {
+        String number = "5208343218";
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:"+number));
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CALL_PHONE}, 1);
+            return;
+        }
+        startActivity(callIntent);
+        startActivity(callIntent);
     }
 
 
