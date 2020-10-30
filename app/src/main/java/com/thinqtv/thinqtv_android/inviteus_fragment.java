@@ -131,7 +131,7 @@ public class inviteus_fragment extends Fragment {
     }
 
     protected void makePhoneCall() {
-        String number = "5208343218";
+        String number = "6028883089";
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:"+number));
         if (ActivityCompat.checkSelfPermission(getContext(),
