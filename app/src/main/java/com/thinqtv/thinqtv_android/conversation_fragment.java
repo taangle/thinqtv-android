@@ -2,18 +2,9 @@ package com.thinqtv.thinqtv_android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.fragment.app.Fragment;
-
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -48,8 +44,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class conversation_fragment extends Fragment {
-    private static final String THINQTV_ROOM_NAME = "ThinqTV";
-
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
 
     public conversation_fragment() {
@@ -81,10 +75,10 @@ public class conversation_fragment extends Fragment {
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
-    public void onJoinClick(View v) {
+    public void onJoinClick(View v, String roomName) {
         JitsiMeetConferenceOptions.Builder optionsBuilder
                 = new JitsiMeetConferenceOptions.Builder()
-                .setRoom(THINQTV_ROOM_NAME);
+                .setRoom(roomName);
 
         Bundle userInfoBundle = new Bundle();
         userInfoBundle.putString("displayName", UserRepository.getInstance().getLoggedInUser().getUserInfo().get("name"));
@@ -187,6 +181,8 @@ public class conversation_fragment extends Fragment {
                 //get current date and what week it is
                 Calendar mCalendar = Calendar.getInstance();
 
+                String roomName = getRoomNameFromTopic(json.get(i).getString("topic"));
+
                 switch(eventFilter_selection)
                 {
                     case ("All Events \u25bc") :
@@ -212,7 +208,7 @@ public class conversation_fragment extends Fragment {
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
                                     if (UserRepository.getInstance().isLoggedIn()) {
-                                        onJoinClick(v);
+                                        onJoinClick(v, roomName);
                                     }
                                     else {
                                         Toast.makeText(getContext().getApplicationContext(),
@@ -266,7 +262,7 @@ public class conversation_fragment extends Fragment {
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
                                     if (UserRepository.getInstance().isLoggedIn()) {
-                                        onJoinClick(v);
+                                        onJoinClick(v, roomName);
                                     }
                                     else {
                                         Toast.makeText(getContext().getApplicationContext(),
@@ -349,6 +345,10 @@ public class conversation_fragment extends Fragment {
                 constraintLayout.setLayoutParams(new LinearLayout.LayoutParams (ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
             }
         } catch (JSONException e) { e.printStackTrace(); }
+    }
+
+    private String getRoomNameFromTopic(String topic) {
+        return topic.equals("DropIn") ? getString(R.string.drop_in_room_name) : getString(R.string.conversation_room_name);
     }
 
     public void getEventsJSONfile()
