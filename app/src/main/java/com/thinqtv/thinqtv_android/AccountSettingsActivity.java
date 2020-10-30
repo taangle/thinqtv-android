@@ -2,18 +2,16 @@ package com.thinqtv.thinqtv_android;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-
-import com.thinqtv.thinqtv_android.data.UserRepository;
-import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
-
-import java.util.HashMap;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.thinqtv.thinqtv_android.data.UserRepository;
+
+import java.util.HashMap;
 
 public class AccountSettingsActivity extends AppCompatActivity {
     @Override

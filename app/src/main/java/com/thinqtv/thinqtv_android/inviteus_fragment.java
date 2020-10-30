@@ -1,14 +1,13 @@
 package com.thinqtv.thinqtv_android;
 
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 public class inviteus_fragment extends Fragment {
     private static final String THINQTV_ROOM_NAME = "ThinqTV";

@@ -14,23 +14,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.google.gson.JsonObject;
-import com.thinqtv.thinqtv_android.data.UserRepository;
-import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.util.HashMap;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+
+import com.thinqtv.thinqtv_android.data.UserRepository;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
     private final int PERMISSIONS_READ_FILES = 1;

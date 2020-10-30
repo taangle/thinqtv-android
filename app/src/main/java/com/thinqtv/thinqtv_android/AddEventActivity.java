@@ -10,11 +10,15 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.TimePicker;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -33,12 +37,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 
 public class AddEventActivity extends AppCompatActivity{
 
