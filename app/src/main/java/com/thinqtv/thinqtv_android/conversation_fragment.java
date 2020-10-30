@@ -2,18 +2,9 @@ package com.thinqtv.thinqtv_android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.fragment.app.Fragment;
-
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +14,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -47,10 +44,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class conversation_fragment extends Fragment {
-    private static final String THINQTV_ROOM_NAME = "ThinqTV";
-    private static final String screenNameKey = "com.thinqtv.thinqtv_android.SCREEN_NAME";
-    private static String lastScreenNameStr = "";
-
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
 
     public conversation_fragment() {
@@ -79,74 +72,17 @@ public class conversation_fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initializeEvents();
-
-        // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
-        if (UserRepository.getInstance().isLoggedIn()) {
-            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
-        }
-        else {
-            // restore screen name using lastInstanceState if possible
-            if (savedInstanceState != null) {
-                lastScreenNameStr = savedInstanceState.getString(screenNameKey);
-            }
-            // else try to restore it using SharedPreferences
-            else {
-                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                String defaultValue = lastScreenNameStr;
-                lastScreenNameStr = sharedPref.getString(screenNameKey, defaultValue);
-            }
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Check if a user has logged in, and if so, set the screen name.
-        if (UserRepository.getInstance().isLoggedIn()) {
-            lastScreenNameStr = UserRepository.getInstance().getLoggedInUser().getName();
-        }
-        // Otherwise, restore text inside screen name field if the user hasn't typed anything to override it
-        else {
-            //TODO: SHOULD ANYTHING HAPPEN IF THE APP IS OPENED AND THE USER IS NOT LOGGED IN?
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        if (lastScreenNameStr.length() > 0) {
-            SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString(screenNameKey, lastScreenNameStr);
-            editor.commit();
-        }
-
-        super.onDestroy();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        // save lastScreenNameStr to savedInstanceState if it exists
-        if (lastScreenNameStr.length() > 0) {
-            outState.putString(screenNameKey, lastScreenNameStr);
-        }
-
-        super.onSaveInstanceState(outState);
     }
 
     // Button listener for "Join Conversation" button that connects to default ThinQ.TV chatroom
-    public void onJoinClick(View v) {
+    public void onJoinClick(View v, String roomName) {
         JitsiMeetConferenceOptions.Builder optionsBuilder
                 = new JitsiMeetConferenceOptions.Builder()
-                .setRoom(THINQTV_ROOM_NAME);
+                .setRoom(roomName);
 
-        if (lastScreenNameStr.length() > 0) {
-            Log.d("SCREEN_NAME", lastScreenNameStr);
-            Bundle userInfoBundle = new Bundle();
-            // the string "displayName" is required by the API
-            userInfoBundle.putString("displayName", lastScreenNameStr);
-            optionsBuilder.setUserInfo(new JitsiMeetUserInfo(userInfoBundle));
-        }
+        Bundle userInfoBundle = new Bundle();
+        userInfoBundle.putString("displayName", UserRepository.getInstance().getLoggedInUser().getUserInfo().get("name"));
+        optionsBuilder.setUserInfo(new JitsiMeetUserInfo(userInfoBundle));
 
         JitsiMeetConferenceOptions options = optionsBuilder.build();
 
@@ -155,7 +91,6 @@ public class conversation_fragment extends Fragment {
         intent.setAction("org.jitsi.meet.CONFERENCE");
         intent.putExtra("JitsiMeetConferenceOptions", options);
         startActivity(intent);
-        getActivity().finish();
     }
 
     // listener for when a user clicks an event to go to its page
@@ -246,6 +181,8 @@ public class conversation_fragment extends Fragment {
                 //get current date and what week it is
                 Calendar mCalendar = Calendar.getInstance();
 
+                String roomName = getRoomNameFromTopic(json.get(i).getString("topic"));
+
                 switch(eventFilter_selection)
                 {
                     case ("All Events \u25bc") :
@@ -270,7 +207,13 @@ public class conversation_fragment extends Fragment {
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
-                                    onJoinClick(v);
+                                    if (UserRepository.getInstance().isLoggedIn()) {
+                                        onJoinClick(v, roomName);
+                                    }
+                                    else {
+                                        Toast.makeText(getContext().getApplicationContext(),
+                                                "Please login to join a conversation", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             });
 
@@ -318,7 +261,13 @@ public class conversation_fragment extends Fragment {
 
                             happening_now.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
-                                    onJoinClick(v);
+                                    if (UserRepository.getInstance().isLoggedIn()) {
+                                        onJoinClick(v, roomName);
+                                    }
+                                    else {
+                                        Toast.makeText(getContext().getApplicationContext(),
+                                                "Please login to join a conversation", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             });
 
@@ -398,12 +347,13 @@ public class conversation_fragment extends Fragment {
         } catch (JSONException e) { e.printStackTrace(); }
     }
 
+    private String getRoomNameFromTopic(String topic) {
+        return topic.equals("DropIn") ? getString(R.string.drop_in_room_name) : getString(R.string.conversation_room_name);
+    }
+
     public void getEventsJSONfile()
     {
-        // where you get the JSON file
-        final String url = "https://thinq.tv/api/v1/events";
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getString(R.string.events_url), null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 // If you receive a response, the JSON data is saved in response

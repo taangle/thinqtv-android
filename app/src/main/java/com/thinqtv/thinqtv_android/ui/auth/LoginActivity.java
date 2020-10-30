@@ -31,27 +31,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.thinqtv.thinqtv_android.R;
 import com.thinqtv.thinqtv_android.data.DataSource;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import co.apptailor.googlesignin.RNGoogleSigninModule;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -255,7 +249,8 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         Log.i(getString(R.string.google_sign_in_tag), "Signed in with Google.");
                         JSONObject user = new JSONObject(response.getString("user"));
-                        UserRepository.getInstance().setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
+                        user.put("token", response.getString("token"));
+                        UserRepository.getInstance().setLoggedInUser(new LoggedInUser(context, new Gson().fromJson(user.toString(), HashMap.class)));
                         setResult(Activity.RESULT_OK);
 
                         // Complete and destroy login activity only on a successful login.
@@ -300,7 +295,8 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     Log.i(getString(R.string.fb_sign_in_tag), "Signed in with FB");
                     JSONObject user = new JSONObject(response.getString("user"));
-                    UserRepository.getInstance().setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
+                    user.put("token", response.getString("token"));
+                    UserRepository.getInstance().setLoggedInUser(new LoggedInUser(context, new Gson().fromJson(user.toString(), HashMap.class)));
                     setResult(Activity.RESULT_OK);
 
                     // Complete and destroy login activity only on a successful login.

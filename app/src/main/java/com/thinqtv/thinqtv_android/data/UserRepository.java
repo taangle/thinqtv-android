@@ -8,11 +8,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import androidx.core.content.ContextCompat;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 import com.thinqtv.thinqtv_android.R;
 import com.thinqtv.thinqtv_android.StartupLoadingActivity;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
@@ -29,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import androidx.core.content.ContextCompat;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -88,7 +88,8 @@ public class UserRepository {
                 response -> {
                     try {
                         JSONObject user = new JSONObject(response.getString("user"));
-                        setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
+                        user.put("token", response.getString("token"));
+                        setLoggedInUser(new LoggedInUser(context, new Gson().fromJson(user.toString(), HashMap.class)));
                         loginViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -136,7 +137,8 @@ public class UserRepository {
                 response -> {
                     try {
                         JSONObject user = new JSONObject(response.getString("user"));
-                        setLoggedInUser(new LoggedInUser(context, response.getString("token"), user.getString("name"), user.getString("permalink")));
+                        user.put("token", response.getString("token"));
+                        setLoggedInUser(new LoggedInUser(context, new Gson().fromJson(user.toString(), HashMap.class)));
                         registerViewModel.setResult(new Result<>(null, true));
                     } catch(JSONException e) {
                         e.printStackTrace();
@@ -188,35 +190,33 @@ public class UserRepository {
     public void loadSavedUser(StartupLoadingActivity activity) {
 
         SharedPreferences pref = activity.getSharedPreferences("ACCOUNT", MODE_PRIVATE);
-        String email = pref.getString("email", null);
         String authToken = pref.getString("token", null);
 
-        JSONObject userLogin = new JSONObject();
-        JSONObject loginParams = new JSONObject();
-        try {
-            loginParams.put("email", email);
-            loginParams.put("token", authToken);
-            userLogin.put("user", loginParams);
-        } catch(JSONException e) { // Couldn't form JSON object for request.
-            e.printStackTrace();
+        if (authToken == null) {
             activity.finish();
             return;
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                activity.getResources().getString(R.string.login_url), userLogin,
-                response -> {
-                    try {
-                        setLoggedInUser(new LoggedInUser(activity, response.getString("name"), response.getString("token"), response.getString("permalink")));
-                        getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
-                        getLoggedInUser().updateProfile(response.getString("name"), response.getString("profpic"),
-                                response.getString("about"), response.getString("genre1"), response.getString("genre2"),
-                                response.getString("genre3"), response.getString("bannerpic"));
-                    } catch(JSONException e) {
-                        e.printStackTrace();
-                    }
-                    activity.finish();
-                }, error -> activity.finish());
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                activity.getResources().getString(R.string.users_url), new JSONObject(), response -> {
+            try {
+                response.put("token", authToken);
+                setLoggedInUser(new LoggedInUser(activity, new Gson().fromJson(response.toString(), HashMap.class)));
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+            activity.finish();
+        }, error -> {
+            activity.finish();
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = super.getHeaders();
+                headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
 
         DataSource.getInstance().addToRequestQueue(request, activity);
     }
@@ -225,8 +225,6 @@ public class UserRepository {
                        String newPasswordConfirm, String permalink) {
         JSONObject params = new JSONObject();
         try {
-            params.put("user_email", getLoggedInUser().getEmail());
-            params.put("user_token", getLoggedInUser().getAuthToken());
             params.put("email", email);
             params.put("current_password", currentPassword);
             params.put("password", newPassword);
@@ -235,36 +233,24 @@ public class UserRepository {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = context.getResources().getString(R.string.users_url) + "/" + UserRepository.getInstance().getLoggedInUser().getName();
+        String url = context.getResources().getString(R.string.users_url) + "/" + getLoggedInUser().getUserInfo().get("permalink");
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, params, response -> {
-            try {
-                getLoggedInUser().updateToken(response.getString("token"));
-                getLoggedInUser().updateAccount(response.getString("email"), response.getString("permalink"));
-                ((Activity)context).finish();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            getLoggedInUser().updateUserInfo(new Gson().fromJson(response.toString(), HashMap.class));
+            ((Activity)context).finish();
             }, error -> {
+            error.printStackTrace();
         });
         DataSource.getInstance().addToRequestQueue(request, context);
     }
     public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
                        String topic2, String topic3, ImageView bannerPic) {
-        String url = context.getResources().getString(R.string.users_url) + "/" + UserRepository.getInstance().getLoggedInUser().getName();
+        String url = context.getResources().getString(R.string.users_url) + "/" + getLoggedInUser().getUserInfo().get("permalink");
         VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.PUT, url,
                 response -> {
                     String responseString = new String(response.data);
                     try {
                         JSONObject result = new JSONObject(responseString);
-                        getLoggedInUser().updateToken(result.getString("token"));
-                        getLoggedInUser().updateProfile(result.getString("name"), result.getString("profpic"),
-                                result.getString("about"), result.getString("genre1"), result.getString("genre2"),
-                                result.getString("genre3"), result.getString("bannerpic"));
-                        if (result.has("name")) {
-                            getLoggedInUser().setName(result.getString("name"));
-                        }
-                        if (result.has("pic")) {
-                        }
+                        getLoggedInUser().updateUserInfo(new Gson().fromJson(user.toString(), HashMap.class));
                         ((Activity)context).finish();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -275,9 +261,6 @@ public class UserRepository {
                 }) {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("user_email", UserRepository.getInstance().getLoggedInUser().getEmail());
-                params.put("user_token", UserRepository.getInstance().getLoggedInUser().getAuthToken());
-
                 if (!name.equals("")) {
                     params.put("name", name);
                 }
@@ -294,6 +277,12 @@ public class UserRepository {
                     params.put("genre3", topic3);
                 }
                 return params;
+            }
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = super.getHeaders();
+                headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + getLoggedInUser().getUserInfo().get("token"));
+                return headers;
             }
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();

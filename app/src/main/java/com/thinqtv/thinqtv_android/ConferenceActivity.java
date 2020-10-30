@@ -1,7 +1,5 @@
 package com.thinqtv.thinqtv_android;
 
-import android.content.Intent;
-
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
@@ -31,13 +29,5 @@ public class ConferenceActivity extends JitsiMeetActivity {
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
         super.initialize();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        // return to the main activity
-        startActivity(new Intent(this, MainActivity.class));
     }
 }
