@@ -1,7 +1,5 @@
 package com.thinqtv.thinqtv_android;
 
-import android.content.Intent;
-
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;

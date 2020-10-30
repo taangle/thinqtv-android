@@ -6,17 +6,15 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.ImageView;
+
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.thinqtv.thinqtv_android.R;
 import com.thinqtv.thinqtv_android.StartupLoadingActivity;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
@@ -33,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import androidx.core.content.ContextCompat;
 
 import static android.content.Context.MODE_PRIVATE;
 

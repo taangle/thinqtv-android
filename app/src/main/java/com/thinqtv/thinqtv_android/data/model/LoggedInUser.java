@@ -3,9 +3,6 @@ package com.thinqtv.thinqtv_android.data.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
