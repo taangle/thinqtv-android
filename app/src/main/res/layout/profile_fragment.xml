@@ -57,7 +57,7 @@
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/usernameP"
+        app:layout_constraintStart_toEndOf="@+id/username"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -71,11 +71,10 @@
         app:srcCompat="@drawable/profil" />
 
     <TextView
-        android:id="@+id/usernameP"
+        android:id="@+id/username"
         android:layout_width="107dp"
         android:layout_height="26dp"
         android:layout_marginTop="20dp"
-        android:text="Username"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
