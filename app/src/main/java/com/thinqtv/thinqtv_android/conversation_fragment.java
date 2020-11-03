@@ -156,6 +156,10 @@ public class conversation_fragment extends Fragment {
                 // get the title of the event
                 String eventTitleString = json.get(i).getString("name");
 
+                // get the host name and permalink
+                String eventHostString = json.get(i).getString("username");
+                String eventHostPerma = json.get(i).getString("permalink");
+
                 // gets the name and sets its values
                 TextView newEvent_textView = new TextView(getContext());
                 newEvent_textView.setId(View.generateViewId());
@@ -163,7 +167,7 @@ public class conversation_fragment extends Fragment {
                 newEvent_textView.setTextColor(getResources().getColor(R.color.colorPrimary));
                 newEvent_textView.setLayoutParams(new LinearLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
                 newEvent_textView.setGravity(Gravity.CENTER_HORIZONTAL);
-                newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b> <br> <br>" + eventTimeString));
+                newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b><br> <font color=#7F7F7F>" + eventHostString + "</font>" + "<br> <br>" + eventTimeString));
 
                 // add listener to the name, so when the user clicks an event it will bring them to the event page
                 //newEvent_textView.setOnClickListener(new goToWebview_ClickListener(getContext(),
@@ -172,6 +176,15 @@ public class conversation_fragment extends Fragment {
                 // Now that you have your textview, create a container for it and add it
                 ConstraintLayout constraintLayout = new ConstraintLayout(getContext());
                 constraintLayout.addView(newEvent_textView);
+                constraintLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent i = new Intent(getContext().getApplicationContext(), AnyWebview.class);
+                        i.putExtra("webviewLink", "https://thinq.tv/" + eventHostPerma);
+                        startActivity(i);
+                    }
+                });
 
                 // Add simple divider to put in between ConstraintLayouts (ie events)
                 View viewDivider = new View(getContext());
