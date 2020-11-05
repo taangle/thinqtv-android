@@ -48,43 +48,51 @@
                 android:id="@+id/tvPageTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Dr. Lisa Schaefer \n Keynotes... "
-                android:textColor="@color/colorPrimary"
-                android:textSize="40dp"
-                android:textStyle="bold" />
+                android:paddingTop="35dp"
+                android:paddingBottom="10dp"
+                android:paddingHorizontal="10dp"
+                android:background="@color/colorPrimary"
+                android:text="Dr. Lisa Schaefer \nKeynotes... "
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="32dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat"/>
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/colorAccent" />
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:paddingHorizontal="30dp"
+                android:background="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/tvMessageTitle1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:paddingHorizontal="10dp"
                 android:layout_marginTop="12dp"
                 android:text="Making Steminism ..."
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="28dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat"/>
 
             <TextView
                 android:id="@+id/tvMessage1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:paddingHorizontal="10dp"
                 android:layout_marginBottom="8dp"
                 android:baselineAligned="false"
                 android:text="ThinQ.tv founder..."
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="24dp" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="24dp"
+                android:fontFamily="@font/montserrat"/>
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
+                android:layout_height="2dp"
                 android:background="@color/colorPrimaryDark"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,8 +106,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -236,7 +243,7 @@
                 android:paddingVertical="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:gravity="center"
-                android:text="(602) 888-3089"
+                android:text="Send Message"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/ic_launcher_background"/>
