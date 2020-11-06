@@ -146,40 +146,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:text="Email Address"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20dp"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/edit_text_background"
-                    android:hint="example@abc.com"
-                    android:paddingHorizontal="8dp"
-                    android:textColor="@color/colorPrimaryDark" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:text="Subject"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20dp"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/edit_text_background"
-                    android:hint=""
-                    android:paddingHorizontal="8dp"
-                    android:textColor="@color/colorPrimaryDark" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:text="Message"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20dp"/>
