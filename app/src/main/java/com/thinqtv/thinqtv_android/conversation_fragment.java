@@ -194,7 +194,7 @@ public class conversation_fragment extends Fragment {
                 //get current date and what week it is
                 Calendar mCalendar = Calendar.getInstance();
 
-                String roomName = getRoomNameFromTopic(json.get(i).getString("topic"));
+                String roomName = json.get(i).getString("chatroom");
 
                 switch(eventFilter_selection)
                 {
@@ -358,10 +358,6 @@ public class conversation_fragment extends Fragment {
                 constraintLayout.setLayoutParams(new LinearLayout.LayoutParams (ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
             }
         } catch (JSONException e) { e.printStackTrace(); }
-    }
-
-    private String getRoomNameFromTopic(String topic) {
-        return topic.equals("DropIn") ? getString(R.string.drop_in_room_name) : getString(R.string.conversation_room_name);
     }
 
     public void getEventsJSONfile()
