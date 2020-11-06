@@ -1,5 +1,6 @@
 package com.thinqtv.thinqtv_android;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -29,8 +30,11 @@ public class ControlPanelActivity extends AppCompatActivity {
             startActivity(i);
         });
         accountSettingsButton.setOnClickListener(view -> {
+            /*
             Intent i = new Intent(this, AccountSettingsActivity.class);
             startActivity(i);
+            */
+            NotificationPublisher.scheduleNotification("title", "ttestt", 2000, this);
         });
         editConversationsButton.setOnClickListener(view -> {
             // Intent i = new Intent(this, EditConversationsActivity.class);
