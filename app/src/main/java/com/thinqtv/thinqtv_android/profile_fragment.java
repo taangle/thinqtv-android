@@ -67,26 +67,26 @@ public class profile_fragment extends Fragment {
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState)
     {
-        // Connect the Browse Schedule button
-        final Button browseScheduleBtn = getView().findViewById(R.id.browse_schedule);
+        // Connect the Edit Profile button
+        final Button browseScheduleBtn = getView().findViewById(R.id.edit_profileBtn);
         browseScheduleBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                goHome(v);
+                Intent i = new Intent(getActivity(), ProfileSettingsActivity.class);
+                startActivity(i);
             }
+        });
+
+        // Connect the Edit Account Settings button
+        Button controlPanelBtn = view.findViewById(R.id.edit_accountBtn);
+        controlPanelBtn.setOnClickListener(v -> {
+            Intent i = new Intent(getActivity(), AccountSettingsActivity.class);
+            startActivity(i);
         });
 
         // Connect the Schedule a Conversation button
         Button scheduleConversationButton = view.findViewById(R.id.scheduleConversation);
         scheduleConversationButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddEventActivity.class);
-            startActivity(intent);
-        });
-
-        // Connect the control panel button
-        Button controlPanelBtn = view.findViewById(R.id.controlPanelBtn);
-        controlPanelBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ControlPanelActivity.class);
             startActivity(intent);
         });
 
@@ -141,17 +141,6 @@ public class profile_fragment extends Fragment {
         }
         UploadTask updatePic = new UploadTask();
         updatePic.execute();
-    }
-
-    public void goHome(View v){
-        Fragment fragment = conversation_fragment.newInstance();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-        BottomNavigationView bottomNavigation = getView().findViewById(R.id.bottom_navigation);
-        MainActivity.bottomNavigation.setSelectedItemId(R.id.action_conversation);
     }
 
     public void logout() {
