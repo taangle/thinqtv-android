@@ -1,12 +1,17 @@
 package com.thinqtv.thinqtv_android;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +23,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.thinqtv.thinqtv_android.data.UserRepository;
+import com.google.gson.Gson;
+import com.google.zxing.common.BitMatrix;
+import com.thinqtv.thinqtv_android.data.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Map;
 
 public class profile_fragment extends Fragment {
 
@@ -47,6 +68,7 @@ public class profile_fragment extends Fragment {
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState)
     {
+        // Connect the Browse Schedule button
         final Button browseScheduleBtn = getView().findViewById(R.id.browse_schedule);
         browseScheduleBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -55,25 +77,45 @@ public class profile_fragment extends Fragment {
             }
         });
 
+        // Connect the Schedule a Conversation button
         Button scheduleConversationButton = view.findViewById(R.id.scheduleConversation);
         scheduleConversationButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddEventActivity.class);
             startActivity(intent);
         });
 
+        // Connect the control panel button
         Button controlPanelBtn = view.findViewById(R.id.controlPanelBtn);
         controlPanelBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ControlPanelActivity.class);
             startActivity(intent);
         });
 
+        // Connect the sign out button
         Button signOutBtn = view.findViewById(R.id.signOutBtn);
         signOutBtn.setOnClickListener(v -> {
             logout();
         });
 
+        // Update username text
         TextView usernameTV = view.findViewById(R.id.username);
         usernameTV.setText(UserRepository.getInstance().getLoggedInUser().getUserInfo().get("name"));
+
+        // Update profile picture
+        class UploadTask extends AsyncTask<String, String, String> {
+
+            @Override
+            protected String doInBackground(String... strings) {
+
+
+
+//                I DONT KNOW HOW TO DO THIS BUT I REALLY WISH I DID :(
+
+                return null;
+            }
+        }
+        UploadTask updatePic = new UploadTask();
+        updatePic.execute();
     }
 
     public void goHome(View v){
