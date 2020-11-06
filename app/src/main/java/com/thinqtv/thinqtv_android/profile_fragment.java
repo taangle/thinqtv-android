@@ -23,7 +23,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
 import com.google.zxing.common.BitMatrix;
 import com.thinqtv.thinqtv_android.data.*;
 
@@ -34,12 +33,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Map;
 
 public class profile_fragment extends Fragment {
 
@@ -106,10 +103,16 @@ public class profile_fragment extends Fragment {
 
             @Override
             protected String doInBackground(String... strings) {
-
-
-
-//                I DONT KNOW HOW TO DO THIS BUT I REALLY WISH I DID :(
+                try {
+                    ImageView userPic = view.findViewById(R.id.imageView);
+                    URL picURL = new URL(UserRepository.getInstance().getLoggedInUser().getUserInfo().get("profilepic"));
+                    Bitmap icon_val = BitmapFactory.decodeStream(picURL.openConnection().getInputStream());
+                    userPic.setImageBitmap(icon_val);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 return null;
             }
