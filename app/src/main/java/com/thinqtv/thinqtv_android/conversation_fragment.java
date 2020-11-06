@@ -1,6 +1,5 @@
 package com.thinqtv.thinqtv_android;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,15 +20,12 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.thinqtv.thinqtv_android.data.DataSource;
 import com.thinqtv.thinqtv_android.data.UserRepository;
 
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -90,46 +85,25 @@ public class conversation_fragment extends Fragment {
         startActivity(intent);
     }
 
-    // listener for when a user clicks an event to go to its page
-    private class goToWebview_ClickListener implements View.OnClickListener{
-        private Context mContext;
-        private String webviewLink;
-
-        public goToWebview_ClickListener(Context context, String address){
-            mContext = context;
-            webviewLink = address;
-        }
-
-        @Override
-        public void onClick(View v){
-            Intent i = new Intent(mContext, AnyWebview.class);
-            i.putExtra("webviewLink", webviewLink); //Optional parameters
-            startActivity(i);
-        }
-    }
-
     // Use EventsJSON file to fill in ScrollView
-    public void setUpcomingEvents(ArrayList<JSONObject> json)
-    {
+    public void setUpcomingEvents(ArrayList<JSONObject> json) {
         sortByStartTime(json);
 
+        // link layout and JSON file
         try {
-            // link layout and JSON file
-            LinearLayout linearLayout = getView().findViewById(R.id.upcoming_events_linearView);
-
-            // Get the selected event filter text
-            Spinner eventFilter_spinner = (Spinner)getView().findViewById(R.id.eventsSpinner);
-            String eventFilter_selection = eventFilter_spinner.getSelectedItem().toString();
-
-            // For each event in the database, create a new item for it in ScrollView
-            for(JSONObject eventObject : json)
-            {
-                createScrollViewItemForEvent(linearLayout, eventFilter_selection, eventObject);
+            for(JSONObject eventObject : json) {
+                createScrollViewItemForEvent(eventObject);
             }
         } catch (JSONException e) { e.printStackTrace(); }
     }
 
-    private void createScrollViewItemForEvent(LinearLayout linearLayout, String eventFilter_selection, JSONObject eventObject) throws JSONException {
+    private void createScrollViewItemForEvent(JSONObject eventObject) throws JSONException {
+        LinearLayout linearLayout = getView().findViewById(R.id.upcoming_events_linearView);
+
+        // Get the selected event filter text
+        Spinner eventFilter_spinner = getView().findViewById(R.id.eventsSpinner);
+        String eventFilter_selection = eventFilter_spinner.getSelectedItem().toString();
+
         // get the time of the event in local time
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         dateFormat.setTimeZone(TimeZone.getTimeZone("MST"));
@@ -150,28 +124,15 @@ public class conversation_fragment extends Fragment {
 
         // gets the name and sets its values
         TextView newEvent_textView = new TextView(getContext());
-        newEvent_textView.setId(View.generateViewId());
-        newEvent_textView.setTextSize(22);
-        newEvent_textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-        newEvent_textView.setLayoutParams(new LinearLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
-        newEvent_textView.setGravity(Gravity.CENTER_HORIZONTAL);
-        newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b><br> <font color=#7F7F7F>" + eventHostString + "</font>" + "<br> <br>" + eventTimeString));
-
-        // add listener to the name, so when the user clicks an event it will bring them to the event page
-        //newEvent_textView.setOnClickListener(new goToWebview_ClickListener(getContext(),
-        //"http://www.thinq.tv/" + json.getJSONObject(i).getString("permalink")));
+        setTextViewProperties(newEvent_textView, eventTimeString, eventTitleString, eventHostString);
 
         // Now that you have your textview, create a container for it and add it
         ConstraintLayout constraintLayout = new ConstraintLayout(getContext());
         constraintLayout.addView(newEvent_textView);
-        constraintLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(getContext().getApplicationContext(), AnyWebview.class);
-                i.putExtra("webviewLink", "https://thinq.tv/" + eventHostPerma);
-                startActivity(i);
-            }
+        constraintLayout.setOnClickListener(v -> {
+            Intent i = new Intent(getContext().getApplicationContext(), AnyWebview.class);
+            i.putExtra("webviewLink", "https://thinq.tv/" + eventHostPerma);
+            startActivity(i);
         });
 
         // Add simple divider to put in between ConstraintLayouts (ie events)
@@ -180,7 +141,7 @@ public class conversation_fragment extends Fragment {
         viewDivider.setBackgroundColor(Color.LTGRAY);
 
         //get current date and what week it is
-        Calendar mCalendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
 
         String roomName = getRoomNameFromTopic(eventObject.getString("topic"));
 
@@ -193,7 +154,7 @@ public class conversation_fragment extends Fragment {
                     end_time = dateFormat.parse(eventObject.getString("end_at"));
                 } catch (ParseException e) { e.printStackTrace(); }
 
-                Date current_time = mCalendar.getTime();
+                Date current_time = calendar.getTime();
 
                 if (date.before(current_time) && end_time.after(current_time))
                 {
@@ -206,15 +167,13 @@ public class conversation_fragment extends Fragment {
                     happening_now.setPadding(100,0,100,0);
                     happening_now.setAllCaps(false);
 
-                    happening_now.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            if (UserRepository.getInstance().isLoggedIn()) {
-                                onJoinClick(v, roomName);
-                            }
-                            else {
-                                Toast.makeText(getContext().getApplicationContext(),
-                                        "Please login to join a conversation", Toast.LENGTH_LONG).show();
-                            }
+                    happening_now.setOnClickListener(v -> {
+                        if (UserRepository.getInstance().isLoggedIn()) {
+                            onJoinClick(v, roomName);
+                        }
+                        else {
+                            Toast.makeText(getContext().getApplicationContext(),
+                                    "Please login to join a conversation", Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -231,7 +190,7 @@ public class conversation_fragment extends Fragment {
                     constraintSet.applyTo(constraintLayout);
                 }
 
-//                        if (json.get(i).getString("topic").equals("DropIn"))
+//                        if (eventObject.getString("topic").equals("DropIn"))
                 {
                     try {
                         linearLayout.addView(constraintLayout);
@@ -247,7 +206,7 @@ public class conversation_fragment extends Fragment {
                     end_time = dateFormat.parse(eventObject.getString("end_at"));
                 } catch (ParseException e) { e.printStackTrace(); }
 
-                Date current_time = mCalendar.getTime();
+                Date current_time = calendar.getTime();
 
                 if (date.before(current_time) && end_time.after(current_time))
                 {
@@ -260,15 +219,13 @@ public class conversation_fragment extends Fragment {
                     happening_now.setPadding(100,0,100,0);
                     happening_now.setAllCaps(false);
 
-                    happening_now.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            if (UserRepository.getInstance().isLoggedIn()) {
-                                onJoinClick(v, roomName);
-                            }
-                            else {
-                                Toast.makeText(getContext().getApplicationContext(),
-                                        "Please login to join a conversation", Toast.LENGTH_LONG).show();
-                            }
+                    happening_now.setOnClickListener(v -> {
+                        if (UserRepository.getInstance().isLoggedIn()) {
+                            onJoinClick(v, roomName);
+                        }
+                        else {
+                            Toast.makeText(getContext().getApplicationContext(),
+                                    "Please login to join a conversation", Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -285,8 +242,8 @@ public class conversation_fragment extends Fragment {
                     constraintSet.applyTo(constraintLayout);
                 }
 
-                mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
-                Date filterDate = mCalendar.getTime();
+                calendar.set(Calendar.WEEK_OF_MONTH, (calendar.get(Calendar.WEEK_OF_MONTH) + 1));
+                Date filterDate = calendar.getTime();
 
                 if (date.before(filterDate))
                 {
@@ -302,17 +259,17 @@ public class conversation_fragment extends Fragment {
             }
             case ("Next Week \u25bc") :
             {
-                mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
-                Date filterDate = mCalendar.getTime();
+                calendar.set(Calendar.WEEK_OF_MONTH, (calendar.get(Calendar.WEEK_OF_MONTH) + 1));
+                Date filterDate = calendar.getTime();
 
                 if (date.after(filterDate))
                 {
-                    mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 1));
-                    filterDate = mCalendar.getTime();
+                    calendar.set(Calendar.WEEK_OF_MONTH, (calendar.get(Calendar.WEEK_OF_MONTH) + 1));
+                    filterDate = calendar.getTime();
 
                     if (date.before(filterDate))
                     {
-//                                if (json.get(i).getString("topic").equals("DropIn"))
+//                                if (eventObject.getString("topic").equals("DropIn"))
                         {
                             try {
                                 linearLayout.addView(constraintLayout);
@@ -325,8 +282,8 @@ public class conversation_fragment extends Fragment {
             }
             case ("Future \u25bc") :
             {
-                mCalendar.set(Calendar.WEEK_OF_MONTH, (mCalendar.get(Calendar.WEEK_OF_MONTH) + 2));
-                Date filterDate = mCalendar.getTime();
+                calendar.set(Calendar.WEEK_OF_MONTH, (calendar.get(Calendar.WEEK_OF_MONTH) + 2));
+                Date filterDate = calendar.getTime();
 
                 if (date.after(filterDate))
                 {
@@ -342,57 +299,61 @@ public class conversation_fragment extends Fragment {
             }
         }
 
+        setConstraintLayoutProperties(constraintLayout);
+    }
+
+    private void setConstraintLayoutProperties(ConstraintLayout constraintLayout) {
         constraintLayout.setPadding(50,50,50,50);
         constraintLayout.setLayoutParams(new LinearLayout.LayoutParams (ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
     }
 
+    private void setTextViewProperties(TextView newEvent_textView, String eventTimeString, String eventTitleString, String eventHostString) {
+        newEvent_textView.setId(View.generateViewId());
+        newEvent_textView.setTextSize(22);
+        newEvent_textView.setTextColor(getResources().getColor(R.color.colorPrimary));
+        newEvent_textView.setLayoutParams(new LinearLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
+        newEvent_textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b><br> <font color=#7F7F7F>" + eventHostString + "</font>" + "<br> <br>" + eventTimeString));
+    }
+
     private void sortByStartTime(ArrayList<JSONObject> json) {
-        Collections.sort(json, new Comparator<JSONObject>() {
-            @Override
-            public int compare(JSONObject lhs, JSONObject rhs) {
-                try {
-                    return (lhs.getString("start_at").toLowerCase().compareTo(rhs.getString("start_at").toLowerCase()));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    return 0;
-                }
+        Collections.sort(json, (lhs, rhs) -> {
+            try {
+                return (lhs.getString("start_at").toLowerCase().compareTo(rhs.getString("start_at").toLowerCase()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return 0;
             }
         });
     }
 
     public void getEventsJSONfile()
     {
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getString(R.string.events_url), null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                // If you receive a response, the JSON data is saved in response
-                // Clear the linearLayout
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getString(R.string.events_url), null, response -> {
+            // If you receive a response, the JSON data is saved in response
+            // Clear the linearLayout
+            try {
+                LinearLayout layout = getView().findViewById(R.id.upcoming_events_linearView);
+                layout.removeAllViews();
+            } catch (NullPointerException e) { return; }
+
+            //fill it back in with the response data
+            ArrayList<JSONObject> array = new ArrayList<>();
+            for (int i = 0; i < response.length(); i++) {
                 try {
-                    LinearLayout layout = (LinearLayout) getView().findViewById(R.id.upcoming_events_linearView);
-                    layout.removeAllViews();
-                } catch (NullPointerException e) { return; }
-
-                //fill it back in with the response data
-                ArrayList<JSONObject> array = new ArrayList<JSONObject>();
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        array.add(response.getJSONObject(i));
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    array.add(response.getJSONObject(i));
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
-                setUpcomingEvents(array);
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                LinearLayout layout = (LinearLayout) getView().findViewById(R.id.upcoming_events_linearView);
-                layout.removeView(getView().findViewById(R.id.loading_events));
+            setUpcomingEvents(array);
+        }, error -> {
+            LinearLayout layout = getView().findViewById(R.id.upcoming_events_linearView);
+            layout.removeView(getView().findViewById(R.id.loading_events));
 
-                TextView loadingError = getView().findViewById(R.id.loading_placeholder);
-                loadingError.setVisibility(View.VISIBLE);
-            }
+            TextView loadingError = getView().findViewById(R.id.loading_placeholder);
+            loadingError.setVisibility(View.VISIBLE);
         });
         DataSource.getInstance().addToRequestQueue(request, getContext());
     }
@@ -401,7 +362,7 @@ public class conversation_fragment extends Fragment {
     {
 
         // get the spinner filter and the layout that's inside of it
-        Spinner eventFilter = (Spinner) getView().findViewById(R.id.eventsSpinner);
+        Spinner eventFilter = getView().findViewById(R.id.eventsSpinner);
 
         // add listener for whenever a user changes filter
         eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
