@@ -38,6 +38,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
+
 public class profile_fragment extends Fragment {
 
     private GoogleSignInClient googleSignInClient;
@@ -107,7 +109,27 @@ public class profile_fragment extends Fragment {
                     ImageView userPic = view.findViewById(R.id.imageView);
                     URL picURL = new URL(UserRepository.getInstance().getLoggedInUser().getUserInfo().get("profilepic"));
                     Bitmap icon_val = BitmapFactory.decodeStream(picURL.openConnection().getInputStream());
-                    userPic.setImageBitmap(icon_val);
+
+                    Thread thread = new Thread()
+                    {
+                        @Override
+                        public void run() {
+                            try {
+                                while(true) {
+                                    sleep(2000);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            userPic.setImageBitmap(icon_val);
+                                        }
+                                    });
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    thread.start();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

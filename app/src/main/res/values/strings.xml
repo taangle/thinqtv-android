@@ -65,11 +65,11 @@
     <string name="topic_3">Topic 3</string>
     <string name="banner_image_label">Banner Image (1500px x 300px is best)</string>
     <string name="save_changes">Save Changes</string>
-    <string name="add_event_title">Post a time to host live video Fellowship Hours</string>
+    <string name="add_event_title">Host a live video conversation</string>
     <string name="event_title_prompt">Conversation Title</string>
     <string name="date_prompt">Date</string>
     <string name="time_prompt">Time</string>
-    <string name="click_to_set">Click To Set</string>
+    <string name="click_to_set">Select</string>
     <string name="length_label">Length</string>
     <string name="initial_length">1:00</string>
     <string name="current_password">Current Password (Required)</string>
@@ -77,7 +77,7 @@
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="profile_picture_description">profile picture</string>
     <string name="banner_picture_description">banner picture</string>
-    <string name="description_prompt">description</string>
+    <string name="description_prompt">Conversation Description</string>
 
     <string name="facebook_app_id">319470872689094</string>
     <string name="fb_login_protocol_scheme">fb319470872689094</string>
@@ -88,10 +88,10 @@
     <string name="server_url_google_sign_in">https://fast-mountain-02267.herokuapp.com/api/v1/oauth/google</string>
     <string name="google_sign_in_tag">GOOGLE_SIGN_IN</string>
 
-    <string name="login_url">https://www.thinq.tv/api/v1/login</string>
-    <string name="register_url">https://www.thinq.tv/api/v1/register</string>
-    <string name="events_url">https://www.thinq.tv/api/v1/events</string>
-    <string name="users_url">https://www.thinq.tv/api/v1/users</string>
+    <string name="login_url">https://fast-mountain-02267.herokuapp.com/api/v1/login</string>
+    <string name="register_url">https://fast-mountain-02267.herokuapp.com/api/v1/register</string>
+    <string name="events_url">https://fast-mountain-02267.herokuapp.com/api/v1/events</string>
+    <string name="users_url">https://fast-mountain-02267.herokuapp.com/api/v1/users</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
