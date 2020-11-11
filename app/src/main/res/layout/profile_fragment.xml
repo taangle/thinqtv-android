@@ -77,6 +77,21 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_accountBtn" />
 
     <Button
+        android:id="@+id/viewRsvpsBtn"
+        android:layout_width="310dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_button"
+        android:text="@string/view_rsvps"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scheduleConversation" />
+
+    <Button
         android:id="@+id/signOutBtn"
         android:layout_width="310dp"
         android:layout_height="45dp"
@@ -89,6 +104,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scheduleConversation" />
+        app:layout_constraintTop_toBottomOf="@+id/viewRsvpsBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
