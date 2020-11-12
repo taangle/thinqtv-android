@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.thinqtv.thinqtv_android.data.DataSource;
@@ -26,6 +28,7 @@ import com.thinqtv.thinqtv_android.data.UserRepository;
 
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetUserInfo;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class conversation_fragment extends Fragment {
@@ -148,7 +153,7 @@ public class conversation_fragment extends Fragment {
         switch(eventFilter_selection)
         {
             case ("All Events \u25bc") :
-            {
+            case ("RSVPs \u25bc") : {
                 Date end_time = new Date();
                 try {
                     end_time = dateFormat.parse(eventObject.getString("end_at"));
@@ -329,38 +334,63 @@ public class conversation_fragment extends Fragment {
 
     public void getEventsJSONfile()
     {
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getString(R.string.events_url), null, response -> {
-            // If you receive a response, the JSON data is saved in response
-            // Clear the linearLayout
-            try {
-                LinearLayout layout = getView().findViewById(R.id.upcoming_events_linearView);
-                layout.removeAllViews();
-            } catch (NullPointerException e) { return; }
-
-            //fill it back in with the response data
-            ArrayList<JSONObject> array = new ArrayList<>();
-            for (int i = 0; i < response.length(); i++) {
-                try {
-                    array.add(response.getJSONObject(i));
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+        Spinner eventFilter_spinner = getView().findViewById(R.id.eventsSpinner);
+        String eventFilter_selection = eventFilter_spinner.getSelectedItem().toString();
+        JsonArrayRequest request;
+        if (eventFilter_selection.equals("RSVPs ▼")) {
+            request = new JsonArrayRequest(Request.Method.GET, getString(R.string.rsvps_url), null, this::handleResponse, error -> {
+                Log.e("RSVP", "Getting RSVP'd event failed", error);
+                handleResponseError();
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + UserRepository.getInstance().getLoggedInUser().getUserInfo().get("token"));
+                    return headers;
                 }
-            }
-            setUpcomingEvents(array);
-        }, error -> {
-            LinearLayout layout = getView().findViewById(R.id.upcoming_events_linearView);
-            layout.removeView(getView().findViewById(R.id.loading_events));
-
-            TextView loadingError = getView().findViewById(R.id.loading_placeholder);
-            loadingError.setVisibility(View.VISIBLE);
-        });
+            };
+        }
+        else {
+            request = new JsonArrayRequest(Request.Method.GET, getString(R.string.events_url), null, this::handleResponse, error -> {
+                handleResponseError();
+            });
+        }
         DataSource.getInstance().addToRequestQueue(request, getContext());
+    }
+
+    private void handleResponseError() {
+        LinearLayout layout = getView().findViewById(R.id.upcoming_events_linearView);
+        layout.removeView(getView().findViewById(R.id.loading_events));
+
+        TextView loadingError = getView().findViewById(R.id.loading_placeholder);
+        loadingError.setVisibility(View.VISIBLE);
+    }
+
+    private void handleResponse(JSONArray response) {
+        // If you receive a response, the JSON data is saved in response
+        // Clear the linearLayout
+        try {
+            LinearLayout layout = getView().findViewById(R.id.upcoming_events_linearView);
+            layout.removeAllViews();
+            Log.i("RSVP", "~~Cleared linear layout");
+        } catch (NullPointerException e) { return; }
+
+        //fill it back in with the response data
+        ArrayList<JSONObject> array = new ArrayList<>();
+        for (int i = 0; i < response.length(); i++) {
+            try {
+                array.add(response.getJSONObject(i));
+                Log.i("RSVP", "~~Added event to array");
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        setUpcomingEvents(array);
     }
 
     public void initializeEvents()
     {
-
         // get the spinner filter and the layout that's inside of it
         Spinner eventFilter = getView().findViewById(R.id.eventsSpinner);
 
