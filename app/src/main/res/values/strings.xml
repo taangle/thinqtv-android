@@ -79,19 +79,19 @@
     <string name="banner_picture_description">banner picture</string>
     <string name="description_prompt">Conversation Description</string>
 
-    <string name="facebook_app_id">319470872689094</string>
-    <string name="fb_login_protocol_scheme">fb319470872689094</string>
+    <string name="facebook_app_id">243146653591136</string>
+    <string name="fb_login_protocol_scheme">fb243146653591136</string>
     <string name="fb_sign_in_tag">FB_SIGN_IN</string>
-    <string name="server_url_fb_sign_in">https://fast-mountain-02267.herokuapp.com/api/v1/oauth/facebook</string>
+    <string name="server_url_fb_sign_in">https://thinq.tv/api/v1/oauth/facebook</string>
 
-    <string name="server_client_id">451817250739-61eieaginbmp9mnsvrasl4pdogj2d10k.apps.googleusercontent.com</string>
-    <string name="server_url_google_sign_in">https://fast-mountain-02267.herokuapp.com/api/v1/oauth/google</string>
+    <string name="server_client_id">923521097239-jo03cpden95g1lojtmupibjf9t0930e0.apps.googleusercontent.com</string>
+    <string name="server_url_google_sign_in">https://thinq.tv/api/v1/oauth/google</string>
     <string name="google_sign_in_tag">GOOGLE_SIGN_IN</string>
 
-    <string name="login_url">https://fast-mountain-02267.herokuapp.com/api/v1/login</string>
-    <string name="register_url">https://fast-mountain-02267.herokuapp.com/api/v1/register</string>
-    <string name="events_url">https://fast-mountain-02267.herokuapp.com/api/v1/events</string>
-    <string name="users_url">https://fast-mountain-02267.herokuapp.com/api/v1/users</string>
+    <string name="login_url">https://thinq.tv/api/v1/login</string>
+    <string name="register_url">https://thinq.tv/api/v1/register</string>
+    <string name="events_url">https://thinq.tv/api/v1/events</string>
+    <string name="users_url">https://thinq.tv/api/v1/users</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
