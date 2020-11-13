@@ -73,7 +73,7 @@ public class aboutus_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.aboutus_fragment, container, false);
-        ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
+        ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
 
         new WebElementsTask().execute();
         return view;
@@ -110,8 +110,12 @@ public class aboutus_fragment extends Fragment {
             section2Content.setText("\t" + aboutUsModel.DetailsSection2Content.replace("amp;", ""));
             section3Title.setText(aboutUsModel.DetailsSection3Title);
             section3Content.setText("\t" + aboutUsModel.DetailsSection3Content.replace("amp;", ""));
-            ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
+            ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
         }
+    }
+
+    protected void maintenanceMessage() {
+        view.findViewById(R.id.rl_Error).setVisibility(View.VISIBLE);
     }
 
     private class WebElementsTask extends AsyncTask<Void, Void, Void> {
@@ -123,6 +127,8 @@ public class aboutus_fragment extends Fragment {
 
         String sectionTitle3;
         String sectionContent3;
+
+        Boolean success = false;
 
         ArrayList<Element> elements = new ArrayList<>();
         @Override
@@ -156,6 +162,7 @@ public class aboutus_fragment extends Fragment {
                 sectionContent2 = parseTag(elementContent2.get(0).toString());
                 sectionContent3 = parseTag(elementContent2.get(1).toString());
 
+                success = true;
                 Log.i("ABOUT_US", "elements.size() = " + elements.size());
             } catch (Exception e) {
                 Log.e("ABOUT_US", "FAILED");
@@ -164,7 +171,11 @@ public class aboutus_fragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            setAboutUsModel(sectionTitle1, sectionContent1, sectionTitle2, sectionContent2, sectionTitle3, sectionContent3);
+            if (success) {
+                setAboutUsModel(sectionTitle1, sectionContent1, sectionTitle2, sectionContent2, sectionTitle3, sectionContent3);
+            } else {
+                maintenanceMessage();
+            }
         }
 
         private String parseTag(String tag) {
