@@ -131,7 +131,7 @@ public class inviteus_fragment extends Fragment {
     private void setMessage() {
         String fullName = ((EditText) view.findViewById(R.id.editTextFullName)).getText().toString();
         String phoneNumber = ((EditText) view.findViewById(R.id.editTextPhone)).getText().toString();
-        String message = ((EditText) view.findViewById(R.id.editTextPhone)).getText().toString();
+        String message = ((EditText) view.findViewById(R.id.editTextMessage)).getText().toString();
 
         if (!fullName.isEmpty()) {
             emailBody += "Name: " + fullName + "\n\n";
