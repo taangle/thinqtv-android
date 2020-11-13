@@ -148,7 +148,7 @@ public class conversation_fragment extends Fragment {
         //get current date and what week it is
         Calendar calendar = Calendar.getInstance();
 
-        String roomName = getRoomNameFromTopic(eventObject.getString("topic"));
+        String roomName = eventObject.getString("chatroom");
 
         switch(eventFilter_selection)
         {
