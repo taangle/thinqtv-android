@@ -2,6 +2,7 @@ package com.thinqtv.thinqtv_android;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,7 +129,7 @@ public class aboutus_fragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://www.thinq.tv/getinvolved").get();
+                Document doc = Jsoup.connect("https://www.thinq.tv/aboutus").get();
 
                 //Get Title value
                 Elements bigTextElements = doc.getElementsByClass("maroon");
@@ -155,9 +156,9 @@ public class aboutus_fragment extends Fragment {
                 sectionContent2 = parseTag(elementContent2.get(0).toString());
                 sectionContent3 = parseTag(elementContent2.get(1).toString());
 
-                System.out.println("elements.size() = " + elements.size());
+                Log.i("ABOUT_US", "elements.size() = " + elements.size());
             } catch (Exception e) {
-                System.out.println("FAILED");
+                Log.e("ABOUT_US", "FAILED");
             }
             return null;
         }
