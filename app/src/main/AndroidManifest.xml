@@ -17,13 +17,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         android:name=".App">
-        <activity android:name=".ControlPanelActivity" />
-        <activity android:name=".AccountSettingsActivity"
-            android:parentActivityName=".ControlPanelActivity" />
-        <activity android:name=".ProfileSettingsActivity"
-            android:parentActivityName=".ControlPanelActivity" />
-        <activity android:name=".EditConversationsActivity"
-            android:parentActivityName=".ControlPanelActivity" />
+        <activity android:name=".AccountSettingsActivity"/>
+        <activity android:name=".ProfileSettingsActivity"/>
+        <activity android:name=".EditConversationsActivity"/>
         <activity android:name=".AddEventActivity" />
         <activity android:name=".StartupLoadingActivity" />
         <activity

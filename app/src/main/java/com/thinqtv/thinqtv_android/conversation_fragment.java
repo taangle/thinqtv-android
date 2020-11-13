@@ -231,13 +231,13 @@ public class conversation_fragment extends Fragment {
                             });
 
                             // Remove the event time from the textView and add the Happening Now Button
-                            newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b> <br>"));
+                            newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b><br> <font color=#7F7F7F>" + eventHostString + "</font>"));
                             constraintLayout.addView(happening_now);
 
                             // Center the Happening Now button under the textView
                             ConstraintSet constraintSet = new ConstraintSet();
                             constraintSet.clone(constraintLayout);
-                            constraintSet.connect(happening_now.getId(),ConstraintSet.TOP,newEvent_textView.getId(),ConstraintSet.BOTTOM,0);
+                            constraintSet.connect(happening_now.getId(),ConstraintSet.TOP,newEvent_textView.getId(),ConstraintSet.BOTTOM,40);
                             constraintSet.connect(happening_now.getId(),ConstraintSet.START,newEvent_textView.getId(),ConstraintSet.START,0);
                             constraintSet.connect(happening_now.getId(),ConstraintSet.END,newEvent_textView.getId(),ConstraintSet.END,0);
                             constraintSet.applyTo(constraintLayout);
@@ -285,13 +285,13 @@ public class conversation_fragment extends Fragment {
                             });
 
                             // Remove the event time from the textView and add the Happening Now Button
-                            newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b> <br>"));
+                            newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b><br> <font color=#7F7F7F>" + eventHostString + "</font>"));
                             constraintLayout.addView(happening_now);
 
                             // Center the Happening Now button under the textView
                             ConstraintSet constraintSet = new ConstraintSet();
                             constraintSet.clone(constraintLayout);
-                            constraintSet.connect(happening_now.getId(),ConstraintSet.TOP,newEvent_textView.getId(),ConstraintSet.BOTTOM,0);
+                            constraintSet.connect(happening_now.getId(),ConstraintSet.TOP,newEvent_textView.getId(),ConstraintSet.BOTTOM,40);
                             constraintSet.connect(happening_now.getId(),ConstraintSet.START,newEvent_textView.getId(),ConstraintSet.START,0);
                             constraintSet.connect(happening_now.getId(),ConstraintSet.END,newEvent_textView.getId(),ConstraintSet.END,0);
                             constraintSet.applyTo(constraintLayout);

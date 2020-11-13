@@ -23,7 +23,7 @@
         android:text="@string/add_event_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimary"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:gravity="start|top"
@@ -60,99 +60,93 @@
         android:importantForAutofill="no"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/length_slider" />
+        app:layout_constraintTop_toBottomOf="@+id/event_title" />
 
     <Button
         android:id="@+id/send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="64dp"
         android:text="@string/save_changes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/time"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:drawable/btn_default"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/rounded_button"
         android:text="@string/click_to_set"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/time_label"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/date_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="40dp"
         android:text="@string/date_prompt"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/date"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/date"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
         android:id="@+id/date"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:drawable/btn_default"
+        android:background="@drawable/rounded_button"
         android:text="@string/click_to_set"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/date_label"
-        app:layout_constraintTop_toBottomOf="@+id/event_title" />
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:layout_constraintStart_toEndOf="@id/date_label"/>
 
     <TextView
         android:id="@+id/time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/time_prompt"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/time"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/time" />
 
     <SeekBar
         android:id="@+id/length_slider"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:max="15"
         android:progress="3"
-        app:layout_constraintStart_toEndOf="@+id/length_label"
-        app:layout_constraintTop_toBottomOf="@+id/time" />
+        app:layout_constraintTop_toBottomOf="@+id/time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/length_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:text="@string/length_label"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time" />
+        app:layout_constraintBottom_toBottomOf="@+id/length_slider"
+        app:layout_constraintEnd_toStartOf="@+id/length_slider"
+        app:layout_constraintTop_toTopOf="@+id/length_slider" />
 
     <TextView
         android:id="@+id/length_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:text="@string/initial_length"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/length_slider"
         app:layout_constraintStart_toEndOf="@+id/length_slider"
-        app:layout_constraintTop_toBottomOf="@+id/time" />
+        app:layout_constraintTop_toTopOf="@+id/length_slider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
