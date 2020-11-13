@@ -39,12 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         // If a user is logged in, use their name. Otherwise, try to find a name elsewhere.
-        if (UserRepository.getInstance().isLoggedIn())
-        {
-            openFragment(inviteus_fragment.newInstance());
-            bottomNavigation.setSelectedItemId(R.id.action_conversation);
-        }
-        else
+        if (!UserRepository.getInstance().isLoggedIn())
         {
             // if Google is signed in but user is not, just sign out of Google
             GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
@@ -56,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
                                 Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
                             }
                         });
-            openFragment(welcome_fragment.newInstance());
-            bottomNavigation.setSelectedItemId(R.id.action_profile);
         }
     }
 
@@ -65,13 +58,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // When resuming from profile/login page, check if user is logged in and choose fragment accordingly.
-        if (bottomNavigation.getSelectedItemId() == R.id.action_profile)
-            if (UserRepository.getInstance().getLoggedInUser() == null) {
-                openFragment(welcome_fragment.newInstance());
-            } else {
-                openFragment(profile_fragment.newInstance(mGoogleSignInClient));
-            }
+        // Open the proper fragment depending on login
+        if (UserRepository.getInstance().isLoggedIn()) {
+            openFragment(conversation_fragment.newInstance());
+            bottomNavigation.setSelectedItemId(R.id.action_conversation);
+        } else {
+            openFragment(welcome_fragment.newInstance());
+            bottomNavigation.setSelectedItemId(R.id.action_profile);
+        }
     }
 
     public void openFragment(Fragment fragment) {

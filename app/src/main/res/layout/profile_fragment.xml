@@ -6,13 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".profile_fragment">
 
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.075" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="307dp"
+        android:layout_height="208dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
+
     <Button
-        android:id="@+id/controlPanelBtn"
+        android:id="@+id/edit_profileBtn"
         android:layout_width="310dp"
         android:layout_height="45dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="75dp"
         android:background="@drawable/rounded_button"
-        android:text="@string/control_panel"
+        android:text="@string/edit_profile"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textColorLink="#F8F5F5"
@@ -23,12 +46,12 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
-        android:id="@+id/browse_schedule"
+        android:id="@+id/edit_accountBtn"
         android:layout_width="310dp"
         android:layout_height="45dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded_button"
-        android:text="@string/browse_conversation_schedule"
+        android:text="@string/edit_account"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textColorLink="#F8F5F5"
@@ -36,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/controlPanelBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_profileBtn" />
 
     <Button
         android:id="@+id/scheduleConversation"
@@ -51,7 +74,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/browse_schedule" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_accountBtn" />
 
     <Button
         android:id="@+id/signOutBtn"
@@ -67,23 +90,5 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scheduleConversation" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="307dp"
-        android:layout_height="208dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
-        app:srcCompat="@drawable/profil" />
-
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="107dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
