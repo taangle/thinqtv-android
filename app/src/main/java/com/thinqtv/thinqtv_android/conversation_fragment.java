@@ -152,7 +152,6 @@ public class conversation_fragment extends Fragment {
 
         switch(eventFilter_selection)
         {
-            case ("All Events \u25bc") :
             case ("RSVPs \u25bc") : {
                 Date end_time = new Date();
                 try {
@@ -163,36 +162,33 @@ public class conversation_fragment extends Fragment {
 
                 if (date.before(current_time) && end_time.after(current_time))
                 {
-                    Button happening_now = new Button(getContext());
-                    happening_now.setId(View.generateViewId());
-                    happening_now.setBackground(getActivity().getDrawable(R.drawable.rounded_button));
-                    happening_now.setTextSize(15);
-                    happening_now.setTextColor(Color.WHITE);
-                    happening_now.setText(R.string.happening_now);
-                    happening_now.setPadding(100,0,100,0);
-                    happening_now.setAllCaps(false);
+                    makeHappeningNow(eventTitleString, newEvent_textView, constraintLayout, roomName);
+                }
 
-                    happening_now.setOnClickListener(v -> {
-                        if (UserRepository.getInstance().isLoggedIn()) {
-                            onJoinClick(v, roomName);
+                Date filterDate = calendar.getTime();
+                if (end_time.after(filterDate)) {
+                    //                        if (eventObject.getString("topic").equals("DropIn"))
+                    {
+                        try {
+                            linearLayout.addView(constraintLayout);
+                            linearLayout.addView(viewDivider);
+                        } catch (NullPointerException e) {
                         }
-                        else {
-                            Toast.makeText(getContext().getApplicationContext(),
-                                    "Please login to join a conversation", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    }
+                }
+                break;
+            }
+            case ("All Events \u25bc") : {
+                Date end_time = new Date();
+                try {
+                    end_time = dateFormat.parse(eventObject.getString("end_at"));
+                } catch (ParseException e) { e.printStackTrace(); }
 
-                    // Remove the event time from the textView and add the Happening Now Button
-                    newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b> <br>"));
-                    constraintLayout.addView(happening_now);
+                Date current_time = calendar.getTime();
 
-                    // Center the Happening Now button under the textView
-                    ConstraintSet constraintSet = new ConstraintSet();
-                    constraintSet.clone(constraintLayout);
-                    constraintSet.connect(happening_now.getId(),ConstraintSet.TOP,newEvent_textView.getId(),ConstraintSet.BOTTOM,0);
-                    constraintSet.connect(happening_now.getId(),ConstraintSet.START,newEvent_textView.getId(),ConstraintSet.START,0);
-                    constraintSet.connect(happening_now.getId(),ConstraintSet.END,newEvent_textView.getId(),ConstraintSet.END,0);
-                    constraintSet.applyTo(constraintLayout);
+                if (date.before(current_time) && end_time.after(current_time))
+                {
+                    makeHappeningNow(eventTitleString, newEvent_textView, constraintLayout, roomName);
                 }
 
 //                        if (eventObject.getString("topic").equals("DropIn"))
@@ -215,36 +211,7 @@ public class conversation_fragment extends Fragment {
 
                 if (date.before(current_time) && end_time.after(current_time))
                 {
-                    Button happening_now = new Button(getContext());
-                    happening_now.setId(View.generateViewId());
-                    happening_now.setBackground(getActivity().getDrawable(R.drawable.rounded_button));
-                    happening_now.setTextSize(15);
-                    happening_now.setTextColor(Color.WHITE);
-                    happening_now.setText(R.string.happening_now);
-                    happening_now.setPadding(100,0,100,0);
-                    happening_now.setAllCaps(false);
-
-                    happening_now.setOnClickListener(v -> {
-                        if (UserRepository.getInstance().isLoggedIn()) {
-                            onJoinClick(v, roomName);
-                        }
-                        else {
-                            Toast.makeText(getContext().getApplicationContext(),
-                                    "Please login to join a conversation", Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-                    // Remove the event time from the textView and add the Happening Now Button
-                    newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b> <br>"));
-                    constraintLayout.addView(happening_now);
-
-                    // Center the Happening Now button under the textView
-                    ConstraintSet constraintSet = new ConstraintSet();
-                    constraintSet.clone(constraintLayout);
-                    constraintSet.connect(happening_now.getId(),ConstraintSet.TOP,newEvent_textView.getId(),ConstraintSet.BOTTOM,0);
-                    constraintSet.connect(happening_now.getId(),ConstraintSet.START,newEvent_textView.getId(),ConstraintSet.START,0);
-                    constraintSet.connect(happening_now.getId(),ConstraintSet.END,newEvent_textView.getId(),ConstraintSet.END,0);
-                    constraintSet.applyTo(constraintLayout);
+                    makeHappeningNow(eventTitleString, newEvent_textView, constraintLayout, roomName);
                 }
 
                 calendar.set(Calendar.WEEK_OF_MONTH, (calendar.get(Calendar.WEEK_OF_MONTH) + 1));
@@ -307,6 +274,38 @@ public class conversation_fragment extends Fragment {
         setConstraintLayoutProperties(constraintLayout);
     }
 
+    private void makeHappeningNow(String eventTitleString, TextView newEvent_textView, ConstraintLayout constraintLayout, String roomName) {
+        Button happening_now = new Button(getContext());
+        happening_now.setId(View.generateViewId());
+        happening_now.setBackground(getActivity().getDrawable(R.drawable.rounded_button));
+        happening_now.setTextSize(15);
+        happening_now.setTextColor(Color.WHITE);
+        happening_now.setText(R.string.happening_now);
+        happening_now.setPadding(100, 0, 100, 0);
+        happening_now.setAllCaps(false);
+
+        happening_now.setOnClickListener(v -> {
+            if (UserRepository.getInstance().isLoggedIn()) {
+                onJoinClick(v, roomName);
+            } else {
+                Toast.makeText(getContext().getApplicationContext(),
+                        "Please login to join a conversation", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Remove the event time from the textView and add the Happening Now Button
+        newEvent_textView.setText(Html.fromHtml("<b>" + eventTitleString + "</b> <br>"));
+        constraintLayout.addView(happening_now);
+
+        // Center the Happening Now button under the textView
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(happening_now.getId(), ConstraintSet.TOP, newEvent_textView.getId(), ConstraintSet.BOTTOM, 0);
+        constraintSet.connect(happening_now.getId(), ConstraintSet.START, newEvent_textView.getId(), ConstraintSet.START, 0);
+        constraintSet.connect(happening_now.getId(), ConstraintSet.END, newEvent_textView.getId(), ConstraintSet.END, 0);
+        constraintSet.applyTo(constraintLayout);
+    }
+
     private void setConstraintLayoutProperties(ConstraintLayout constraintLayout) {
         constraintLayout.setPadding(50,50,50,50);
         constraintLayout.setLayoutParams(new LinearLayout.LayoutParams (ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
@@ -338,7 +337,7 @@ public class conversation_fragment extends Fragment {
         String eventFilter_selection = eventFilter_spinner.getSelectedItem().toString();
         JsonArrayRequest request;
         if (eventFilter_selection.equals("RSVPs ▼")) {
-            request = new JsonArrayRequest(Request.Method.GET, getString(R.string.rsvps_url), null, this::handleResponse, error -> {
+            request = new JsonArrayRequest(Request.Method.GET, getString(R.string.rsvps_url), null, this::handleEventResponse, error -> {
                 Log.e("RSVP", "Getting RSVP'd event failed", error);
                 handleResponseError();
             }) {
@@ -351,7 +350,7 @@ public class conversation_fragment extends Fragment {
             };
         }
         else {
-            request = new JsonArrayRequest(Request.Method.GET, getString(R.string.events_url), null, this::handleResponse, error -> {
+            request = new JsonArrayRequest(Request.Method.GET, getString(R.string.events_url), null, this::handleEventResponse, error -> {
                 handleResponseError();
             });
         }
@@ -366,13 +365,12 @@ public class conversation_fragment extends Fragment {
         loadingError.setVisibility(View.VISIBLE);
     }
 
-    private void handleResponse(JSONArray response) {
+    private void handleEventResponse(JSONArray response) {
         // If you receive a response, the JSON data is saved in response
         // Clear the linearLayout
         try {
             LinearLayout layout = getView().findViewById(R.id.upcoming_events_linearView);
             layout.removeAllViews();
-            Log.i("RSVP", "~~Cleared linear layout");
         } catch (NullPointerException e) { return; }
 
         //fill it back in with the response data
@@ -380,7 +378,6 @@ public class conversation_fragment extends Fragment {
         for (int i = 0; i < response.length(); i++) {
             try {
                 array.add(response.getJSONObject(i));
-                Log.i("RSVP", "~~Added event to array");
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
