@@ -163,6 +163,9 @@ public class inviteus_fragment extends Fragment {
         }
     }
 
+    protected void maintenanceMessage() {
+        view.findViewById(R.id.rl_Error).setVisibility(View.VISIBLE);
+    }
 
     private class WebElementsTask extends AsyncTask<Void, Void, Void> {
         String title = "";
@@ -170,6 +173,7 @@ public class inviteus_fragment extends Fragment {
         String sectionTitle1 = "";
         String sectionContent1 = "";
 
+        Boolean success = false;
         ArrayList<Element> elements = new ArrayList<>();
         @Override
         protected Void doInBackground(Void... voids) {
@@ -186,7 +190,7 @@ public class inviteus_fragment extends Fragment {
                 sectionTitle1 = parseWhiteClass(redTextSectionTitle.get(0).toString());
                 Elements redTextSectionContent = doc.getElementsByClass("h5 text-left");
                 sectionContent1 = parseRerContent(redTextSectionContent.get(0).toString());
-
+                success = true;
             } catch (Exception e) {
                 System.out.println("FAILED");
             }
@@ -194,7 +198,11 @@ public class inviteus_fragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            setInviteUsModel(title, sectionTitle1, sectionContent1);
+            if (success) {
+                setInviteUsModel(title, sectionTitle1, sectionContent1);
+            } else {
+                maintenanceMessage();
+            }
         }
 
         private String parseWhiteClass(String tag) {
