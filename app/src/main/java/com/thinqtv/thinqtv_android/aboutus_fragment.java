@@ -136,29 +136,25 @@ public class aboutus_fragment extends Fragment {
             try{
                 Document doc = Jsoup.connect("https://www.thinq.tv/aboutus").get();
 
-                //Get Title value
-                Elements bigTextElements = doc.getElementsByClass("maroon");
-                for (int i = 0; i < bigTextElements.size(); i++) {
-                    String s = bigTextElements.get(i).toString();
-                    if (i == 0){
-                        sectionTitle1 = parseTag(s);
-                    } else if (i == 1) {
-                        sectionTitle2 = parseTag(s);
-                    }else {
-                        sectionTitle3 = parseTag(s);
-                        break;
-                    }
-                }
+                //Get Title values
+                Element title1 = doc.getElementById("appTitle1");
+                Element title2 = doc.getElementById("appTitle2");
+                Element title3 = doc.getElementById("appTitle3");
 
-                //Get DetailsSection 1
-                Elements subTitleElements = doc.getElementsByClass("lead pr-2 mr-1");
-                for (Element element: subTitleElements) {
-                    String s = element.toString();
-                    sectionContent1 = parseTag(s);
-                }
+                sectionTitle1 = parseTag(title1.toString());
+                sectionTitle2 = parseTag(title2.toString());
+                sectionTitle3 = parseTag(title3.toString());
 
+                Element content1 = doc.getElementById("appContent1");
+                Element content2 = doc.getElementById("appContent2");
+                Element content3 = doc.getElementById("appContent3");
+
+                sectionContent1 = parseTag(content1.toString());
+                sectionContent2 = parseTag(content2.toString());
+                //sectionContent3 = parseTag(content3.toString());
+
+                // TODO: We need to use appContent3 when the html gets corrected.
                 Elements elementContent2 = doc.getElementsByClass("black");
-                sectionContent2 = parseTag(elementContent2.get(0).toString());
                 sectionContent3 = parseTag(elementContent2.get(1).toString());
 
                 success = true;
