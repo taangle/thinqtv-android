@@ -83,7 +83,7 @@
             <RelativeLayout
                 android:id="@+id/layout_about_us_section1"
                 android:layout_marginTop="30dp"
-                android:layout_below="@+id/redLayout"
+                android:layout_below="@id/redLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -149,7 +149,15 @@
                     tools:ignore="RtlCompat" />
             </RelativeLayout>
 
-            <!--TODO: Add more sections as needed-->
+            <ImageView
+                android:id="@+id/image_about_us"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_about_us_section2"
+                android:layout_marginVertical="10dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/about_us_img" />
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>
