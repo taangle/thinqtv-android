@@ -41,7 +41,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        HashMap<String, String> userInfo = UserRepository.getInstance().getLoggedInUser().getUserInfo();
+       HashMap<String, String> userInfo = UserRepository.getInstance().getLoggedInUser().getUserInfo();
         EditText name = findViewById(R.id.name);
         name.setText(userInfo.get("name"));
         EditText about = findViewById(R.id.about_you);
