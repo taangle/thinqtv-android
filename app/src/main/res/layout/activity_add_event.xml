@@ -118,35 +118,5 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/time"
         app:layout_constraintEnd_toStartOf="@id/time" />
 
-    <SeekBar
-        android:id="@+id/length_slider"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:max="15"
-        android:progress="3"
-        app:layout_constraintTop_toBottomOf="@+id/time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <TextView
-        android:id="@+id/length_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/length_label"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/length_slider"
-        app:layout_constraintEnd_toStartOf="@+id/length_slider"
-        app:layout_constraintTop_toTopOf="@+id/length_slider" />
-
-    <TextView
-        android:id="@+id/length_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/initial_length"
-        app:layout_constraintBottom_toBottomOf="@+id/length_slider"
-        app:layout_constraintStart_toEndOf="@+id/length_slider"
-        app:layout_constraintTop_toTopOf="@+id/length_slider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
