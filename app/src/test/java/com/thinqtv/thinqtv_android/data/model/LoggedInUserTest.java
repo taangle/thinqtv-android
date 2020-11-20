@@ -18,42 +18,42 @@ import java.util.Map;
 @RunWith(MockitoJUnitRunner.class)
 public class LoggedInUserTest {
     @Mock
-    private Context mMockContext;
+    private Context mockContext;
     @Mock
-    private SharedPreferences mMockSharedPreferences;
+    private SharedPreferences mockSharedPreferences;
     @Mock
-    private SharedPreferences.Editor mMockEditor;
+    private SharedPreferences.Editor mockEditor;
 
-    private LoggedInUser mLoggedInUser;
+    private LoggedInUser loggedInUser;
 
     private String TEST_TOKEN = "TEST_TOKEN";
 
     @Before
     public void setup() {
-        when(mMockContext.getSharedPreferences(eq("ACCOUNT"), eq(0)))
-                .thenReturn(mMockSharedPreferences);
-        when(mMockSharedPreferences.edit())
-                .thenReturn(mMockEditor);
-        when(mMockEditor.putString(eq("token"), anyString()))
-                .thenReturn(mMockEditor);
-        when(mMockEditor.remove(eq("token")))
-                .thenReturn(mMockEditor);
+        when(mockContext.getSharedPreferences(eq("ACCOUNT"), eq(0)))
+                .thenReturn(mockSharedPreferences);
+        when(mockSharedPreferences.edit())
+                .thenReturn(mockEditor);
+        when(mockEditor.putString(eq("token"), anyString()))
+                .thenReturn(mockEditor);
+        when(mockEditor.remove(eq("token")))
+                .thenReturn(mockEditor);
 
         HashMap<String, String> userInfo = new HashMap<>();
         userInfo.put("token", TEST_TOKEN);
 
-        mLoggedInUser = new LoggedInUser(mMockContext, userInfo);
+        loggedInUser = new LoggedInUser(mockContext, userInfo);
     }
 
     @Test
     public void WHEN_created_THEN_tokenPutInSharedPrefs() {
-        verify(mMockEditor, times(1))
+        verify(mockEditor, times(1))
                 .putString(eq("token"), eq(TEST_TOKEN));
     }
 
     @Test
     public void WHEN_created_THEN_tokenStoredInUserInfo() {
-        assertThat(mLoggedInUser.getUserInfo().get("token"),
+        assertThat(loggedInUser.getUserInfo().get("token"),
                 is(equalTo(TEST_TOKEN)));
     }
 
@@ -61,15 +61,15 @@ public class LoggedInUserTest {
     public void WHEN_userInfoUpdateAttempted_THEN_userInfoUpdates() {
         Map<String, String> updateParams = new HashMap<>();
         updateParams.put("testKey", "testValue");
-        mLoggedInUser.updateUserInfo(updateParams);
-        assertThat(mLoggedInUser.getUserInfo().get("testKey"),
+        loggedInUser.updateUserInfo(updateParams);
+        assertThat(loggedInUser.getUserInfo().get("testKey"),
                 is(equalTo("testValue")));
     }
 
     @Test
     public void WHEN_loggedOut_THEN_tokenRemovedFromSharedPrefs() {
-        mLoggedInUser.logout();
-        verify(mMockEditor, times(1))
+        loggedInUser.logout();
+        verify(mockEditor, times(1))
                 .remove(eq("token"));
     }
 }
