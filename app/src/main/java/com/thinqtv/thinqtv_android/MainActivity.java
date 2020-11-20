@@ -55,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        // Disable back button for fragments INSIDE this activity
+        // Not disabled between activities.
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
