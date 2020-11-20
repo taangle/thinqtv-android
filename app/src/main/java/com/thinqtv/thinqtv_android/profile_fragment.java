@@ -3,11 +3,13 @@ package com.thinqtv.thinqtv_android;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -40,6 +45,8 @@ import java.net.URLConnection;
 
 import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
 
+import com.thinqtv.thinqtv_android.data.UserRepository;
+
 public class profile_fragment extends Fragment {
 
     private GoogleSignInClient googleSignInClient;
@@ -54,7 +61,9 @@ public class profile_fragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -67,6 +76,9 @@ public class profile_fragment extends Fragment {
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState)
     {
+        ImageView img = (ImageView) getView().findViewById(R.id.imageView);
+        img.setImageResource(R.drawable.defaultimg);
+
         // Connect the Edit Profile button
         final Button browseScheduleBtn = getView().findViewById(R.id.edit_profileBtn);
         browseScheduleBtn.setOnClickListener(new View.OnClickListener() {
@@ -148,4 +160,6 @@ public class profile_fragment extends Fragment {
                 });
         ((MainActivity)getActivity()).openFragment(welcome_fragment.newInstance());
     }
+
+
 }
