@@ -68,7 +68,7 @@
 
         <ImageView
             android:id="@+id/profile_image_view"
-            android:src="@drawable/defaultimg"
+            android:src="@drawable/defaultimga"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="24dp"

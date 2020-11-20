@@ -77,7 +77,7 @@ public class profile_fragment extends Fragment {
     public void onViewCreated (View view, Bundle savedInstanceState)
     {
         ImageView img = (ImageView) getView().findViewById(R.id.imageView);
-        img.setImageResource(R.drawable.defaultimg);
+        img.setImageResource(R.drawable.defaultimga);
 
         // Connect the Edit Profile button
         final Button browseScheduleBtn = getView().findViewById(R.id.edit_profileBtn);
