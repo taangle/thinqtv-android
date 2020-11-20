@@ -20,16 +20,6 @@
         <item>RSVPs \u25bc</item>
     </string-array>
 
-    <string name="sidebar_register_login">Register/Login</string>
-    <string name="sidebar_get_involved">Get Involved</string>
-    <string name="sidebar_podcast">Have us on your Podcast</string>
-    <string name="sidebar_about">About ThinQ</string>
-    <string name="sidebar_join_the_team">Join the Team</string>
-    <string name="sidebar_profile">View Profile</string>
-    <string name="sidebar_account">Account</string>
-    <string name="sidebar_logout">Logout</string>
-    <string name="sidebar_add_event">Add Event</string>
-
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Sign up</string>
     <string name="prompt_email">Email</string>
@@ -79,6 +69,7 @@
     <string name="profile_picture_description">profile picture</string>
     <string name="banner_picture_description">banner picture</string>
     <string name="description_prompt">Conversation Description</string>
+    <string name="donate">$$</string>
 
     <string name="facebook_app_id">319470872689094</string>
     <string name="fb_login_protocol_scheme">fb319470872689094</string>
