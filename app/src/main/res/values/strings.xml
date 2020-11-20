@@ -17,6 +17,7 @@
         <item>This Week \u25bc</item>
         <item>Next Week \u25bc</item>
         <item>Future \u25bc</item>
+        <item>RSVPs \u25bc</item>
     </string-array>
 
     <string name="sidebar_register_login">Register/Login</string>
@@ -101,4 +102,5 @@
     <string name="edit_account">Edit Account Settings</string>
     <string name="schedule_a_conversation">Schedule a Conversation</string>
     <string name="phone_number">6028883089</string>
+    <string name="rsvps_url">https://fast-mountain-02267.herokuapp.com/api/v1/users/rsvps</string>
 </resources>
