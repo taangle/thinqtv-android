@@ -20,16 +20,6 @@
         <item>RSVPs \u25bc</item>
     </string-array>
 
-    <string name="sidebar_register_login">Register/Login</string>
-    <string name="sidebar_get_involved">Get Involved</string>
-    <string name="sidebar_podcast">Have us on your Podcast</string>
-    <string name="sidebar_about">About ThinQ</string>
-    <string name="sidebar_join_the_team">Join the Team</string>
-    <string name="sidebar_profile">View Profile</string>
-    <string name="sidebar_account">Account</string>
-    <string name="sidebar_logout">Logout</string>
-    <string name="sidebar_add_event">Add Event</string>
-
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Sign up</string>
     <string name="prompt_email">Email</string>
@@ -79,6 +69,7 @@
     <string name="profile_picture_description">profile picture</string>
     <string name="banner_picture_description">banner picture</string>
     <string name="description_prompt">Conversation Description</string>
+    <string name="donate">$$</string>
 
     <string name="facebook_app_id">319470872689094</string>
     <string name="fb_login_protocol_scheme">fb319470872689094</string>
@@ -89,10 +80,10 @@
     <string name="server_url_google_sign_in">https://fast-mountain-02267.herokuapp.com/api/v1/oauth/google</string>
     <string name="google_sign_in_tag">GOOGLE_SIGN_IN</string>
 
-    <string name="login_url">https://fast-mountain-02267.herokuapp.com/api/v1/login</string>
-    <string name="register_url">https://fast-mountain-02267.herokuapp.com/api/v1/register</string>
-    <string name="events_url">https://fast-mountain-02267.herokuapp.com/api/v1/events</string>
-    <string name="users_url">https://fast-mountain-02267.herokuapp.com/api/v1/users</string>
+    <string name="login_url">https://www.thinq.tv/api/v1/login</string>
+    <string name="register_url">https://www.thinq.tv/api/v1/register</string>
+    <string name="events_url">https://www.thinq.tv/api/v1/events</string>
+    <string name="users_url">https://www.thinq.tv/api/v1/users</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
