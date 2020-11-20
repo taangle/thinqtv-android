@@ -114,19 +114,12 @@ public class profile_fragment extends Fragment {
                     {
                         @Override
                         public void run() {
-                            try {
-                                while(true) {
-                                    sleep(2000);
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            userPic.setImageBitmap(icon_val);
-                                        }
-                                    });
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    userPic.setImageBitmap(icon_val);
                                 }
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                            });
                         }
                     };
                     thread.start();
