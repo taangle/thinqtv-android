@@ -80,10 +80,10 @@
     <string name="server_url_google_sign_in">https://fast-mountain-02267.herokuapp.com/api/v1/oauth/google</string>
     <string name="google_sign_in_tag">GOOGLE_SIGN_IN</string>
 
-    <string name="login_url">https://www.thinq.tv/api/v1/login</string>
-    <string name="register_url">https://www.thinq.tv/api/v1/register</string>
-    <string name="events_url">https://www.thinq.tv/api/v1/events</string>
-    <string name="users_url">https://www.thinq.tv/api/v1/users</string>
+    <string name="login_url">https://fast-mountain-02267.herokuapp.com/api/v1/login</string>
+    <string name="register_url">https://fast-mountain-02267.herokuapp.com/api/v1/register</string>
+    <string name="events_url">https://fast-mountain-02267.herokuapp.com/api/v1/events</string>
+    <string name="users_url">https://fast-mountain-02267.herokuapp.com/api/v1/users</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
