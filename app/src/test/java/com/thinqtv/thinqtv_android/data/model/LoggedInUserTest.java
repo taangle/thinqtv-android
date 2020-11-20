@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoggedInUserTest {
@@ -45,10 +46,30 @@ public class LoggedInUserTest {
     }
 
     @Test
-    public void tokenSetAtConstruction() {
+    public void WHEN_created_THEN_tokenPutInSharedPrefs() {
         verify(mMockEditor, times(1))
                 .putString(eq("token"), eq(TEST_TOKEN));
-        HashMap<String, String> userInfo = mLoggedInUser.getUserInfo();
-        assertThat(userInfo.get("token"), is(equalTo(TEST_TOKEN)));
+    }
+
+    @Test
+    public void WHEN_created_THEN_tokenStoredInUserInfo() {
+        assertThat(mLoggedInUser.getUserInfo().get("token"),
+                is(equalTo(TEST_TOKEN)));
+    }
+
+    @Test
+    public void WHEN_userInfoUpdateAttempted_THEN_userInfoUpdates() {
+        Map<String, String> updateParams = new HashMap<>();
+        updateParams.put("testKey", "testValue");
+        mLoggedInUser.updateUserInfo(updateParams);
+        assertThat(mLoggedInUser.getUserInfo().get("testKey"),
+                is(equalTo("testValue")));
+    }
+
+    @Test
+    public void WHEN_loggedOut_THEN_tokenRemovedFromSharedPrefs() {
+        mLoggedInUser.logout();
+        verify(mMockEditor, times(1))
+                .remove(eq("token"));
     }
 }
