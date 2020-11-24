@@ -146,6 +146,6 @@ public class profile_fragment extends Fragment {
                         Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google accountl");
                     }
                 });
-        ((MainActivity)getActivity()).openFragment(welcome_fragment.newInstance());
+        ((MainActivity)getActivity()).openFragment(welcome_fragment.newInstance(), getString(R.string.welcome_fragment));
     }
 }

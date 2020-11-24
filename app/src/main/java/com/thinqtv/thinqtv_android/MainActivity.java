@@ -1,6 +1,8 @@
 package com.thinqtv.thinqtv_android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,9 +57,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        putSharedPrefs();
+    }
+
+    private void putSharedPrefs() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        profile_fragment profile = (profile_fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.profile_fragment));
+        if (profile != null && profile.isVisible()) {
+            editor.putString(getString(R.string.fragment), getString(R.string.profile_fragment));
+            editor.apply();
+            return;
+        }
+
+        aboutus_fragment aboutus = (aboutus_fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.aboutus_fragment));
+        if (aboutus != null && aboutus.isVisible()) {
+            editor.putString(getString(R.string.fragment), getString(R.string.aboutus_fragment));
+            editor.apply();
+            return;
+        }
+
+        inviteus_fragment inviteus = (inviteus_fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.inviteus_fragment));
+        if (inviteus != null && inviteus.isVisible()) {
+            editor.putString(getString(R.string.fragment), getString(R.string.inviteus_fragment));
+            editor.apply();
+            return;
+        }
+
+        welcome_fragment welcome = (welcome_fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.welcome_fragment));
+        if (welcome != null && welcome.isVisible()) {
+            editor.putString(getString(R.string.fragment), getString(R.string.welcome_fragment));
+            editor.apply();
+            return;
+        }
+
+        editor.putString(getString(R.string.fragment), getString(R.string.conversation_fragment));
+        editor.apply();
+    }
+
+    @Override
     public void onBackPressed() {
         // Disable back button for fragments INSIDE this activity
         // Not disabled between activities.
+        this.moveTaskToBack(true);
     }
 
     @Override
@@ -66,17 +112,44 @@ public class MainActivity extends AppCompatActivity {
 
         // Open the proper fragment depending on login
         if (UserRepository.getInstance().isLoggedIn()) {
-            openFragment(conversation_fragment.newInstance());
-            bottomNavigation.setSelectedItemId(R.id.action_conversation);
+            openFragmentBasedOnExtras();
         } else {
-            openFragment(welcome_fragment.newInstance());
             bottomNavigation.setSelectedItemId(R.id.action_profile);
         }
     }
 
-    public void openFragment(Fragment fragment) {
+    private void openFragmentBasedOnExtras() {
+        Intent intent = getIntent();
+        String activity = intent.getStringExtra(getString(R.string.activity));
+        if (activity != null
+            && (activity.equals(getString(R.string.profile_settings_activity))
+                || activity.equals(getString(R.string.account_settings_activity))
+                || activity.equals(getString(R.string.add_event_activity)))) {
+            bottomNavigation.setSelectedItemId(R.id.action_profile);
+        }
+        else {
+            String fragment = getPreferences(Context.MODE_PRIVATE).getString(getString(R.string.fragment), getString(R.string.conversation_fragment));
+            if (fragment.equals(getString(R.string.aboutus_fragment))) {
+                bottomNavigation.setSelectedItemId(R.id.action_aboutus);
+            }
+            else if (fragment.equals(getString(R.string.inviteus_fragment))) {
+                bottomNavigation.setSelectedItemId(R.id.action_inviteus);
+            }
+            else if (fragment.equals(getString(R.string.profile_fragment))) {
+                bottomNavigation.setSelectedItemId(R.id.action_profile);
+            }
+            else if (fragment.equals(getString(R.string.welcome_fragment))) {
+                bottomNavigation.setSelectedItemId(R.id.action_profile);
+            }
+            else {
+                bottomNavigation.setSelectedItemId(R.id.action_conversation);
+            }
+        }
+    }
+
+    public void openFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
+        transaction.replace(R.id.container, fragment, tag);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -85,19 +158,19 @@ public class MainActivity extends AppCompatActivity {
     {
         switch (item.getItemId()) {
             case R.id.action_conversation:
-                openFragment(conversation_fragment.newInstance());
+                openFragment(conversation_fragment.newInstance(), getString(R.string.conversation_fragment));
                 return true;
             case R.id.action_inviteus:
-                openFragment(inviteus_fragment.newInstance());
+                openFragment(inviteus_fragment.newInstance(), getString(R.string.inviteus_fragment));
                 return true;
             case R.id.action_aboutus:
-                openFragment(aboutus_fragment.newInstance("",""));
+                openFragment(aboutus_fragment.newInstance("",""), getString(R.string.aboutus_fragment));
                 return true;
             case R.id.action_profile:
                 if (UserRepository.getInstance().isLoggedIn())
-                    openFragment(profile_fragment.newInstance(mGoogleSignInClient));
+                    openFragment(profile_fragment.newInstance(mGoogleSignInClient), getString(R.string.profile_fragment));
                 else
-                    openFragment(welcome_fragment.newInstance());
+                    openFragment(welcome_fragment.newInstance(), getString(R.string.welcome_fragment));
                 return true;
         }
         return false;
