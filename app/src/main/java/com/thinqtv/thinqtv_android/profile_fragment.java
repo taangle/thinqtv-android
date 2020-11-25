@@ -93,12 +93,6 @@ public class profile_fragment extends Fragment {
             startActivity(intent);
         }));
 
-        if (CustomerSession.getInstance().getCachedCustomer() == null) {
-            stripeSettingsButton.setVisibility(View.INVISIBLE);
-        } else {
-            stripeSettingsButton.setVisibility(View.VISIBLE);
-        }
-
         // Update username text
         TextView usernameTV = view.findViewById(R.id.username);
         usernameTV.setText(UserRepository.getInstance().getLoggedInUser().getUserInfo().get("name"));
