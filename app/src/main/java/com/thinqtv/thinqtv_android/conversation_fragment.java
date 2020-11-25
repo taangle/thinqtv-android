@@ -342,7 +342,7 @@ public class conversation_fragment extends Fragment {
         Spinner eventFilter_spinner = getView().findViewById(R.id.eventsSpinner);
         String eventFilter_selection = eventFilter_spinner.getSelectedItem().toString();
         JsonArrayRequest request;
-        if (eventFilter_selection.equals("RSVPs ▼")) {
+        if (eventFilter_selection.equals("Your RSVPs ▼")) {
             request = new JsonArrayRequest(Request.Method.GET, getString(R.string.rsvps_url), null, this::handleEventResponse, error -> {
                 Log.e("RSVP", "Getting RSVP'd event failed", error);
                 handleResponseError();

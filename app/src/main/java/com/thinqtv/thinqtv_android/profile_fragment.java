@@ -30,6 +30,7 @@ import java.net.URL;
 
 import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
 
+
 public class profile_fragment extends Fragment {
 
     private GoogleSignInClient googleSignInClient;
