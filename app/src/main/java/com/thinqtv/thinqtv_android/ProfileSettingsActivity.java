@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,11 +36,13 @@ public class ProfileSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_profile_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         HashMap<String, String> userInfo = UserRepository.getInstance().getLoggedInUser().getUserInfo();
         EditText name = findViewById(R.id.name);
@@ -76,11 +79,12 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.save_changes_button);
         saveButton.setOnClickListener(view -> {
-                UserRepository.getInstance().updateProfile(context, name.getText().toString(), findViewById(R.id.profile_image_view),
-                        about.getText().toString(), topic1.getText().toString(), topic2.getText().toString(),
-                        topic3.getText().toString(), findViewById(R.id.banner_image_view));
-                finish();});
+            UserRepository.getInstance().updateProfile(context, name.getText().toString(), findViewById(R.id.profile_image_view),
+                    about.getText().toString(), topic1.getText().toString(), topic2.getText().toString(),
+                    topic3.getText().toString(), findViewById(R.id.banner_image_view));
+            finish();});
     }
+
 
     private void selectImage(Context context) {
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
@@ -215,9 +219,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(getString(R.string.activity), getString(R.string.profile_settings_activity));
-        startActivity(intent);
+        finish();
     }
 
     private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -243,6 +245,17 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap result) {
             imageView.setImageBitmap(result);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

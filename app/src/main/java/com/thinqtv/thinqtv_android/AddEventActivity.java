@@ -177,9 +177,7 @@ public class AddEventActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(getString(R.string.activity), getString(R.string.add_event_activity));
-        startActivity(intent);
+        finish();
     }
 }
 

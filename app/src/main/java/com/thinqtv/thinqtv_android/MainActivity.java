@@ -112,38 +112,28 @@ public class MainActivity extends AppCompatActivity {
 
         // Open the proper fragment depending on login
         if (UserRepository.getInstance().isLoggedIn()) {
-            openFragmentBasedOnExtras();
+            openFragmentBasedOnSharedPrefs();
         } else {
             bottomNavigation.setSelectedItemId(R.id.action_profile);
         }
     }
 
-    private void openFragmentBasedOnExtras() {
-        Intent intent = getIntent();
-        String activity = intent.getStringExtra(getString(R.string.activity));
-        if (activity != null
-            && (activity.equals(getString(R.string.profile_settings_activity))
-                || activity.equals(getString(R.string.account_settings_activity))
-                || activity.equals(getString(R.string.add_event_activity)))) {
+    private void openFragmentBasedOnSharedPrefs() {
+        String fragment = getPreferences(Context.MODE_PRIVATE).getString(getString(R.string.fragment), getString(R.string.conversation_fragment));
+        if (fragment.equals(getString(R.string.aboutus_fragment))) {
+            bottomNavigation.setSelectedItemId(R.id.action_aboutus);
+        }
+        else if (fragment.equals(getString(R.string.inviteus_fragment))) {
+            bottomNavigation.setSelectedItemId(R.id.action_inviteus);
+        }
+        else if (fragment.equals(getString(R.string.profile_fragment))) {
+            bottomNavigation.setSelectedItemId(R.id.action_profile);
+        }
+        else if (fragment.equals(getString(R.string.welcome_fragment))) {
             bottomNavigation.setSelectedItemId(R.id.action_profile);
         }
         else {
-            String fragment = getPreferences(Context.MODE_PRIVATE).getString(getString(R.string.fragment), getString(R.string.conversation_fragment));
-            if (fragment.equals(getString(R.string.aboutus_fragment))) {
-                bottomNavigation.setSelectedItemId(R.id.action_aboutus);
-            }
-            else if (fragment.equals(getString(R.string.inviteus_fragment))) {
-                bottomNavigation.setSelectedItemId(R.id.action_inviteus);
-            }
-            else if (fragment.equals(getString(R.string.profile_fragment))) {
-                bottomNavigation.setSelectedItemId(R.id.action_profile);
-            }
-            else if (fragment.equals(getString(R.string.welcome_fragment))) {
-                bottomNavigation.setSelectedItemId(R.id.action_profile);
-            }
-            else {
-                bottomNavigation.setSelectedItemId(R.id.action_conversation);
-            }
+            bottomNavigation.setSelectedItemId(R.id.action_conversation);
         }
     }
 
