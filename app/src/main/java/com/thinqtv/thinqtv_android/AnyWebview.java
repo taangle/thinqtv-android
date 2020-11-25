@@ -29,6 +29,8 @@ public class AnyWebview extends AppCompatActivity {
         loading = findViewById(R.id.loading);
 
         view = findViewById(R.id.webView);
+        view.setHorizontalFadingEdgeEnabled(true);
+        view.setFadingEdgeLength(40);
         view.setVisibility(WebView.INVISIBLE);
         loading.setVisibility(View.VISIBLE);
         String link = "";
@@ -47,7 +49,7 @@ public class AnyWebview extends AppCompatActivity {
                             "(navBar = document.getElementsByTagName('nav')[0]); navBar.parentNode.removeChild(navBar);" +
                             "(footer = document.getElementsByTagName('footer')[0]); footer.parentNode.removeChild(footer);" +
                             "(label = document.getElementsByClassName('box')[0]); if (label != undefined) { label.parentNode.removeChild(label); }" +
-                            "(convoBtns = document.getElementsByClassName('col-10 col-md-4 col-sm-12')[0]); if (convoBtns != undefined) { convoBtns.parentNode.removeChild(convoBtns); }" +
+                            "(scheduleBtn = document.getElementById('appBackground')); if (scheduleBtn != undefined) { scheduleBtn.parentNode.removeChild(scheduleBtn); }" +
                             "links = document.getElementsByTagName('a'); [...links].forEach((link) => { link.removeAttribute('data-method'); });" +
                             "Android.displayPage();" +
                             "})()");

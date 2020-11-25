@@ -116,19 +116,12 @@ public class profile_fragment extends Fragment {
                     {
                         @Override
                         public void run() {
-                            try {
-                                while(true) {
-                                    sleep(2000);
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            userPic.setImageBitmap(icon_val);
-                                        }
-                                    });
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    userPic.setImageBitmap(icon_val);
                                 }
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                            });
                         }
                     };
                     thread.start();
@@ -155,6 +148,6 @@ public class profile_fragment extends Fragment {
                         Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
                     }
                 });
-        ((MainActivity)getActivity()).openFragment(welcome_fragment.newInstance());
+        ((MainActivity)getActivity()).openFragment(welcome_fragment.newInstance(), getString(R.string.welcome_fragment));
     }
 }

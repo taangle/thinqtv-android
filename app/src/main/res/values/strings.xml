@@ -17,17 +17,8 @@
         <item>This Week \u25bc</item>
         <item>Next Week \u25bc</item>
         <item>Future \u25bc</item>
+        <item>RSVPs \u25bc</item>
     </string-array>
-
-    <string name="sidebar_register_login">Register/Login</string>
-    <string name="sidebar_get_involved">Get Involved</string>
-    <string name="sidebar_podcast">Have us on your Podcast</string>
-    <string name="sidebar_about">About ThinQ</string>
-    <string name="sidebar_join_the_team">Join the Team</string>
-    <string name="sidebar_profile">View Profile</string>
-    <string name="sidebar_account">Account</string>
-    <string name="sidebar_logout">Logout</string>
-    <string name="sidebar_add_event">Add Event</string>
 
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Sign up</string>
@@ -78,6 +69,7 @@
     <string name="profile_picture_description">profile picture</string>
     <string name="banner_picture_description">banner picture</string>
     <string name="description_prompt">Conversation Description</string>
+    <string name="donate">$$</string>
 
     <string name="facebook_app_id">319470872689094</string>
     <string name="fb_login_protocol_scheme">fb319470872689094</string>
@@ -106,6 +98,18 @@
     <string name="edit_account">Edit Account Settings</string>
     <string name="schedule_a_conversation">Schedule a Conversation</string>
     <string name="phone_number">6028883089</string>
+    <string name="rsvps_url">https://fast-mountain-02267.herokuapp.com/api/v1/users/rsvps</string>
+    <string name="activity">activity</string>
+    <string name="profile_settings_activity">ProfileSettingsActivity</string>
+    <string name="account_settings_activity">AccountSettingsActivity</string>
+    <string name="add_event_activity">AddEventActivity</string>
+    <string name="main_activity">MainActivity</string>
+    <string name="conversation_fragment">conversation_fragment</string>
+    <string name="fragment">fragment</string>
+    <string name="aboutus_fragment">aboutus_fragment</string>
+    <string name="inviteus_fragment">inviteus_fragment</string>
+    <string name="profile_fragment">profile_fragment</string>
+    <string name="welcome_fragment">welcome_fragment</string>
     <string name="connect_to_stripe">Connect to Stripe</string>
 
     <string name="merchandise_title_prompt">Title</string>

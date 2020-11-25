@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -70,29 +71,6 @@ public class AddEventActivity extends AppCompatActivity{
             newFragment.show(getSupportFragmentManager(), "datePicker");
         });
 
-        SeekBar lengthSlider = findViewById(R.id.length_slider);
-        TextView lengthDisplay = findViewById(R.id.length_display);
-        lengthSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                                                    @Override
-                                                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                                                        i += 1;
-                                                        int hours = i / 4;
-                                                        int minutes = (i % 4) * 15;
-                                                        String time = hours + ":" + minutes;
-                                                        if (minutes == 0) {
-                                                            time += "0";
-                                                        }
-                                                        lengthDisplay.setText(time);
-                                                    }
-
-                                                    @Override
-                                                    public void onStartTrackingTouch(SeekBar seekBar) {}
-
-                                                    @Override
-                                                    public void onStopTrackingTouch(SeekBar seekBar) {}
-                                                }
-        );
-
         Button sendButton = findViewById(R.id.send);
         Context context = this;
         sendButton.setOnClickListener(view -> {
@@ -103,9 +81,8 @@ public class AddEventActivity extends AppCompatActivity{
             start = start.minusMinutes(start.getMinute());
             start = start.minusSeconds(start.getSecond());
             start = start.minusNanos(start.getNano());
-            int length = (lengthSlider.getProgress() + 1) * 15;
             ZonedDateTime zoned_start = start.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("America/Phoenix"));
-            ZonedDateTime zoned_end = zoned_start.plusMinutes(length);
+            ZonedDateTime zoned_end = zoned_start.plusMinutes(60);
 
             String start_string = zoned_start.toLocalDateTime().toString();
             String end_string = zoned_end.toLocalDateTime().toString();
@@ -196,6 +173,13 @@ public class AddEventActivity extends AppCompatActivity{
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(getString(R.string.activity), getString(R.string.add_event_activity));
+        startActivity(intent);
     }
 }
 

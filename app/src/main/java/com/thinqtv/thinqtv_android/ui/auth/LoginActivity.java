@@ -197,6 +197,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        if (UserRepository.getInstance().isLoggedIn())
+            finish();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode,resultCode,data);
 

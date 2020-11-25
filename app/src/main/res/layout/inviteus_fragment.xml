@@ -7,6 +7,29 @@
     android:orientation="vertical"
     tools:context=".inviteus_fragment">
 
+    <RelativeLayout
+        android:id="@+id/rl_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="30dp"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/ic_launcher_foreground_gold"/>
+        <TextView
+            android:layout_below="@+id/img_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Site underwent maintenance."
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="32dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -16,32 +39,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/rl_Error"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-                <ImageView
-                    android:id="@+id/img_logo"
-                    android:layout_centerInParent="true"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
-                    android:src="@drawable/ic_launcher_foreground_gold"/>
-                <TextView
-                    android:layout_below="@+id/img_logo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Temporary holder while undergoing maintenance."
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="32dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="THIS WILL BE THE PAGE WE DISPLAY WHEN WORKING ON CHANGING THE ABOUT US MODEL"/>
-            </RelativeLayout>
 
             <TextView
                 android:id="@+id/about_us_title"

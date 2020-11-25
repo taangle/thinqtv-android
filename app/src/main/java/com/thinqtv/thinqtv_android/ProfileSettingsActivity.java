@@ -75,10 +75,11 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         });
 
         Button saveButton = findViewById(R.id.save_changes_button);
-        saveButton.setOnClickListener(view ->
+        saveButton.setOnClickListener(view -> {
                 UserRepository.getInstance().updateProfile(context, name.getText().toString(), findViewById(R.id.profile_image_view),
                         about.getText().toString(), topic1.getText().toString(), topic2.getText().toString(),
-                        topic3.getText().toString(), findViewById(R.id.banner_image_view)));
+                        topic3.getText().toString(), findViewById(R.id.banner_image_view));
+                finish();});
     }
 
     private void selectImage(Context context) {
@@ -210,6 +211,13 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(getString(R.string.activity), getString(R.string.profile_settings_activity));
+        startActivity(intent);
     }
 
     private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
