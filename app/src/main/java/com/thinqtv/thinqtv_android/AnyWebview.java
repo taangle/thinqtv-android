@@ -40,8 +40,7 @@ public class AnyWebview extends AppCompatActivity {
                             "(navBar = document.getElementsByTagName('nav')[0]); navBar.parentNode.removeChild(navBar);" +
                             "(footer = document.getElementsByTagName('footer')[0]); footer.parentNode.removeChild(footer);" +
                             "(label = document.getElementsByClassName('box')[0]); if (label != undefined) { label.parentNode.removeChild(label); }" +
-                            "(convoBtns = document.getElementsByClassName('col-10 col-md-4 col-sm-12')[0]); if (convoBtns != undefined) { convoBtns.parentNode.removeChild(convoBtns); }" +
-                            "(scheduleBtn = document.getElementsByClassName('col-lg-5 col-md-5 col-sm-12')[0]); if (scheduleBtn != undefined) { scheduleBtn.parentNode.removeChild(scheduleBtn); }" +
+                            "(scheduleBtn = document.getElementById('appBackground')); if (scheduleBtn != undefined) { scheduleBtn.parentNode.removeChild(scheduleBtn); }" +
                             "Android.displayPage();" +
                             "})()");
                 } catch (Exception e) {
