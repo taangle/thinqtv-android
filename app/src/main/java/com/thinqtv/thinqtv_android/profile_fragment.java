@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,27 +15,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.zxing.common.BitMatrix;
+import com.stripe.android.CustomerSession;
 import com.thinqtv.thinqtv_android.data.*;
+import com.thinqtv.thinqtv_android.stripe.StripeHostActivity;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
 import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
 
@@ -96,6 +86,18 @@ public class profile_fragment extends Fragment {
             logout();
         });
 
+        Button stripeSettingsButton = view.findViewById(R.id.merchandise_button);
+        stripeSettingsButton.setOnClickListener((v -> {
+            Intent intent = new Intent(getActivity(), EditMerchandiseListActivity.class);
+            startActivity(intent);
+        }));
+
+        if (CustomerSession.getInstance().getCachedCustomer() == null) {
+            stripeSettingsButton.setVisibility(View.INVISIBLE);
+        } else {
+            stripeSettingsButton.setVisibility(View.VISIBLE);
+        }
+
         // Update username text
         TextView usernameTV = view.findViewById(R.id.username);
         usernameTV.setText(UserRepository.getInstance().getLoggedInUser().getUserInfo().get("name"));
@@ -144,13 +146,13 @@ public class profile_fragment extends Fragment {
     }
 
     public void logout() {
-        UserRepository.getInstance().logout();
+        UserRepository.getInstance().logout(getContext());
         LoginManager.getInstance().logOut();
         googleSignInClient.signOut()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google accountl");
+                        Log.i(getString(R.string.google_sign_in_tag), "Signed out of Google account");
                     }
                 });
         ((MainActivity)getActivity()).openFragment(welcome_fragment.newInstance());

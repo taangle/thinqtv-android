@@ -22,6 +22,11 @@
         <activity android:name=".EditConversationsActivity"/>
         <activity android:name=".AddEventActivity" />
         <activity android:name=".StartupLoadingActivity" />
+        <activity android:name=".stripe.StoreActivity" />
+        <activity android:name=".stripe.StripeHostActivity" />
+        <activity android:name=".AddMerchandiseActivity" />
+        <activity android:name=".EditMerchandiseListActivity" />
+        <activity android:name=".stripe.CheckoutActivity" />
         <activity
             android:name=".ui.auth.LoginActivity"
             android:label="@string/title_activity_login"

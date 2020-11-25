@@ -181,7 +181,7 @@ public class conversation_fragment extends Fragment {
                     public void onClick(View v) {
 
                         Intent i = new Intent(getContext().getApplicationContext(), AnyWebview.class);
-                        i.putExtra("webviewLink", "https://thinq.tv/" + eventHostPerma);
+                        i.putExtra("webviewLink", "https://fast-mountain-02267.herokuapp.com/" + eventHostPerma);
                         startActivity(i);
                     }
                 });
