@@ -67,6 +67,12 @@ public class conversation_fragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initializeEvents();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         initializeEvents();
     }
@@ -394,9 +400,11 @@ public class conversation_fragment extends Fragment {
         // add listener for whenever a user changes filter
         eventFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ((TextView) adapterView.getChildAt(0)).setTextSize(18);
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-                getEventsJSONfile();
+                if (((TextView) adapterView.getChildAt(0)) != null && ((TextView) adapterView.getChildAt(0)) != null) {
+                    ((TextView) adapterView.getChildAt(0)).setTextSize(18);
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                    getEventsJSONfile();
+                }
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {

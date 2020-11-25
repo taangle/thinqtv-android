@@ -213,6 +213,13 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(getString(R.string.activity), getString(R.string.profile_settings_activity));
+        startActivity(intent);
+    }
+
     private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView imageView;
         public DownloadImageTask(ImageView imageView) {
