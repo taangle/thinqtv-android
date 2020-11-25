@@ -68,7 +68,7 @@
 
         <ImageView
             android:id="@+id/profile_image_view"
-            android:src="@drawable/defaultimga"
+            android:src="@drawable/defaultprofil"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="24dp"
@@ -159,7 +159,7 @@
 
         <ImageView
             android:id="@+id/banner_image_view"
-            android:src="@drawable/bannerimg"
+            android:src="@drawable/banner"
             android:layout_width="375dp"
             android:layout_height="75dp"
             android:layout_marginTop="8dp"
