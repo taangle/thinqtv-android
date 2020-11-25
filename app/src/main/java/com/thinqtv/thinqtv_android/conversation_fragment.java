@@ -158,7 +158,7 @@ public class conversation_fragment extends Fragment {
 
         switch(eventFilter_selection)
         {
-            case ("RSVPs \u25bc") : {
+            case ("Your RSVPs \u25bc") : {
                 Date end_time = new Date();
                 try {
                     end_time = dateFormat.parse(eventObject.getString("end_at"));

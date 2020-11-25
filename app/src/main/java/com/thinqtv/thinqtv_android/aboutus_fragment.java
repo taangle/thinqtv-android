@@ -102,7 +102,7 @@ public class aboutus_fragment extends Fragment {
         if (sTitle1.length() == 0 || sContent1.length() == 0 || sTitle2.length() == 0 || sContent2.length() == 0 || sContent3.length() == 0 || sTitle3.length() == 0){
             ((RelativeLayout)view.findViewById(R.id.rl_Error)).setVisibility(View.VISIBLE);
         } else {
-            title.setText("- " + aboutUsModel.Title + " -");
+            title.setText(aboutUsModel.Title);
             section1Title.setText(aboutUsModel.DetailsSection1Title);
             section1Content.setText("\t" + aboutUsModel.DetailsSection1Content.replace("amp;", ""));
             section2Title.setText(aboutUsModel.DetailsSection2Title);
