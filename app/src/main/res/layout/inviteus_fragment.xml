@@ -7,6 +7,29 @@
     android:orientation="vertical"
     tools:context=".inviteus_fragment">
 
+    <RelativeLayout
+        android:id="@+id/rl_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="30dp"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/ic_launcher_foreground_gold"/>
+        <TextView
+            android:layout_below="@+id/img_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Site underwent maintenance."
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="32dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -16,212 +39,179 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/rl_Error"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-                <ImageView
-                    android:id="@+id/img_logo"
-                    android:layout_centerInParent="true"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
-                    android:src="@drawable/ic_launcher_foreground_gold"/>
-                <TextView
-                    android:layout_below="@+id/img_logo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Temporary holder while undergoing maintenance."
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="32dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="THIS WILL BE THE PAGE WE DISPLAY WHEN WORKING ON CHANGING THE ABOUT US MODEL"/>
-            </RelativeLayout>
-
 
             <TextView
-                android:id="@+id/tvPageTitle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/about_us_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Dr. Lisa Schaefer \n Keynotes... "
-                android:textColor="@color/colorPrimary"
-                android:textSize="40dp"
-                android:textStyle="bold" />
+                android:text="Invite Us to Speak"
+                android:textStyle="bold"
+                android:textSize="36sp"
+                android:textColor="@color/colorPrimary"/>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary">
+
+                <TextView
+                    android:id="@+id/tvPageTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/montserrat"
+                    android:paddingHorizontal="10dp"
+                    android:gravity="center"
+                    android:text="Dr. Lisa Schaefer \nKeynotes... "
+                    android:textColor="@color/ic_launcher_background"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="140dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/lisa"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPageTitle" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/colorAccent" />
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:paddingHorizontal="30dp"
+                android:background="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/tvMessageTitle1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:paddingHorizontal="10dp"
                 android:layout_marginTop="12dp"
                 android:text="Making Steminism ..."
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="28dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat"/>
 
             <TextView
                 android:id="@+id/tvMessage1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:paddingHorizontal="10dp"
                 android:layout_marginBottom="8dp"
                 android:baselineAligned="false"
                 android:text="ThinQ.tv founder..."
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="24dp" />
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/colorPrimaryDark"/>
+                android:textColor="@color/colorPrimary"
+                android:textSize="20dp"
+                android:fontFamily="@font/montserrat"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center"
+                    android:text="Women who inspire you to"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="30dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView"
+                    android:layout_centerHorizontal="true"
+                    android:drawableEnd="@drawable/ic_launcher_foreground_gold"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Thin "
+                    android:textColor="@color/colorAccent"
+                    android:textSize="24sp" />
+
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="8dp"
                 android:text="Invite Dr. Schaefer to Speak"
-                android:textColor="#000000"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:textSize="28dp"/>
-            <!-- This will eventually be implemented-->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:text="Full Name"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="20dp"/>
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/editTextFullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="18dp"
-                    android:background="#777570"
-                    android:padding="2dp">
-
-                    <EditText
-                        android:id="@+id/editTextFullName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/ic_launcher_background"
-                        android:hint="ex: Jon Doe"
-                        android:paddingHorizontal="8dp"
-                        android:textColor="#000000" />
-                </LinearLayout>
+                    android:layout_marginHorizontal="10dp"
+                    android:inputType="text"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="ex: Jon Doe"
+                    android:paddingHorizontal="8dp"
+                    android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:text="Phone Number"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="20dp"/>
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/editTextPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="18dp"
-                    android:background="#777570"
-                    android:padding="2dp">
-
-                    <EditText
-                        android:id="@+id/editTextPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/ic_launcher_background"
-                        android:hint=""
-                        android:paddingHorizontal="8dp"
-                        android:textColor="#000000" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:text="Email Address"
-                    android:textColor="#000000"
-                    android:textSize="20dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="18dp"
-                    android:background="#777570"
-                    android:padding="2dp">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/ic_launcher_background"
-                        android:hint=""
-                        android:paddingHorizontal="8dp"
-                        android:textColor="#000000" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:text="Subject"
-                    android:textColor="#000000"
-                    android:textSize="20dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="18dp"
-                    android:background="#777570"
-                    android:padding="2dp">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/ic_launcher_background"
-                        android:hint=""
-                        android:paddingHorizontal="8dp"
-                        android:textColor="#000000" />
-                </LinearLayout>
+                    android:layout_marginHorizontal="10dp"
+                    android:inputType="text"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="(999) 999-9999"
+                    android:paddingHorizontal="8dp"
+                    android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:text="Message"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="20dp"/>
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/editTextMessage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="18dp"
-                    android:background="#777570"
-                    android:padding="2dp">
-
-                    <EditText
-                        android:id="@+id/editTextMessage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/ic_launcher_background"
-                        android:hint=""
-                        android:paddingHorizontal="8dp"
-                        android:textColor="#000000" />
-                </LinearLayout>
+                    android:layout_height="100dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:inputType="textMultiLine"
+                    android:background="@drawable/edit_text_background"
+                    android:hint=""
+                    android:paddingHorizontal="8dp"
+                    android:textColor="@color/colorPrimaryDark" />
 
         </LinearLayout>
 
@@ -236,7 +226,7 @@
                 android:paddingVertical="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:gravity="center"
-                android:text="(602) 888-3089"
+                android:text="Send Message"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/ic_launcher_background"/>

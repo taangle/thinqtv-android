@@ -2,10 +2,10 @@ package com.thinqtv.thinqtv_android;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -72,7 +72,7 @@ public class aboutus_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.aboutus_fragment, container, false);
-        ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
+        ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
 
         new WebElementsTask().execute();
         return view;
@@ -109,8 +109,12 @@ public class aboutus_fragment extends Fragment {
             section2Content.setText("\t" + aboutUsModel.DetailsSection2Content.replace("amp;", ""));
             section3Title.setText(aboutUsModel.DetailsSection3Title);
             section3Content.setText("\t" + aboutUsModel.DetailsSection3Content.replace("amp;", ""));
-            ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
+            ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
         }
+    }
+
+    protected void maintenanceMessage() {
+        view.findViewById(R.id.rl_Error).setVisibility(View.VISIBLE);
     }
 
     private class WebElementsTask extends AsyncTask<Void, Void, Void> {
@@ -123,12 +127,14 @@ public class aboutus_fragment extends Fragment {
         String sectionTitle3;
         String sectionContent3;
 
+        Boolean success = false;
+
         ArrayList<Element> elements = new ArrayList<>();
         @Override
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://www.thinq.tv/getinvolved").get();
+                Document doc = Jsoup.connect("https://www.thinq.tv/aboutus").get();
 
                 //Get Title value
                 Elements bigTextElements = doc.getElementsByClass("maroon");
@@ -155,15 +161,20 @@ public class aboutus_fragment extends Fragment {
                 sectionContent2 = parseTag(elementContent2.get(0).toString());
                 sectionContent3 = parseTag(elementContent2.get(1).toString());
 
-                System.out.println("elements.size() = " + elements.size());
+                success = true;
+                Log.i("ABOUT_US", "elements.size() = " + elements.size());
             } catch (Exception e) {
-                System.out.println("FAILED");
+                Log.e("ABOUT_US", "FAILED");
             }
             return null;
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            setAboutUsModel(sectionTitle1, sectionContent1, sectionTitle2, sectionContent2, sectionTitle3, sectionContent3);
+            if (success) {
+                setAboutUsModel(sectionTitle1, sectionContent1, sectionTitle2, sectionContent2, sectionTitle3, sectionContent3);
+            } else {
+                maintenanceMessage();
+            }
         }
 
         private String parseTag(String tag) {

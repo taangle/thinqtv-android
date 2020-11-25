@@ -1,9 +1,7 @@
 package com.thinqtv.thinqtv_android;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,12 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.thinqtv.thinqtv_android.data.model.InviteUsModel;
@@ -34,6 +33,7 @@ public class inviteus_fragment extends Fragment {
     private View view;
 
     private InviteUsModel inviteUsModel;
+    private String emailBody = "";
 
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
 
@@ -121,25 +121,51 @@ public class inviteus_fragment extends Fragment {
             buttonSendMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    makePhoneCall();
+                    setMessage();
+                    makeEmail();
                 }
             });
         }
     }
 
-    protected void makePhoneCall() {
-        String number = getString(R.string.phone_number);
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:"+number));
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CALL_PHONE}, 1);
-            return;
+    private void setMessage() {
+        String fullName = ((EditText) view.findViewById(R.id.editTextFullName)).getText().toString();
+        String phoneNumber = ((EditText) view.findViewById(R.id.editTextPhone)).getText().toString();
+        String message = ((EditText) view.findViewById(R.id.editTextMessage)).getText().toString();
+
+        if (!fullName.isEmpty()) {
+            emailBody += "Name: " + fullName + "\n\n";
         }
-        startActivity(callIntent);
-        startActivity(callIntent);
+        if (!phoneNumber.isEmpty()) {
+            emailBody += "Phone: " + phoneNumber + "\n\n";
+        }
+        if (!message.isEmpty()) {
+            emailBody += "Message: " + message ;
+        }
     }
 
+    protected void makeEmail() {
+        String[] TO = {"info@ThinQ.tv"};
+        String[] CC = {""};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Invitation to Speak!");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody);
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getContext(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void maintenanceMessage() {
+        view.findViewById(R.id.rl_Error).setVisibility(View.VISIBLE);
+    }
 
     private class WebElementsTask extends AsyncTask<Void, Void, Void> {
         String title = "";
@@ -147,6 +173,7 @@ public class inviteus_fragment extends Fragment {
         String sectionTitle1 = "";
         String sectionContent1 = "";
 
+        Boolean success = false;
         ArrayList<Element> elements = new ArrayList<>();
         @Override
         protected Void doInBackground(Void... voids) {
@@ -163,7 +190,7 @@ public class inviteus_fragment extends Fragment {
                 sectionTitle1 = parseWhiteClass(redTextSectionTitle.get(0).toString());
                 Elements redTextSectionContent = doc.getElementsByClass("h5 text-left");
                 sectionContent1 = parseRerContent(redTextSectionContent.get(0).toString());
-
+                success = true;
             } catch (Exception e) {
                 System.out.println("FAILED");
             }
@@ -171,7 +198,11 @@ public class inviteus_fragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            setInviteUsModel(title, sectionTitle1, sectionContent1);
+            if (success) {
+                setInviteUsModel(title, sectionTitle1, sectionContent1);
+            } else {
+                maintenanceMessage();
+            }
         }
 
         private String parseWhiteClass(String tag) {

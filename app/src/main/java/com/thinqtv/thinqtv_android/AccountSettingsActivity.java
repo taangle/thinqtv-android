@@ -1,6 +1,7 @@
 package com.thinqtv.thinqtv_android;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -38,6 +39,13 @@ public class AccountSettingsActivity extends AppCompatActivity {
             UserRepository.getInstance().updateAccount(context, email.getText().toString(), newPassword.getText().toString(),
                     newPasswordConfirm.getText().toString(), permalink.getText().toString());
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(getString(R.string.activity), getString(R.string.account_settings_activity));
+        startActivity(intent);
     }
 
     @Override
