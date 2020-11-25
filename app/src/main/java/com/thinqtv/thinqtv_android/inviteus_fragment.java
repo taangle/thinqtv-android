@@ -24,7 +24,6 @@ import com.thinqtv.thinqtv_android.data.model.InviteUsModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -179,17 +178,18 @@ public class inviteus_fragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://www.thinq.tv/drschaeferspeaking").get();
+                Document doc = Jsoup.connect("https://fast-mountain-02267.herokuapp.com/drschaeferspeaking").get();
 
-                //Get Title value
-                Elements titleElements = doc.getElementsByClass("text-white pt-5");
-                title = parseTag(titleElements.get(0).toString());
+                // ids = appTitle1, appTitle2, appContent1
 
-                // Red text view
-                Elements redTextSectionTitle = doc.getElementsByClass("maroon");
-                sectionTitle1 = parseWhiteClass(redTextSectionTitle.get(0).toString());
-                Elements redTextSectionContent = doc.getElementsByClass("h5 text-left");
-                sectionContent1 = parseRerContent(redTextSectionContent.get(0).toString());
+                Element title1 = doc.getElementById("appTitle1");
+                Element title2 = doc.getElementById("appTitle2");
+                Element content1 = doc.getElementById("appContent1");
+
+                title = parseTitle(title1.toString());
+                sectionTitle1 = parseSectionTitle(title2.toString());
+                sectionContent1 = parseSectionContent(content1.toString());
+
                 success = true;
             } catch (Exception e) {
                 System.out.println("FAILED");
@@ -205,7 +205,7 @@ public class inviteus_fragment extends Fragment {
             }
         }
 
-        private String parseWhiteClass(String tag) {
+        private String parseSectionTitle(String tag) {
             String result = "";
             String[] arrOfStr1 = tag.split(">",2);
             if (arrOfStr1[1].contains("<strong>")) {
@@ -218,7 +218,7 @@ public class inviteus_fragment extends Fragment {
             }
         }
 
-        private String parseTag(String tag) {
+        private String parseTitle(String tag) {
             String[] arrOfStr = tag.split("<b>",2);
             String[] arrResult = arrOfStr[1].split("<",2);
             String value = arrResult[0];
@@ -241,7 +241,7 @@ public class inviteus_fragment extends Fragment {
             return value;
         }
 
-        private String parseRerContent(String tag) {
+        private String parseSectionContent(String tag) {
             String ret = "";
             String[] arrOfStr1 = tag.split(">", 2);
             String[] arrOfStr2 = arrOfStr1[1].split("<", 2);
