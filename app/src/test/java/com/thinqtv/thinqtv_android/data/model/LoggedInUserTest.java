@@ -26,7 +26,7 @@ public class LoggedInUserTest {
 
     private LoggedInUser loggedInUser;
 
-    private String TEST_TOKEN = "TEST_TOKEN";
+    private final String TEST_TOKEN = "TEST_TOKEN";
 
     @Before
     public void setup() {
