@@ -2,6 +2,7 @@ package com.thinqtv.thinqtv_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 
 import androidx.appcompat.app.ActionBar;
@@ -26,5 +27,16 @@ public class EditMerchandiseListActivity extends AppCompatActivity {
         });
 
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_layout, new MerchandiseListFragment()).commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
