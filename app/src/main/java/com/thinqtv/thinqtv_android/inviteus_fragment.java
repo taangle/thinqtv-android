@@ -133,13 +133,13 @@ public class inviteus_fragment extends Fragment {
         String message = ((EditText) view.findViewById(R.id.editTextMessage)).getText().toString();
 
         if (!fullName.isEmpty()) {
-            emailBody += "Name: " + fullName + "\n\n";
+            emailBody += getContext().getString(R.string.email_name) + fullName + "\n\n";
         }
         if (!phoneNumber.isEmpty()) {
-            emailBody += "Phone: " + phoneNumber + "\n\n";
+            emailBody += getContext().getString(R.string.email_phone) + phoneNumber + "\n\n";
         }
         if (!message.isEmpty()) {
-            emailBody += "Message: " + message ;
+            emailBody += getContext().getString(R.string.email_message) + message ;
         }
     }
 
@@ -152,13 +152,13 @@ public class inviteus_fragment extends Fragment {
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
         emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Invitation to Speak!");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getContext().getString(R.string.invite_us_to_speak));
         emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody);
 
         try {
             startActivity(Intent.createChooser(emailIntent, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getContext(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.no_email_client), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -182,9 +182,9 @@ public class inviteus_fragment extends Fragment {
 
                 // ids = appTitle1, appTitle2, appContent1
 
-                Element title1 = doc.getElementById("appTitle1");
-                Element title2 = doc.getElementById("appTitle2");
-                Element content1 = doc.getElementById("appContent1");
+                Element title1 = doc.getElementById(getContext().getString(R.string.app_title_1));
+                Element title2 = doc.getElementById(getContext().getString(R.string.app_title_2));
+                Element content1 = doc.getElementById(getContext().getString(R.string.app_content_1));
 
                 title = parseTitle(title1.toString());
                 sectionTitle1 = parseSectionTitle(title2.toString());
@@ -192,7 +192,7 @@ public class inviteus_fragment extends Fragment {
 
                 success = true;
             } catch (Exception e) {
-                System.out.println("FAILED");
+                System.out.println(getContext().getString(R.string.failed));
             }
             return null;
         }

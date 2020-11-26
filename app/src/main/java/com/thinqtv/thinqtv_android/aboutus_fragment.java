@@ -81,7 +81,7 @@ public class aboutus_fragment extends Fragment {
     private void setAboutUsModel(String sTitle1, String sContent1, String sTitle2, String sContent2, String sTitle3, String sContent3){
         aboutUsModel = new AboutUsModel();
 
-        aboutUsModel.Title = "About Us";
+        aboutUsModel.Title = getContext().getString(R.string.about_us);
         aboutUsModel.DetailsSection1Title = sTitle1;
         aboutUsModel.DetailsSection1Content = sContent1;
 
@@ -137,17 +137,17 @@ public class aboutus_fragment extends Fragment {
                 Document doc = Jsoup.connect(getContext().getString(R.string.about_us_url)).get();
 
                 //Get Title values
-                Element title1 = doc.getElementById("appTitle1");
-                Element title2 = doc.getElementById("appTitle2");
-                Element title3 = doc.getElementById("appTitle3");
+                Element title1 = doc.getElementById(getContext().getString(R.string.app_title_1));
+                Element title2 = doc.getElementById(getContext().getString(R.string.app_title_2));
+                Element title3 = doc.getElementById(getContext().getString(R.string.app_title_3));
 
                 sectionTitle1 = parseTag(title1.toString());
                 sectionTitle2 = parseTag(title2.toString());
                 sectionTitle3 = parseTag(title3.toString());
 
-                Element content1 = doc.getElementById("appContent1");
-                Element content2 = doc.getElementById("appContent2");
-                Element content3 = doc.getElementById("appContent3");
+                Element content1 = doc.getElementById(getContext().getString(R.string.app_content_1));
+                Element content2 = doc.getElementById(getContext().getString(R.string.app_content_2));
+                Element content3 = doc.getElementById(getContext().getString(R.string.app_content_3));
 
                 sectionContent1 = parseTag(content1.toString());
                 sectionContent2 = parseTag(content2.toString());
