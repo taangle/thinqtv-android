@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
-                android:text="ABOUT US TITLE HOLDER"
+                android:text="@string/temporary_holder"
                 android:textStyle="bold"
                 android:textSize="36sp"
                 android:textColor="@color/colorPrimary"/>
@@ -74,7 +74,7 @@
                     android:id="@+id/text_view_details3_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Section Holder"
+                    android:text="@string/temporary_holder"
                     android:textColor="@color/colorAccent"
                     android:textSize="32dp"
                     android:textStyle="bold" />
@@ -83,7 +83,7 @@
                     android:id="@+id/text_view_details3_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Section Holder"
+                    android:text="@string/temporary_holder"
                     android:textColor="#FFFFFF"
                     android:textSize="24sp" />
             </LinearLayout>
@@ -104,7 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="ABOUT US DETAILS TITLE"
+                        android:text="@string/temporary_holder"
                         android:gravity="center_horizontal"
                         android:paddingHorizontal="20dp"
                         android:textStyle="bold"
@@ -118,7 +118,7 @@
                         android:paddingHorizontal="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_below="@id/text_view_details1_title"
-                        android:text="random text hbhbhbhbhbhb hbhbbbhbbhbhbh bhbhbhb hbhbhbh"
+                        android:text="@string/random_text"
                         android:textAlignment="textStart"
                         android:textSize="18sp" />
 
@@ -137,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="5dp"
-                    android:text="ABOUT US DETAILS TITLE"
+                    android:text="@string/temporary_holder"
                     android:textStyle="bold"
                     android:textSize="24sp"
                     android:textColor="@color/colorPrimaryDark"/>
@@ -151,7 +151,7 @@
                     android:paddingHorizontal="20dp"
                     android:layout_marginTop="15dp"
                     android:gravity="center"
-                    android:text="random text hbhbhbhbhbhbhbhbbbhbbhbhbhbhbhbhbhbhbhbh"
+                    android:text="@string/random_text"
                     android:textAlignment="viewStart"
                     android:textSize="18sp"
                     tools:ignore="RtlCompat" />

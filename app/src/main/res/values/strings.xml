@@ -105,4 +105,6 @@
     <string name="inviteus_fragment">inviteus_fragment</string>
     <string name="profile_fragment">profile_fragment</string>
     <string name="welcome_fragment">welcome_fragment</string>
+    <string name="temporary_holder">Temporary Holder</string>
+    <string name="random_text">andom text hbhbhbhbhbhbhbhbbbhbbhbhbhbhbhbhbhbhbhbh</string>
 </resources>
