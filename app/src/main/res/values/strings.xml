@@ -106,5 +106,16 @@
     <string name="profile_fragment">profile_fragment</string>
     <string name="welcome_fragment">welcome_fragment</string>
     <string name="temporary_holder">Temporary Holder</string>
-    <string name="random_text">andom text hbhbhbhbhbhbhbhbbbhbbhbhbhbhbhbhbhbhbhbh</string>
+    <string name="random_text">Random text</string>
+    <string name="random_text_long">Random text hbhbhbhbhbhbhbhbbbhbbhbhbhbhbhbhbhbhbhbh</string>
+    <string name="invite_us_to_speak">Invite Us to Speak</string>
+    <string name="women_who_inspire">Women who inspire you to</string>
+    <string name="thin">Thin </string>
+    <string name="invite_dr_schaefer">Invite Dr. Schaefer to Speak</string>
+    <string name="full_name">Full Name</string>
+    <string name="full_name_hint">ex: Jon Doe</string>
+    <string name="phone_number_phrase">Phone Number</string>
+    <string name="phone_number_hint">(999)999-9999</string>
+    <string name="message">Message</string>
+    <string name="send_message">Send Message</string>
 </resources>

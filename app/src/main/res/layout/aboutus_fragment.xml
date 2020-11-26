@@ -118,7 +118,7 @@
                         android:paddingHorizontal="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_below="@id/text_view_details1_title"
-                        android:text="@string/random_text"
+                        android:text="@string/random_text_long"
                         android:textAlignment="textStart"
                         android:textSize="18sp" />
 
@@ -151,7 +151,7 @@
                     android:paddingHorizontal="20dp"
                     android:layout_marginTop="15dp"
                     android:gravity="center"
-                    android:text="@string/random_text"
+                    android:text="@string/random_text_long"
                     android:textAlignment="viewStart"
                     android:textSize="18sp"
                     tools:ignore="RtlCompat" />
