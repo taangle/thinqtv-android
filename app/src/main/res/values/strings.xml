@@ -118,4 +118,6 @@
     <string name="phone_number_hint">(999)999-9999</string>
     <string name="message">Message</string>
     <string name="send_message">Send Message</string>
+    <string name="invite_us_url">https://fast-mountain-02267.herokuapp.com/drschaeferspeaking</string>
+    <string name="about_us_url">https://www.thinq.tv/aboutus</string>
 </resources>

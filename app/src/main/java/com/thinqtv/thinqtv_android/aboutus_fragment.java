@@ -134,7 +134,7 @@ public class aboutus_fragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://www.thinq.tv/aboutus").get();
+                Document doc = Jsoup.connect(getContext().getString(R.string.about_us_url)).get();
 
                 //Get Title values
                 Element title1 = doc.getElementById("appTitle1");

@@ -178,7 +178,7 @@ public class inviteus_fragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://fast-mountain-02267.herokuapp.com/drschaeferspeaking").get();
+                Document doc = Jsoup.connect(getContext().getString(R.string.invite_us_url)).get();
 
                 // ids = appTitle1, appTitle2, appContent1
 
