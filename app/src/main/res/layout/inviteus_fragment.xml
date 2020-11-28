@@ -47,7 +47,7 @@
                 android:layout_marginVertical="10dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Invite Us to Speak"
+                android:text="@string/invite_us_to_speak"
                 android:textStyle="bold"
                 android:textSize="36sp"
                 android:textColor="@color/colorPrimary"/>
@@ -66,7 +66,7 @@
                     android:fontFamily="@font/montserrat"
                     android:paddingHorizontal="10dp"
                     android:gravity="center"
-                    android:text="Dr. Lisa Schaefer \nKeynotes... "
+                    android:text="@string/random_text"
                     android:textColor="@color/ic_launcher_background"
                     android:textSize="24dp"
                     android:textStyle="bold"
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
                 android:layout_marginTop="12dp"
-                android:text="Making Steminism ..."
+                android:text="@string/random_text"
                 android:textColor="@color/colorPrimary"
                 android:textSize="28dp"
                 android:textStyle="bold"
@@ -110,7 +110,7 @@
                 android:paddingHorizontal="10dp"
                 android:layout_marginBottom="8dp"
                 android:baselineAligned="false"
-                android:text="ThinQ.tv founder..."
+                android:text="@string/random_text_long"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
                 android:fontFamily="@font/montserrat"/>
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center"
-                    android:text="Women who inspire you to"
+                    android:text="@string/women_who_inspire"
                     android:textColor="@color/colorAccent"
                     android:textSize="30dp" />
 
@@ -137,7 +137,7 @@
                     android:layout_centerHorizontal="true"
                     android:drawableEnd="@drawable/ic_launcher_foreground_gold"
                     android:fontFamily="@font/montserrat"
-                    android:text="Thin "
+                    android:text="@string/thin"
                     android:textColor="@color/colorAccent"
                     android:textSize="24sp" />
 
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="8dp"
-                android:text="Invite Dr. Schaefer to Speak"
+                android:text="@string/invite_dr_schaefer"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:textSize="28dp"/>
@@ -160,7 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:text="Full Name"
+                    android:text="@string/full_name"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20dp"/>
 
@@ -171,7 +171,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:inputType="text"
                     android:background="@drawable/edit_text_background"
-                    android:hint="ex: Jon Doe"
+                    android:hint="@string/full_name_hint"
                     android:paddingHorizontal="8dp"
                     android:textColor="@color/colorPrimaryDark" />
 
@@ -179,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:text="Phone Number"
+                    android:text="@string/phone_number_phrase"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20dp"/>
 
@@ -190,7 +190,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:inputType="text"
                     android:background="@drawable/edit_text_background"
-                    android:hint="(999) 999-9999"
+                    android:hint="@string/phone_number_hint"
                     android:paddingHorizontal="8dp"
                     android:textColor="@color/colorPrimaryDark" />
 
@@ -198,7 +198,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:text="Message"
+                    android:text="@string/message"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20dp"/>
 
@@ -226,7 +226,7 @@
                 android:paddingVertical="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:gravity="center"
-                android:text="Send Message"
+                android:text="@string/send_message"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/ic_launcher_background"/>

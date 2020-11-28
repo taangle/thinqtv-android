@@ -24,7 +24,6 @@ import com.thinqtv.thinqtv_android.data.model.InviteUsModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -134,13 +133,13 @@ public class inviteus_fragment extends Fragment {
         String message = ((EditText) view.findViewById(R.id.editTextMessage)).getText().toString();
 
         if (!fullName.isEmpty()) {
-            emailBody += "Name: " + fullName + "\n\n";
+            emailBody += getContext().getString(R.string.email_name) + fullName + "\n\n";
         }
         if (!phoneNumber.isEmpty()) {
-            emailBody += "Phone: " + phoneNumber + "\n\n";
+            emailBody += getContext().getString(R.string.email_phone) + phoneNumber + "\n\n";
         }
         if (!message.isEmpty()) {
-            emailBody += "Message: " + message ;
+            emailBody += getContext().getString(R.string.email_message) + message ;
         }
     }
 
@@ -153,13 +152,13 @@ public class inviteus_fragment extends Fragment {
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
         emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Invitation to Speak!");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getContext().getString(R.string.invite_us_to_speak));
         emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody);
 
         try {
             startActivity(Intent.createChooser(emailIntent, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getContext(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.no_email_client), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -179,20 +178,21 @@ public class inviteus_fragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://www.thinq.tv/drschaeferspeaking").get();
+                Document doc = Jsoup.connect(getContext().getString(R.string.invite_us_url)).get();
 
-                //Get Title value
-                Elements titleElements = doc.getElementsByClass("text-white pt-5");
-                title = parseTag(titleElements.get(0).toString());
+                // ids = appTitle1, appTitle2, appContent1
 
-                // Red text view
-                Elements redTextSectionTitle = doc.getElementsByClass("maroon");
-                sectionTitle1 = parseWhiteClass(redTextSectionTitle.get(0).toString());
-                Elements redTextSectionContent = doc.getElementsByClass("h5 text-left");
-                sectionContent1 = parseRerContent(redTextSectionContent.get(0).toString());
+                Element title1 = doc.getElementById(getContext().getString(R.string.app_title_1));
+                Element title2 = doc.getElementById(getContext().getString(R.string.app_title_2));
+                Element content1 = doc.getElementById(getContext().getString(R.string.app_content_1));
+
+                title = parseTitle(title1.toString());
+                sectionTitle1 = parseSectionTitle(title2.toString());
+                sectionContent1 = parseSectionContent(content1.toString());
+
                 success = true;
             } catch (Exception e) {
-                System.out.println("FAILED");
+                System.out.println(getContext().getString(R.string.failed));
             }
             return null;
         }
@@ -205,7 +205,7 @@ public class inviteus_fragment extends Fragment {
             }
         }
 
-        private String parseWhiteClass(String tag) {
+        private String parseSectionTitle(String tag) {
             String result = "";
             String[] arrOfStr1 = tag.split(">",2);
             if (arrOfStr1[1].contains("<strong>")) {
@@ -218,7 +218,7 @@ public class inviteus_fragment extends Fragment {
             }
         }
 
-        private String parseTag(String tag) {
+        private String parseTitle(String tag) {
             String[] arrOfStr = tag.split("<b>",2);
             String[] arrResult = arrOfStr[1].split("<",2);
             String value = arrResult[0];
@@ -241,7 +241,7 @@ public class inviteus_fragment extends Fragment {
             return value;
         }
 
-        private String parseRerContent(String tag) {
+        private String parseSectionContent(String tag) {
             String ret = "";
             String[] arrOfStr1 = tag.split(">", 2);
             String[] arrOfStr2 = arrOfStr1[1].split("<", 2);
