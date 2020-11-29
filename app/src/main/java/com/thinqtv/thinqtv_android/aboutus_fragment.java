@@ -81,7 +81,7 @@ public class aboutus_fragment extends Fragment {
     private void setAboutUsModel(String sTitle1, String sContent1, String sTitle2, String sContent2, String sTitle3, String sContent3){
         aboutUsModel = new AboutUsModel();
 
-        aboutUsModel.Title = "About Us";
+        aboutUsModel.Title = getContext().getString(R.string.about_us);
         aboutUsModel.DetailsSection1Title = sTitle1;
         aboutUsModel.DetailsSection1Content = sContent1;
 
@@ -134,31 +134,27 @@ public class aboutus_fragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://www.thinq.tv/aboutus").get();
+                Document doc = Jsoup.connect(getContext().getString(R.string.about_us_url)).get();
 
-                //Get Title value
-                Elements bigTextElements = doc.getElementsByClass("maroon");
-                for (int i = 0; i < bigTextElements.size(); i++) {
-                    String s = bigTextElements.get(i).toString();
-                    if (i == 0){
-                        sectionTitle1 = parseTag(s);
-                    } else if (i == 1) {
-                        sectionTitle2 = parseTag(s);
-                    }else {
-                        sectionTitle3 = parseTag(s);
-                        break;
-                    }
-                }
+                //Get Title values
+                Element title1 = doc.getElementById(getContext().getString(R.string.app_title_1));
+                Element title2 = doc.getElementById(getContext().getString(R.string.app_title_2));
+                Element title3 = doc.getElementById(getContext().getString(R.string.app_title_3));
 
-                //Get DetailsSection 1
-                Elements subTitleElements = doc.getElementsByClass("lead pr-2 mr-1");
-                for (Element element: subTitleElements) {
-                    String s = element.toString();
-                    sectionContent1 = parseTag(s);
-                }
+                sectionTitle1 = parseTag(title1.toString());
+                sectionTitle2 = parseTag(title2.toString());
+                sectionTitle3 = parseTag(title3.toString());
 
+                Element content1 = doc.getElementById(getContext().getString(R.string.app_content_1));
+                Element content2 = doc.getElementById(getContext().getString(R.string.app_content_2));
+                Element content3 = doc.getElementById(getContext().getString(R.string.app_content_3));
+
+                sectionContent1 = parseTag(content1.toString());
+                sectionContent2 = parseTag(content2.toString());
+                //sectionContent3 = parseTag(content3.toString());
+
+                // TODO: We need to use appContent3 when the html gets corrected.
                 Elements elementContent2 = doc.getElementsByClass("black");
-                sectionContent2 = parseTag(elementContent2.get(0).toString());
                 sectionContent3 = parseTag(elementContent2.get(1).toString());
 
                 success = true;

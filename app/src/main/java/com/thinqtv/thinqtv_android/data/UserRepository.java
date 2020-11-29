@@ -48,8 +48,10 @@ public class UserRepository {
 
     private static volatile UserRepository instance;
     private LoggedInUser user = null;
+    private DataSource dataSource;
 
     private UserRepository() {
+        setDataSource(DataSource.getInstance());
     }
 
     public static UserRepository getInstance() {
@@ -109,7 +111,7 @@ public class UserRepository {
                     }
                 });
 
-        DataSource.getInstance().addToRequestQueue(request, context);
+        dataSource.addToRequestQueue(request, context);
     }
 
     public void logout(Context context) {
@@ -193,7 +195,7 @@ public class UserRepository {
                         registerViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
                     }
                 });
-        DataSource.getInstance().addToRequestQueue(request, context);
+        dataSource.addToRequestQueue(request, context);
     }
 
     public void loadSavedUser(StartupLoadingActivity activity) {
@@ -230,7 +232,7 @@ public class UserRepository {
             }
         };
 
-        DataSource.getInstance().addToRequestQueue(request, activity);
+        dataSource.addToRequestQueue(request, activity);
     }
 
     public void updateAccount(Context context, String email, String newPassword,
@@ -269,7 +271,7 @@ public class UserRepository {
                 return headers;
             }
         };
-        DataSource.getInstance().addToRequestQueue(request, context);
+        dataSource.addToRequestQueue(request, context);
     }
     public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
                        String topic2, String topic3, ImageView bannerPic) {
@@ -319,7 +321,7 @@ public class UserRepository {
                 return params;
             }
         };
-        DataSource.getInstance().addToRequestQueue(request, context);
+        dataSource.addToRequestQueue(request, context);
     }
 
     public void getEphemeralKey(Context context) {
@@ -338,5 +340,9 @@ public class UserRepository {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }
