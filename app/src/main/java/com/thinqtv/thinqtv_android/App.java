@@ -17,7 +17,7 @@ public class App extends Application {
 
         PaymentConfiguration.init(
                 getApplicationContext(),
-                "pk_test_wWEX8coPe3XAN08BCg8wk7hg00b8AUS35M"
+                "ca_6Ws78QidiUJpM70FWAELSMoUDYE37QA9"
         );
 
         createNotificationChannel();
