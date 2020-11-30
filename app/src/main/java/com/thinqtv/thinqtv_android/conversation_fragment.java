@@ -158,7 +158,7 @@ public class conversation_fragment extends Fragment {
 
         switch(eventFilter_selection)
         {
-            case ("RSVPs \u25bc") : {
+            case ("Your RSVPs \u25bc") : {
                 Date end_time = new Date();
                 try {
                     end_time = dateFormat.parse(eventObject.getString("end_at"));
@@ -172,7 +172,7 @@ public class conversation_fragment extends Fragment {
                 }
 
                 Date filterDate = calendar.getTime();
-                if (end_time.after(filterDate)) {
+                if (UserRepository.getInstance().isLoggedIn() && end_time.after(filterDate)) {
                     //                        if (eventObject.getString("topic").equals("DropIn"))
                     {
                         try {
@@ -342,7 +342,7 @@ public class conversation_fragment extends Fragment {
         Spinner eventFilter_spinner = getView().findViewById(R.id.eventsSpinner);
         String eventFilter_selection = eventFilter_spinner.getSelectedItem().toString();
         JsonArrayRequest request;
-        if (eventFilter_selection.equals("RSVPs ▼")) {
+        if (UserRepository.getInstance().isLoggedIn() && eventFilter_selection.equals("Your RSVPs ▼")) {
             request = new JsonArrayRequest(Request.Method.GET, getString(R.string.rsvps_url), null, this::handleEventResponse, error -> {
                 Log.e("RSVP", "Getting RSVP'd event failed", error);
                 handleResponseError();
