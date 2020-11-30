@@ -19,7 +19,7 @@ public class App extends Application {
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "main";
-            String description = "A channel to be used as an example.";
+            String description = "The main notification channel.";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("main-id", name, importance);
             channel.setDescription(description);
