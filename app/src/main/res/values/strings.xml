@@ -79,8 +79,8 @@
     <string name="banner_picture_description">banner picture</string>
     <string name="description_prompt">description</string>
 
-    <string name="facebook_app_id">243146653591136</string>
-    <string name="fb_login_protocol_scheme">fb243146653591136</string>
+    <string name="facebook_app_id">325409095260822</string>
+    <string name="fb_login_protocol_scheme">fb325409095260822</string>
     <string name="fb_sign_in_tag">FB_SIGN_IN</string>
     <string name="server_url_fb_sign_in">https://thinq.tv/api/v1/oauth/facebook</string>
 
