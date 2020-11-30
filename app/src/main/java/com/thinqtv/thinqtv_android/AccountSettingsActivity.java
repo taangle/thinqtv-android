@@ -1,7 +1,9 @@
 package com.thinqtv.thinqtv_android;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -35,7 +37,23 @@ public class AccountSettingsActivity extends AppCompatActivity {
         Context context = this;
         sendButton.setOnClickListener(view -> {
             UserRepository.getInstance().updateAccount(context, email.getText().toString(), newPassword.getText().toString(),
-                newPasswordConfirm.getText().toString(), permalink.getText().toString());
+                    newPasswordConfirm.getText().toString(), permalink.getText().toString());
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

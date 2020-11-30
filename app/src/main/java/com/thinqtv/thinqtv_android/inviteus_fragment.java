@@ -1,9 +1,7 @@
 package com.thinqtv.thinqtv_android;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,12 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.thinqtv.thinqtv_android.data.model.InviteUsModel;
@@ -25,7 +24,6 @@ import com.thinqtv.thinqtv_android.data.model.InviteUsModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,6 +32,7 @@ public class inviteus_fragment extends Fragment {
     private View view;
 
     private InviteUsModel inviteUsModel;
+    private String emailBody = "";
 
     private ActionBarDrawerToggle mDrawerToggle; //toggle for sidebar button shown in action bar
 
@@ -121,25 +120,51 @@ public class inviteus_fragment extends Fragment {
             buttonSendMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    makePhoneCall();
+                    setMessage();
+                    makeEmail();
                 }
             });
         }
     }
 
-    protected void makePhoneCall() {
-        String number = getString(R.string.phone_number);
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:"+number));
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CALL_PHONE}, 1);
-            return;
+    private void setMessage() {
+        String fullName = ((EditText) view.findViewById(R.id.editTextFullName)).getText().toString();
+        String phoneNumber = ((EditText) view.findViewById(R.id.editTextPhone)).getText().toString();
+        String message = ((EditText) view.findViewById(R.id.editTextMessage)).getText().toString();
+
+        if (!fullName.isEmpty()) {
+            emailBody += getContext().getString(R.string.email_name) + fullName + "\n\n";
         }
-        startActivity(callIntent);
-        startActivity(callIntent);
+        if (!phoneNumber.isEmpty()) {
+            emailBody += getContext().getString(R.string.email_phone) + phoneNumber + "\n\n";
+        }
+        if (!message.isEmpty()) {
+            emailBody += getContext().getString(R.string.email_message) + message ;
+        }
     }
 
+    protected void makeEmail() {
+        String[] TO = {"info@ThinQ.tv"};
+        String[] CC = {""};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getContext().getString(R.string.invite_us_to_speak));
+        emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody);
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getContext(), getContext().getString(R.string.no_email_client), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void maintenanceMessage() {
+        view.findViewById(R.id.rl_Error).setVisibility(View.VISIBLE);
+    }
 
     private class WebElementsTask extends AsyncTask<Void, Void, Void> {
         String title = "";
@@ -147,34 +172,40 @@ public class inviteus_fragment extends Fragment {
         String sectionTitle1 = "";
         String sectionContent1 = "";
 
+        Boolean success = false;
         ArrayList<Element> elements = new ArrayList<>();
         @Override
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://www.thinq.tv/drschaeferspeaking").get();
+                Document doc = Jsoup.connect(getContext().getString(R.string.invite_us_url)).get();
 
-                //Get Title value
-                Elements titleElements = doc.getElementsByClass("text-white pt-5");
-                title = parseTag(titleElements.get(0).toString());
+                // ids = appTitle1, appTitle2, appContent1
 
-                // Red text view
-                Elements redTextSectionTitle = doc.getElementsByClass("maroon");
-                sectionTitle1 = parseWhiteClass(redTextSectionTitle.get(0).toString());
-                Elements redTextSectionContent = doc.getElementsByClass("h5 text-left");
-                sectionContent1 = parseRerContent(redTextSectionContent.get(0).toString());
+                Element title1 = doc.getElementById(getContext().getString(R.string.app_title_1));
+                Element title2 = doc.getElementById(getContext().getString(R.string.app_title_2));
+                Element content1 = doc.getElementById(getContext().getString(R.string.app_content_1));
 
+                title = parseTitle(title1.toString());
+                sectionTitle1 = parseSectionTitle(title2.toString());
+                sectionContent1 = parseSectionContent(content1.toString());
+
+                success = true;
             } catch (Exception e) {
-                System.out.println("FAILED");
+                System.out.println(getContext().getString(R.string.failed));
             }
             return null;
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            setInviteUsModel(title, sectionTitle1, sectionContent1);
+            if (success) {
+                setInviteUsModel(title, sectionTitle1, sectionContent1);
+            } else {
+                maintenanceMessage();
+            }
         }
 
-        private String parseWhiteClass(String tag) {
+        private String parseSectionTitle(String tag) {
             String result = "";
             String[] arrOfStr1 = tag.split(">",2);
             if (arrOfStr1[1].contains("<strong>")) {
@@ -187,7 +218,7 @@ public class inviteus_fragment extends Fragment {
             }
         }
 
-        private String parseTag(String tag) {
+        private String parseTitle(String tag) {
             String[] arrOfStr = tag.split("<b>",2);
             String[] arrResult = arrOfStr[1].split("<",2);
             String value = arrResult[0];
@@ -210,7 +241,7 @@ public class inviteus_fragment extends Fragment {
             return value;
         }
 
-        private String parseRerContent(String tag) {
+        private String parseSectionContent(String tag) {
             String ret = "";
             String[] arrOfStr1 = tag.split(">", 2);
             String[] arrOfStr2 = arrOfStr1[1].split("<", 2);
