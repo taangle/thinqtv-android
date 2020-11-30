@@ -94,7 +94,6 @@
     <string name="edit_account">Edit Account Settings</string>
     <string name="schedule_a_conversation">Schedule a Conversation</string>
     <string name="phone_number">6028883089</string>
-    <string name="rsvps_url">https://fast-mountain-02267.herokuapp.com/api/v1/users/rsvps</string>
     <string name="activity">activity</string>
     <string name="profile_settings_activity">ProfileSettingsActivity</string>
     <string name="account_settings_activity">AccountSettingsActivity</string>
