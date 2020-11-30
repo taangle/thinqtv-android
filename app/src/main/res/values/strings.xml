@@ -17,7 +17,7 @@
         <item>This Week \u25bc</item>
         <item>Next Week \u25bc</item>
         <item>Future \u25bc</item>
-        <item>RSVPs \u25bc</item>
+        <item>Your RSVPs \u25bc</item>
     </string-array>
 
     <string name="title_activity_login">Sign in</string>
@@ -84,6 +84,11 @@
     <string name="register_url">https://fast-mountain-02267.herokuapp.com/api/v1/register</string>
     <string name="events_url">https://fast-mountain-02267.herokuapp.com/api/v1/events</string>
     <string name="users_url">https://fast-mountain-02267.herokuapp.com/api/v1/users</string>
+    <string name="merchandise_url">https://fast-mountain-02267.herokuapp.com/api/v1/merchandise</string>
+
+    <string name="stripe_ephemeral_key_url">https://fast-mountain-02267.herokuapp.com/api/v1/stripe/ephemeral-key</string>
+    <string name="stripe_url">https://fast-mountain-02267.herokuapp.com/api/v1/stripe</string>
+    <string name="stripe_api_version">2020-08-27</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -105,6 +110,26 @@
     <string name="inviteus_fragment">inviteus_fragment</string>
     <string name="profile_fragment">profile_fragment</string>
     <string name="welcome_fragment">welcome_fragment</string>
+    <string name="connect_to_stripe">Connect to Stripe</string>
+
+    <string name="merchandise_title_prompt">Title</string>
+    <string name="merchandise_price_prompt">Price</string>
+    <string name="merchandise_description_prompt">Description</string>
+    <string name="add_merchandise_title">Add Merchandise</string>
+    <string name="edit_merchandise_title">Edit Merchandise</string>
+    <string name="merchandise_type_label">Type</string>
+    <string name="merchandise_reward_button">Reward</string>
+    <string name="merchandise_donation_button">Donation</string>
+    <string name="merchandise_deadline_label">Deadline</string>
+    <string name="merchandise_date_button">Choose Date</string>
+    <string name="merchandise_price_label">Price</string>
+    <string name="merchandise_image_label">Image</string>
+    <string name="merchandise_button_label">Merchandise</string>
+    <string name="add_merchandise_button">Add Merchandise</string>
+    <string name="merchandise_loading_error">Error: Unable to load merchandise.</string>
+
+    <string name="stripe_settings">Stripe Settings</string>
+    <string name="pay">Pay</string>
     <string name="temporary_holder">Temporary Holder</string>
     <string name="random_text">Random text</string>
     <string name="random_text_long">Random text hbhbhbhbhbhbhbhbbbhbbhbhbhbhbhbhbhbhbhbh</string>
