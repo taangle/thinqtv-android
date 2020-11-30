@@ -71,7 +71,9 @@ public class LoggedInUser {
                     JSONObject rsvpInfo = response.getJSONObject(i);
                     rsvps.add(new RSVP(rsvpInfo.getString("start_at"), rsvpInfo.getInt("id"), rsvpInfo.getString("name")));
                 }
-                updateRSVPNotification(context);
+                if (rsvps.size() > 0) {
+                    updateRSVPNotification(context);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
