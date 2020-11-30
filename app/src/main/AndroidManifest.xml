@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thinqtv.thinqtv_android"
-    android:versionCode="2"
-    android:versionName="0.2">
+    android:versionCode="3"
+    android:versionName="0.3">
     <!-- This permission is required in order to get JSON files using Hudson's API -->
     <!-- Without it, the app cannot access the internet and get outside data -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,15 +19,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         android:name=".App">
-        <activity android:name=".ControlPanelActivity" />
-        <activity android:name=".AccountSettingsActivity"
-            android:parentActivityName=".ControlPanelActivity" />
-        <activity android:name=".ProfileSettingsActivity"
-            android:parentActivityName=".ControlPanelActivity" />
-        <activity android:name=".EditConversationsActivity"
-            android:parentActivityName=".ControlPanelActivity" />
+        <activity android:name=".AccountSettingsActivity"/>
+        <activity android:name=".ProfileSettingsActivity"/>
+        <activity android:name=".EditConversationsActivity"/>
         <activity android:name=".AddEventActivity" />
         <activity android:name=".StartupLoadingActivity" />
+        <activity android:name=".stripe.StoreActivity" />
+        <activity android:name=".stripe.StripeHostActivity" />
+        <activity android:name=".AddMerchandiseActivity" />
+        <activity android:name=".EditMerchandiseListActivity" />
+        <activity android:name=".stripe.CheckoutActivity" />
         <activity
             android:name=".ui.auth.LoginActivity"
             android:label="@string/title_activity_login"
@@ -74,7 +75,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
+        <receiver android:name=".NotificationPublisher" />
     </application>
 
 </manifest>

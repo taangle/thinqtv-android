@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
@@ -15,12 +16,16 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.stripe.android.CustomerSession;
+import com.stripe.android.EphemeralKeyUpdateListener;
 import com.thinqtv.thinqtv_android.R;
 import com.thinqtv.thinqtv_android.StartupLoadingActivity;
 import com.thinqtv.thinqtv_android.data.model.LoggedInUser;
+import com.thinqtv.thinqtv_android.stripe.StripeEphemeralKeyProvider;
 import com.thinqtv.thinqtv_android.ui.auth.LoginViewModel;
 import com.thinqtv.thinqtv_android.ui.auth.RegisterViewModel;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,8 +48,10 @@ public class UserRepository {
 
     private static volatile UserRepository instance;
     private LoggedInUser user = null;
+    private DataSource dataSource;
 
     private UserRepository() {
+        setDataSource(DataSource.getInstance());
     }
 
     public static UserRepository getInstance() {
@@ -91,6 +98,7 @@ public class UserRepository {
                         user.put("token", response.getString("token"));
                         setLoggedInUser(new LoggedInUser(context, new Gson().fromJson(user.toString(), HashMap.class)));
                         loginViewModel.setResult(new Result<>(null, true));
+                        getEphemeralKey(context);
                     } catch(JSONException e) {
                         e.printStackTrace();
                         loginViewModel.setResult(new Result<>(R.string.login_failed, false));
@@ -103,12 +111,14 @@ public class UserRepository {
                     }
                 });
 
-        DataSource.getInstance().addToRequestQueue(request, context);
+        dataSource.addToRequestQueue(request, context);
     }
 
-    public void logout() {
+    public void logout(Context context) {
         getLoggedInUser().logout();
         setLoggedInUser(null);
+        CustomerSession.endCustomerSession();
+        getEphemeralKey(context);
     }
 
     /**
@@ -140,6 +150,7 @@ public class UserRepository {
                         user.put("token", response.getString("token"));
                         setLoggedInUser(new LoggedInUser(context, new Gson().fromJson(user.toString(), HashMap.class)));
                         registerViewModel.setResult(new Result<>(null, true));
+                        getEphemeralKey(context);
                     } catch(JSONException e) {
                         e.printStackTrace();
                         registerViewModel.setResult(new Result<>(R.string.server_response_error, false));
@@ -184,7 +195,7 @@ public class UserRepository {
                         registerViewModel.setResult(new Result<>(R.string.could_not_reach_server, false));
                     }
                 });
-        DataSource.getInstance().addToRequestQueue(request, context);
+        dataSource.addToRequestQueue(request, context);
     }
 
     public void loadSavedUser(StartupLoadingActivity activity) {
@@ -193,6 +204,7 @@ public class UserRepository {
         String authToken = pref.getString("token", null);
 
         if (authToken == null) {
+            getEphemeralKey(activity);
             activity.finish();
             return;
         }
@@ -202,11 +214,13 @@ public class UserRepository {
             try {
                 response.put("token", authToken);
                 setLoggedInUser(new LoggedInUser(activity, new Gson().fromJson(response.toString(), HashMap.class)));
+                getEphemeralKey(activity);
             } catch(JSONException e) {
                 e.printStackTrace();
             }
             activity.finish();
         }, error -> {
+            getEphemeralKey(activity);
             activity.finish();
         }) {
             @Override
@@ -218,7 +232,7 @@ public class UserRepository {
             }
         };
 
-        DataSource.getInstance().addToRequestQueue(request, activity);
+        dataSource.addToRequestQueue(request, activity);
     }
 
     public void updateAccount(Context context, String email, String newPassword,
@@ -257,7 +271,7 @@ public class UserRepository {
                 return headers;
             }
         };
-        DataSource.getInstance().addToRequestQueue(request, context);
+        dataSource.addToRequestQueue(request, context);
     }
     public void updateProfile(Context context, String name, ImageView profilePic, String about, String topic1,
                        String topic2, String topic3, ImageView bannerPic) {
@@ -307,7 +321,11 @@ public class UserRepository {
                 return params;
             }
         };
-        DataSource.getInstance().addToRequestQueue(request, context);
+        dataSource.addToRequestQueue(request, context);
+    }
+
+    public void getEphemeralKey(Context context) {
+        CustomerSession.initCustomerSession(context, new StripeEphemeralKeyProvider(context));
     }
 
     public static byte[] getFileDataFromDrawable(Context context, int id) {
@@ -322,5 +340,9 @@ public class UserRepository {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }

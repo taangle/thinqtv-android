@@ -15,12 +15,12 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="197dp"
-            android:layout_height="48dp"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
             android:src="@drawable/thinq_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.04" />
@@ -40,14 +40,14 @@
 
         <Spinner
             android:id="@+id/eventsSpinner"
-            android:layout_width="125dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:background="@null"
             android:entries="@array/eventFilters"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.891"
+            app:layout_constraintHorizontal_bias="0.93"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.073" />

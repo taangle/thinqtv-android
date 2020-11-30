@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -73,7 +72,7 @@ public class aboutus_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.aboutus_fragment, container, false);
-        ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
+        ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.GONE);
 
         new WebElementsTask().execute();
         return view;
@@ -82,7 +81,7 @@ public class aboutus_fragment extends Fragment {
     private void setAboutUsModel(String sTitle1, String sContent1, String sTitle2, String sContent2, String sTitle3, String sContent3){
         aboutUsModel = new AboutUsModel();
 
-        aboutUsModel.Title = "About Us";
+        aboutUsModel.Title = getContext().getString(R.string.about_us);
         aboutUsModel.DetailsSection1Title = sTitle1;
         aboutUsModel.DetailsSection1Content = sContent1;
 
@@ -103,15 +102,19 @@ public class aboutus_fragment extends Fragment {
         if (sTitle1.length() == 0 || sContent1.length() == 0 || sTitle2.length() == 0 || sContent2.length() == 0 || sContent3.length() == 0 || sTitle3.length() == 0){
             ((RelativeLayout)view.findViewById(R.id.rl_Error)).setVisibility(View.VISIBLE);
         } else {
-            title.setText("- " + aboutUsModel.Title + " -");
+            title.setText(aboutUsModel.Title);
             section1Title.setText(aboutUsModel.DetailsSection1Title);
             section1Content.setText("\t" + aboutUsModel.DetailsSection1Content.replace("amp;", ""));
             section2Title.setText(aboutUsModel.DetailsSection2Title);
             section2Content.setText("\t" + aboutUsModel.DetailsSection2Content.replace("amp;", ""));
             section3Title.setText(aboutUsModel.DetailsSection3Title);
             section3Content.setText("\t" + aboutUsModel.DetailsSection3Content.replace("amp;", ""));
-            ((LinearLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
+            ((RelativeLayout) view.findViewById(R.id.rlAboutUs)).setVisibility(View.VISIBLE);
         }
+    }
+
+    protected void maintenanceMessage() {
+        view.findViewById(R.id.rl_Error).setVisibility(View.VISIBLE);
     }
 
     private class WebElementsTask extends AsyncTask<Void, Void, Void> {
@@ -124,38 +127,37 @@ public class aboutus_fragment extends Fragment {
         String sectionTitle3;
         String sectionContent3;
 
+        Boolean success = false;
+
         ArrayList<Element> elements = new ArrayList<>();
         @Override
         protected Void doInBackground(Void... voids) {
             URL url;
             try{
-                Document doc = Jsoup.connect("https://www.thinq.tv/aboutus").get();
+                Document doc = Jsoup.connect(getContext().getString(R.string.about_us_url)).get();
 
-                //Get Title value
-                Elements bigTextElements = doc.getElementsByClass("maroon");
-                for (int i = 0; i < bigTextElements.size(); i++) {
-                    String s = bigTextElements.get(i).toString();
-                    if (i == 0){
-                        sectionTitle1 = parseTag(s);
-                    } else if (i == 1) {
-                        sectionTitle2 = parseTag(s);
-                    }else {
-                        sectionTitle3 = parseTag(s);
-                        break;
-                    }
-                }
+                //Get Title values
+                Element title1 = doc.getElementById(getContext().getString(R.string.app_title_1));
+                Element title2 = doc.getElementById(getContext().getString(R.string.app_title_2));
+                Element title3 = doc.getElementById(getContext().getString(R.string.app_title_3));
 
-                //Get DetailsSection 1
-                Elements subTitleElements = doc.getElementsByClass("lead pr-2 mr-1");
-                for (Element element: subTitleElements) {
-                    String s = element.toString();
-                    sectionContent1 = parseTag(s);
-                }
+                sectionTitle1 = parseTag(title1.toString());
+                sectionTitle2 = parseTag(title2.toString());
+                sectionTitle3 = parseTag(title3.toString());
 
+                Element content1 = doc.getElementById(getContext().getString(R.string.app_content_1));
+                Element content2 = doc.getElementById(getContext().getString(R.string.app_content_2));
+                Element content3 = doc.getElementById(getContext().getString(R.string.app_content_3));
+
+                sectionContent1 = parseTag(content1.toString());
+                sectionContent2 = parseTag(content2.toString());
+                //sectionContent3 = parseTag(content3.toString());
+
+                // TODO: We need to use appContent3 when the html gets corrected.
                 Elements elementContent2 = doc.getElementsByClass("black");
-                sectionContent2 = parseTag(elementContent2.get(0).toString());
                 sectionContent3 = parseTag(elementContent2.get(1).toString());
 
+                success = true;
                 Log.i("ABOUT_US", "elements.size() = " + elements.size());
             } catch (Exception e) {
                 Log.e("ABOUT_US", "FAILED");
@@ -164,7 +166,11 @@ public class aboutus_fragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            setAboutUsModel(sectionTitle1, sectionContent1, sectionTitle2, sectionContent2, sectionTitle3, sectionContent3);
+            if (success) {
+                setAboutUsModel(sectionTitle1, sectionContent1, sectionTitle2, sectionContent2, sectionTitle3, sectionContent3);
+            } else {
+                maintenanceMessage();
+            }
         }
 
         private String parseTag(String tag) {

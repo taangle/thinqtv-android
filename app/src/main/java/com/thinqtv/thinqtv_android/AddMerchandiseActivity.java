@@ -5,21 +5,17 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -34,35 +30,33 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddEventActivity extends AppCompatActivity{
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+
+public class AddMerchandiseActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.SECOND, 0);
-        setContentView(R.layout.activity_add_event);
+        setContentView(R.layout.activity_add_merchandise);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        Button setTimeButton = findViewById(R.id.time);
-        setTimeButton.setOnClickListener(view -> {
-            DialogFragment newFragment = new TimePickerFragment((view1, hour, minute) -> {
-                calendar.set(Calendar.HOUR_OF_DAY, hour);
-                calendar.set(Calendar.MINUTE, minute);
-                setTimeButton.setText(calendar.getTime().toString().substring(11, 16));
-            });
-            newFragment.show(getSupportFragmentManager(), "timePicker");
-        });
+
         Button setDateButton = findViewById(R.id.date);
         setDateButton.setOnClickListener(view -> {
-            DialogFragment newFragment = new DatePickerFragment((datePicker, year, month, day) -> {
+            DialogFragment newFragment = new AddMerchandiseActivity.DatePickerFragment((datePicker, year, month, day) -> {
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DATE, day);
                 calendar.set(Calendar.YEAR, year);
@@ -74,39 +68,48 @@ public class AddEventActivity extends AppCompatActivity{
         Button sendButton = findViewById(R.id.send);
         Context context = this;
         sendButton.setOnClickListener(view -> {
-            String name = ((EditText) findViewById(R.id.event_title)).getText().toString();
+            String name = ((EditText) findViewById(R.id.merchandise_title)).getText().toString();
+            int selectedButtonId = ((RadioGroup)findViewById(R.id.merchandise_type)).getCheckedRadioButtonId();
+            String type = "";
+            if (selectedButtonId == R.id.donation_button) {
+                type = "Donate";
+            } else if (selectedButtonId == R.id.reward_button) {
+                type = "Buy";
+            }
+            String price = ((EditText)findViewById(R.id.merchandise_price)).getText().toString();
             String desc = ((EditText) findViewById(R.id.description)).getText().toString();
             Date date = calendar.getTime();
-            LocalDateTime start = DateTimeUtils.toInstant(date).atZone(ZoneId.systemDefault()).toLocalDateTime();
-            start = start.minusMinutes(start.getMinute());
-            start = start.minusSeconds(start.getSecond());
-            start = start.minusNanos(start.getNano());
-            ZonedDateTime zoned_start = start.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("America/Phoenix"));
-            ZonedDateTime zoned_end = zoned_start.plusMinutes(60);
+            LocalDateTime deadline = DateTimeUtils.toInstant(date).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            deadline = deadline.minusMinutes(deadline.getMinute());
+            deadline = deadline.minusSeconds(deadline.getSecond());
+            deadline = deadline.minusNanos(deadline.getNano());
+            ZonedDateTime zoned_deadline = deadline.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("America/Phoenix"));
 
-            String start_string = zoned_start.toLocalDateTime().toString();
-            String end_string = zoned_end.toLocalDateTime().toString();
-            makeRequest(context, name, start_string, end_string, desc);
+            String deadline_string = zoned_deadline.toLocalDateTime().toString();
+            makeRequest(context, name, type, price, desc, deadline_string);
         });
-    }
 
-    public static class TimePickerFragment extends DialogFragment {
-        private TimePickerDialog.OnTimeSetListener listener;
-        public TimePickerFragment(TimePickerDialog.OnTimeSetListener listener) {
-            super();
-            this.listener = listener;
-        }
-        @Override
-        @NonNull
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // default values are the current time
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-            return new TimePickerDialog(getActivity(), listener, hour, minute, DateFormat.is24HourFormat(getActivity()));
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.getBoolean("edit")) {
+            TextView addHeader = findViewById(R.id.add_header);
+            TextView editHeader = findViewById(R.id.edit_header);
+            addHeader.setVisibility(View.INVISIBLE);
+            editHeader.setVisibility(View.VISIBLE);
+
+            ((EditText)findViewById(R.id.merchandise_title)).setText(bundle.getString("name"));
+            if (bundle.getString("buttontype").equals("Donate")) {
+                ((RadioButton)findViewById(R.id.donation_button)).toggle();
+            } else if (bundle.getString("buttontype").equals("Buy")) {
+                ((RadioButton)findViewById(R.id.reward_button)).toggle();
+            }
+            ((EditText)findViewById(R.id.merchandise_price)).setText(bundle.getDouble("price") + "");
+            ((EditText) findViewById(R.id.description)).setText(bundle.getString("desc"));
+
+            String[] dateSegments = bundle.getString("deadline").split("-");
+            calendar.set(Integer.parseInt(dateSegments[0]), Integer.parseInt(dateSegments[1]) - 1, Integer.parseInt(dateSegments[2].substring(0, 2)));
+            setDateButton.setText(calendar.getTime().toString().substring(0, 10));
         }
     }
-
     public static class DatePickerFragment extends DialogFragment {
         private DatePickerDialog.OnDateSetListener listener;
         public DatePickerFragment(DatePickerDialog.OnDateSetListener listener) {
@@ -125,27 +128,32 @@ public class AddEventActivity extends AppCompatActivity{
         }
     }
 
-    public void makeRequest(Context context, String name, String start, String end, String desc) {
+    public void makeRequest(Context context, String name, String type, String price, String desc, String deadline) {
         JSONObject params = new JSONObject();
         try {
             params.put("name", name);
-            params.put("start_at", start);
+            params.put("buttontype", type);
+            params.put("price", price);
             params.put("desc", desc);
+            params.put("deadline", deadline);
         } catch(JSONException e) {
             e.printStackTrace();
             return;
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                getString(R.string.events_url), params, response -> {
-            ((Activity)context).finish();
+        int requestMethod = Request.Method.POST;
+        String url = getString(R.string.merchandise_url);
+        if (getIntent().getExtras().getBoolean("edit")) {
+            requestMethod = Request.Method.PUT;
+            url = url + "/" + getIntent().getExtras().getInt("id");
+        }
+        JsonObjectRequest request = new JsonObjectRequest(requestMethod,
+                url, params, response -> {
+            this.finish();
         }, error -> {
-            Log.e("create event", "server error");
-            Log.e("create event", error.toString());
             try {
                 if (error.networkResponse != null && error.networkResponse.data != null) {
                     JSONObject errors = new JSONObject(new String(error.networkResponse.data)).getJSONObject("errors");
-                    Log.e("create event", errors.toString());
                 }
             } catch(JSONException e) {
                 e.printStackTrace();
@@ -174,10 +182,4 @@ public class AddEventActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 }
-
