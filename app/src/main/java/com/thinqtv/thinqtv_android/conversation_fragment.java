@@ -122,7 +122,7 @@ public class conversation_fragment extends Fragment {
         try {
             date = dateFormat.parse(eventObject.getString("start_at"));
         } catch (ParseException e) { e.printStackTrace(); }
-        dateFormat.setTimeZone(TimeZone.getDefault());
+
         SimpleDateFormat displayFormat = new SimpleDateFormat("EEE, MMM dd - h:mm aa");
         String eventTimeString = displayFormat.format(date);
 
